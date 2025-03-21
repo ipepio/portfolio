@@ -1,54 +1,30 @@
-# React + TypeScript + Vite
+# 🚀 Portfolio - Isaac Pepió Tàrrega
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es mi portfolio personal, desarrollado con **React**, **Vite** y **TypeScript**.
 
-Currently, two official plugins are available:
+El objetivo del proyecto es mostrar mis trabajos, habilidades y experiencia como desarrollador frontend en una web moderna, rápida y escalable.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tecnologías utilizadas
 
-## Expanding the ESLint configuration
+- ⚛️ React
+- ⚡ Vite
+- 🧠 TypeScript
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+🚀 Cómo iniciar el proyecto
+```bash
+npm install     # Instala las dependencias
+npm run dev     # Inicia el servidor de desarrollo
 ```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+📦 Build para producción
+```bash
+npm run build
 ```
+📄 Licencia
+
+Este proyecto está bajo una licencia abierta. Puedes usarlo y modificarlo libremente, siempre que me menciones como autor original.
+
+Consulta el archivo LICENSE para más detalles.
+
+👨‍💻 Desarrollado por Isaac Pepió Tàrrega
+
+---
