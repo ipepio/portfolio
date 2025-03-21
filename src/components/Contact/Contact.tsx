@@ -1,10 +1,7 @@
-import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import { SendIcon, MailIcon, PhoneIcon, MapPinIcon } from "lucide-react";
 import useContactForm from "@/hooks/useContactForm";
-// import { FaLinkedin, FaTwitter, FaGithub } from "react-icons/fa";
-
 import { motion } from "framer-motion";
 import { locales } from "@/data/locales";
 import "./Contact.css";
@@ -25,16 +22,12 @@ export default function Contact() {
   return (
     <section className={`contact-section ${theme}`} id="contacto">
       <div className="contact-container">
-        {/* Header */}
         <div className="contact-header">
           <h2 className="contact-title">{t.contactTitle}</h2>
           <div className={`contact-underline ${theme}`}></div>
         </div>
-
         <p className={`contact-description ${theme}`}>{t.contactDescription}</p>
-
         <div className="contact-content">
-          {/* Form */}
           <motion.form 
             className={`contact-form ${theme}`}
             initial={{ opacity: 0, y: 50 }}
@@ -137,8 +130,6 @@ export default function Contact() {
               </div>
             )}
           </motion.form>
-
-          {/* Contact information */}
           <div className={`contact-info ${theme}`}>
             <div className={`contact-info-item ${theme}`}>
               <div className={`contact-info-icon ${theme}`}>
