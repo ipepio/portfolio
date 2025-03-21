@@ -1,0 +1,598 @@
+/* 🔹 Sección principal */
+.projects-section {
+    padding: 6rem 10% 4rem;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+.projects-section.light {
+    background-color: var(--bg-secondary-light);
+    color: var(--text-light);
+}
+
+.projects-section.dark {
+    background-color: var(--bg-secondary-dark);
+    color: var(--text-dark);
+}
+
+/* 🔹 Contenedor */
+.projects-container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+/* 🔹 Encabezado */
+.projects-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* 🔹 Título */
+.projects-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+/* 🔹 Línea decorativa */
+.projects-underline {
+    width: 80px;
+    height: 3px;
+    margin: 8px auto 0;
+}
+
+.projects-underline.light {
+    background-color: var(--color-primary-light);
+}
+
+.projects-underline.dark {
+    background-color: var(--color-primary-dark);
+}
+
+/* 🔹 Descripción de proyectos */
+.projects-description {
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+}
+
+.projects-description.light {
+    color: var(--color-muted-light);
+}
+
+.projects-description.dark {
+    color: var(--color-muted-dark);
+}
+
+/* 🔹 Grid de proyectos */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* 🔹 Tarjeta de proyecto */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    position: relative;
+    background-color: #222222;
+}
+
+.project-card.light {
+    background-color: var(--card-bg-light);
+    border: 1px solid var(--card-border-light);
+}
+
+.project-card.dark {
+    background-color: #222222;
+    border: none;
+}
+
+.project-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* 🔹 Imagen del proyecto */
+.project-image {
+    height: 170px;
+    width: 100%;
+    background-color: #333333;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-image.light {
+    background-color: #f0f0f0;
+}
+
+.project-image.dark {
+    background-color: #333333;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.project-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+}
+
+/* 🔹 Contenido del proyecto */
+.project-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0 0 0.8rem 0;
+}
+
+.project-description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    flex: 1;
+}
+
+.project-description.light {
+    color: var(--color-muted-light);
+}
+
+.project-description.dark {
+    color: #aaaaaa;
+}
+
+/* 🔹 Etiquetas de tecnologías */
+.project-technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tech-tag {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: white;
+    font-weight: 600;
+}
+
+/* 🔹 Controles del proyecto */
+.project-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.project-expand-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+.project-expand-button.light {
+    color: var(--color-muted-light);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.project-expand-button.active {
+    transform: rotate(180deg);
+}
+
+/* 🔹 Detalles expandidos */
+.project-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0;
+    background-color: #1a1a1a;
+    border-top: 0px solid transparent;
+}
+
+.project-details.light {
+    background-color: #f5f5f5;
+}
+
+.project-details.expanded {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.features-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.features-list {
+    margin: 0 0 1.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.features-list li {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.features-list li.light {
+    color: var(--color-muted-light);
+}
+
+.features-list li.dark {
+    color: #aaaaaa;
+}
+
+/* 🔹 Botones en el panel desplegado */
+.project-buttons {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.project-button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    flex: 1;
+    min-width: 120px;
+}
+
+.project-button.code {
+    background-color: transparent;
+    border: 1px solid #ccff00;
+    color: #ccff00;
+}
+
+.project-button.demo {
+    background-color: #ccff00;
+    color: #000;
+    border: 1px solid #ccff00;
+}
+
+.project-button.more {
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+.project-button.code.light {
+    border: 1px solid var(--color-primary-light);
+    color: var(--color-primary-light);
+}
+
+.project-button.demo.light {
+    background-color: var(--color-primary-light);
+    color: white;
+    border: 1px solid var(--color-primary-light);
+}
+
+.project-button.more.light {
+    border: 1px solid var(--text-light);
+    color: var(--text-light);
+}
+
+.project-button:hover {
+    transform: translateY(-2px);
+}
+
+.project-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 🔹 Modal */
+.project-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.project-modal {
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.project-modal.light {
+    background-color: var(--bg-modal-secondary-light);
+    color: var(--text-light);
+}
+
+.project-modal.dark {
+    background-color: var(--bg-modal-secondary-dark);
+    color: var(--text-dark);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header.light {
+    border-color: var(--card-border-light);
+}
+
+.modal-header.dark {
+    border-color: var(--card-border-dark);
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close.light {
+    color: var(--text-light);
+}
+
+.modal-close.dark {
+    color: var(--text-dark);
+}
+
+.modal-image {
+    width: 100%;
+    height: 300px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-image.dark {
+    background-color: #2a2a2a;
+}
+
+.modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-content {
+    padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.modal-description.light {
+    color: var(--color-muted-light);
+}
+
+.modal-description.dark {
+    color: var(--color-muted-dark);
+}
+
+.modal-technologies {
+    margin-bottom: 1.5rem;
+}
+
+.modal-technologies-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+}
+
+.modal-tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.modal-features-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+}
+
+.modal-features {
+    margin: 0 0 1.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.modal-features li {
+    margin-bottom: 0.5rem;
+}
+
+.modal-features li.light {
+    color: var(--color-muted-light);
+}
+
+.modal-features li.dark {
+    color: var(--color-muted-dark);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.modal-button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.modal-button.primary.light {
+    background-color: var(--color-primary-light);
+    color: var(--text-light);
+}
+
+.modal-button.primary.dark {
+    background-color: var(--color-primary-dark);
+    color: var(--text-light);
+}
+
+.modal-button.secondary.light {
+    background-color: transparent;
+    border-color: var(--color-primary-light);
+    color: var(--color-primary-light);
+}
+
+.modal-button.secondary.dark {
+    background-color: transparent;
+    border-color: var(--color-primary-dark);
+    color: var(--color-primary-dark);
+}
+
+.modal-button:hover {
+    transform: translateY(-2px);
+}
+
+.modal-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 🔹 Responsive */
+@media (max-width: 1100px) {
+    .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .projects-section {
+        padding: 5rem 5% 3rem;
+    }
+    
+    .projects-title {
+        font-size: 2rem;
+    }
+    
+    .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .project-image {
+        height: 180px;
+    }
+    
+    .project-modal {
+        width: 95%;
+    }
+    
+    .modal-image {
+        height: 250px;
+    }
+}
+
+@media (max-width: 600px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-card {
+        max-width: 100%;
+    }
+    
+    .project-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .project-button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+    }
+    
+    .modal-button {
+        width: 100%;
+        justify-content: center;
+    }
+}

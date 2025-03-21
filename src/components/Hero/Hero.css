@@ -1,0 +1,354 @@
+/* 🔹 Sección Hero */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8rem; /* Aumentado a 8rem para mayor separación entre texto y foto */
+    padding: 6rem 10%;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    position: relative;
+}
+
+.hero.light {
+    color: var(--text-light);
+}
+
+.hero.dark {
+    color: var(--text-dark);
+}
+
+/* 🔹 Contenido principal */
+.hero-content {
+    flex: 1;
+    max-width: 550px; /* Aumentado para dar más espacio al contenido */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    white-space: nowrap; /* Mantiene "Hola, soy Isaac" en una sola línea */
+}
+
+.hero-title.light {
+    color: var(--text-light);
+}
+
+.hero-title.dark {
+    color: var(--text-dark);
+}
+
+.hero-subtitle {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    height: 2.5rem; /* Altura fija para una sola línea */
+    line-height: 2.5rem;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap; /* Evita que el texto se divida en dos líneas */
+}
+
+.hero-subtitle.light {
+    color: var(--color-primary-light);
+}
+
+.hero-subtitle.dark {
+    color: var(--color-primary-dark);
+}
+
+.hero-text {
+    font-size: 1.125rem;
+    max-width: 40rem;
+    margin-bottom: 2rem;
+}
+
+.hero-text.light {
+    color: var(--color-muted-light);
+}
+
+.hero-text.dark {
+    color: var(--color-muted-dark);
+}
+
+/* 🔹 Botones */
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.hero-button {
+    font-weight: 600;
+    padding: 0.8rem 1.6rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1rem; /* Asegura que ambos botones tengan el mismo tamaño de fuente */
+    font-family: inherit; /* Asegura que ambos botones usen la misma fuente */
+}
+
+/* 🔹 Botón "Descargar CV" */
+/* .hero-button.cv {
+    color: var(--text-dark); /* Cambiamos el color del texto *//*
+} */
+
+.hero-button.cv.light {
+    color: var(--text-dark); /* Cambiamos el color del texto */
+    background-color: var(--color-primary-light);
+    border: 2px solid var(--color-primary-light);
+}
+
+.hero-button.cv.dark {
+    color: var(--text-light); /* Cambiamos el color del texto */
+    background-color: var(--color-primary-dark);
+    border: 2px solid var(--color-primary-dark);
+}
+
+.hero-button.cv.light:hover {
+    background-color: transparent;
+    color: var(--color-primary-light);
+    transform: scale(1.05);
+}
+
+.hero-button.cv.dark:hover {
+    background-color: transparent;
+    color: var(--color-primary-dark);
+    transform: scale(1.05);
+}
+
+/* 🔹 Botón "Contáctame" */
+.hero-button.contact {
+    background-color: transparent;
+}
+
+.hero-button.contact.light {
+    color: var(--color-primary-light);
+    border: 2px solid var(--color-primary-light);
+}
+
+.hero-button.contact.dark {
+    color: var(--color-primary-dark);
+    border: 2px solid var(--color-primary-dark);
+}
+
+.hero-button.contact.light:hover {
+    background-color: var(--color-primary-light);
+    color: white;
+    transform: scale(1.05);
+}
+
+.hero-button.contact.dark:hover {
+    background-color: var(--color-primary-dark);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* 🔹 Imagen */
+.hero-image {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    max-width: 350px;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 350px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hero-image.light img {
+    border: 3px solid var(--color-primary-light);
+}
+
+.hero-image.dark img {
+    border: 3px solid var(--color-primary-dark);
+}
+
+/* 🔹 Iconos de redes sociales */
+.hero-links {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    font-size: 2rem;
+}
+
+.hero-links a {
+    transition: all 0.3s ease;
+    transform: scale(1);
+}
+
+.hero-links.light a {
+    color: var(--color-muted-light);
+}
+
+.hero-links.dark a {
+    color: var(--text-dark);
+}
+
+.hero-links a:hover {
+    transform: scale(1.15);
+}
+
+.hero-links.light a:hover {
+    color: var(--color-primary-light);
+}
+
+.hero-links.dark a:hover {
+    color: var(--color-primary-dark);
+}
+
+/* 🔹 Animación del cursor parpadeante */
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.animate-blink {
+    animation: blink 1s infinite;
+}
+
+.animate-blink.light {
+    color: var(--color-primary-light);
+}
+
+.animate-blink.dark {
+    color: var(--color-primary-dark);
+}
+
+/* 🔹 Flecha de Scroll */
+.hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.hero-scroll.light {
+    color: var(--color-muted-light);
+}
+
+.hero-scroll.dark {
+    color: var(--color-muted-dark);
+}
+
+.hero-scroll.light:hover {
+    color: var(--color-primary-light);
+}
+
+.hero-scroll.dark:hover {
+    color: var(--color-primary-dark);
+}
+
+/* 🔹 Responsive */
+@media (min-width: 1200px) {
+    .hero {
+        gap: 10rem; /* Aún más separación en pantallas muy grandes */
+    }
+}
+
+@media (max-width: 1024px) {
+    .hero-title {
+        white-space: normal; /* Permite que el título se divida en pantallas medianas */
+    }
+    
+    .hero-subtitle {
+        white-space: normal; /* Permite que el subtítulo se divida en pantallas medianas */
+        height: auto; /* Altura automática para acomodar múltiples líneas */
+        min-height: 2.5rem; /* Altura mínima */
+    }
+}
+
+@media (max-width: 900px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 5rem 5% 3rem;
+        gap: 3rem;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        padding-right: 0;
+    }
+  
+    .hero-title {
+        font-size: 2.5rem;
+    }
+  
+    .hero-subtitle {
+        font-size: 1.5rem;
+        height: auto;
+        min-height: 2rem;
+        line-height: 2rem;
+        justify-content: center;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+  
+    .hero-button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .hero-image {
+        margin-bottom: 2.5rem;
+        max-width: 220px;
+        order: -1; /* Mueve la imagen antes del contenido en móvil */
+    }
+  
+    .hero-image img {
+        max-width: 220px;
+    }
+  
+    .hero-links {
+        justify-content: center;
+    }
+}
+
+/* Ajuste adicional para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .hero {
+        padding-top: 4rem;
+    }
+  
+    .hero-title {
+        font-size: 2rem;
+    }
+  
+    .hero-subtitle {
+        font-size: 1.2rem;
+        min-height: 1.5rem;
+        line-height: 1.5rem;
+    }
+  
+    .hero-text {
+        font-size: 1rem;
+    }
+  
+    .hero-image {
+        max-width: 180px;
+    }
+  
+    .hero-image img {
+        max-width: 180px;
+    }
+}

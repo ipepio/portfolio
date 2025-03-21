@@ -1,0 +1,85 @@
+:root {
+  /* 🎨 Colores de fondo */
+  --bg-primary-light: rgba(255, 255, 255, 0.567);
+  --bg-secondary-light: rgba(235, 235, 235, 0.567);
+  --bg-primary-dark: rgba(0, 0, 0, 0.567);
+  --bg-secondary-dark: rgba(20, 20, 20, 0.567);
+
+  /* 🎨 Colores de fondo para modales */
+  --bg-modal-primary-light: rgba(255, 255, 255);
+  --bg-modal-secondary-light: rgba(235, 235, 235);
+  --bg-modal-primary-dark: rgba(0, 0, 0);
+  --bg-modal-secondary-dark: rgba(20, 20, 20);
+
+  /* 🎨 Colores de texto */
+  --text-light: #333;
+  --text-dark: #f5f5f5;
+  --color-muted-light: #6c757d;
+  --color-muted-dark: #a0a0a0;
+  
+ /* 🎨 Colores de texto secundarios para botones */
+ --text-secondary-light: #ffffff;
+ --text-secondary-dark: #000000;
+
+
+ --color-primary-light: #68a2f9; /* Azul principal */
+ --color-secondary-light: #a5b4fc; /* Azul más claro */
+
+ --color-primary-dark: #becb57; /* Amarillo/verdoso principal */
+ --color-secondary-dark: #e9f974; /* Amarillo/verdoso más claro */
+  
+  --text-dark: #f5f5f5;
+  --text-light: #333;
+
+  /* 🎨 Colores para tarjetas y bordes */
+  --card-bg-light: #fff;
+  --card-border-light: #ddd;
+  --card-bg-dark: #111;
+  --card-border-dark: rgba(255, 255, 255, 0.1);
+
+  /* 🎨 Colores de botones */
+  --button-bg-light: var(--color-primary);
+  --button-bg-dark: var(--color-secondary);
+  --button-text-light: #fff;
+  --button-text-dark: #000;
+
+  /* 🎨 Colores para tags */
+  --tag-bg: var(--color-primary);
+  --tag-text: white;
+  
+  /* 🎨 Colores para barras de progreso */
+  --progress-bg-light: #eee;
+  --progress-bg-dark: rgba(255, 255, 255, 0.2);
+}
+
+/* 🌙 Modo oscuro */
+:root.dark {
+  --bg-primary: var(--bg-primary-dark);
+  --bg-secondary: var(--bg-secondary-dark);
+  --text-color: var(--text-dark);
+  --card-bg: var(--card-bg-dark);
+  --card-border: var(--card-border-dark);
+  --button-bg: var(--button-bg-dark);
+  --button-text: var(--button-text-dark);
+  --progress-bg: var(--progress-bg-dark);
+}
+
+/* ☀️ Modo claro */
+:root.light {
+  --bg-primary: var(--bg-primary-light);
+  --bg-secondary: var(--bg-secondary-light);
+  --text-color: var(--text-light);
+  --card-bg: var(--card-bg-light);
+  --card-border: var(--card-border-light);
+  --button-bg: var(--button-bg-light);
+  --button-text: var(--button-text-light);
+  --progress-bg: var(--progress-bg-light);
+}
+
+/* Estilos globales */
+* {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}

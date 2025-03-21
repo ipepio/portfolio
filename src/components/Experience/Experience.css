@@ -1,0 +1,453 @@
+/* 🔹 Sección principal */
+.experience-section {
+    padding: 6rem 10% 4rem;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+.experience-section.light {
+    background-color: var(--bg-primary-light);
+    color: var(--text-light);
+}
+
+.experience-section.dark {
+    background-color: var(--bg-primary-dark);
+    color: var(--text-dark);
+}
+
+/* 🔹 Contenedor */
+.experience-container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 🔹 Encabezado */
+.experience-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* 🔹 Título */
+.experience-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+/* 🔹 Línea decorativa */
+.experience-underline {
+    width: 80px;
+    height: 3px;
+    margin: 8px auto 0;
+}
+
+.experience-underline.light {
+    background-color: var(--color-primary-light);
+}
+
+.experience-underline.dark {
+    background-color: var(--color-primary-dark);
+}
+
+/* 🔹 Timeline */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+}
+
+/* Línea vertical del timeline */
+.timeline::before {
+    content: '';
+    position: absolute;
+    width: 3px;
+    background-color: var(--bg-secondary);
+    top: 0;
+    bottom: 0;
+    left: 50px;
+    margin-left: -1.5px;
+}
+
+.timeline.light::before {
+    background-color: var(--color-primary-light);
+    opacity: 0.3;
+}
+
+.timeline.dark::before {
+    background-color: var(--color-primary-dark);
+    opacity: 0.3;
+}
+
+/* 🔹 Contenedor de cada elemento del timeline */
+.timeline-item {
+    padding: 0 0 2.5rem 6rem;
+    position: relative;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+/* 🔹 Círculo/punto del timeline */
+.timeline-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    left: 40px;
+    top: 15px;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+/* 🔹 Círculo/punto del timeline - Estados según current y tema */
+.timeline-dot-current.light {
+    background-color: var(--color-primary-dark);
+}
+
+.timeline-dot-current.dark {
+    background-color: var(--color-primary-light);
+}
+
+.timeline-dot-previous.light {
+    background-color: var(--color-primary-light);
+}
+
+.timeline-dot-previous.dark {
+    background-color: var(--color-primary-dark);
+}
+
+/* 🔹 Tarjeta de experiencia */
+.timeline-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid; /* El color se asigna dinámicamente */
+}
+
+/* 🔹 Tarjeta de experiencia - Estados según current y tema */
+.timeline-card-current.light {
+    border-left-color: var(--color-primary-dark);
+}
+
+.timeline-card-current.dark {
+    border-left-color: var(--color-primary-light);
+}
+
+.timeline-card-previous.light {
+    border-left-color: var(--color-primary-light);
+}
+
+.timeline-card-previous.dark {
+    border-left-color: var(--color-primary-dark);
+}
+
+.timeline-card.light {
+    background-color: var(--card-bg-light);
+    border: 1px solid var(--card-border-light);
+}
+
+.timeline-card.dark {
+    background-color: var(--card-bg-dark);
+    border: 1px solid var(--card-border-dark);
+}
+
+.timeline-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Información de la experiencia */
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.timeline-info {
+    flex: 1;
+}
+
+.timeline-position {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+}
+
+.timeline-company {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.timeline-period {
+    font-size: 1rem;
+    color: var(--color-muted);
+    margin-left: auto;
+    padding-left: 1rem;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.timeline-period.light {
+    color: var(--color-muted-light);
+}
+
+.timeline-period.dark {
+    color: var(--color-muted-dark);
+}
+
+.timeline-description {
+    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.timeline-description.light {
+    color: var(--color-muted-light);
+}
+
+.timeline-description.dark {
+    color: var(--color-muted-dark);
+}
+
+/* 🔹 Botón "Ver más" */
+.timeline-more {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.more-button {
+    background-color: transparent;
+    border: none;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.more-button.light {
+    color: var(--color-primary-light);
+}
+
+.more-button.dark {
+    color: var(--color-primary-dark);
+}
+
+.more-button:hover {
+    transform: translateX(5px);
+}
+
+.more-icon {
+    margin-left: 0.5rem;
+}
+
+/* 🔹 Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.modal-container {
+    background-color: var(--bg-primary);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-container.light {
+    background-color: var(--bg-modal-primary-light);
+    color: var(--text-light);
+    border: 1px solid var(--card-border-light);
+}
+
+.modal-container.dark {
+    background-color: var(--bg-modal-primary-dark);
+    color: var(--text-dark);
+    border: 1px solid var(--card-border-dark);
+}
+
+.modal-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header.light {
+    border-bottom: 1px solid var(--card-border-light);
+    background-color: var(--bg-modal-secondary-light);
+
+}
+
+.modal-header.dark {
+    border-bottom: 1px solid var(--card-border-dark);
+    background-color: var(--bg-modal-secondary-dark);
+}
+
+.modal-title {
+    margin: 0;
+}
+
+.modal-company {
+    font-size: 1.1rem;
+    color: var(--color-muted);
+    margin: 0.3rem 0 0 0;
+}
+
+.modal-company.light {
+    color: var(--color-muted-light);
+}
+
+.modal-company.dark {
+    color: var(--color-muted-dark);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    color: var(--text-color);
+}
+
+.modal-close.light {
+    color: var(--text-light);
+}
+
+.modal-close.dark {
+    color: var(--text-dark);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-description {
+    white-space: pre-line;
+    line-height: 1.8;
+}
+
+.modal-description.light {
+    color: var(--color-muted-light);
+}
+
+.modal-description.dark {
+    color: var(--color-muted-dark);
+}
+
+/* 🔹 Responsive */
+@media (max-width: 900px) {
+    .experience-section {
+        padding: 5rem 5% 3rem;
+    }
+    
+    .experience-title {
+        font-size: 2rem;
+    }
+    
+    .timeline {
+        max-width: 100%;
+        margin-bottom: 3.5rem;
+    }
+    
+    .timeline::before {
+        left: 30px;
+    }
+    
+    .timeline-item {
+        padding-left: 4rem;
+    }
+    
+    .timeline-dot {
+        left: 30px;
+    }
+    
+    .timeline-card {
+        padding: 1.5rem;        
+    }
+    
+    .timeline-header {
+        flex-direction: column;
+    }
+    
+    .timeline-period {
+        margin-left: 0;
+        padding-left: 0;
+        margin-top: 0.5rem;
+        text-align: left;
+    }
+}
+
+/* Ajustes adicionales para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .experience-section {
+        padding: 4rem 5% 2rem;
+    }
+    
+    .experience-title {
+        font-size: 1.8rem;
+    }
+    
+    .timeline-item {
+        padding-left: 3.5rem;
+    }
+    
+    .timeline::before {
+        left: 20px;
+    }
+    
+    .timeline-dot {
+        left: 20px;
+        width: 15px;
+        height: 15px;
+    }
+    
+    .timeline-card {
+        padding: 1.2rem;
+    }
+    
+    .timeline-position {
+        font-size: 1.3rem;
+    }
+    
+    .timeline-company {
+        font-size: 1.1rem;
+    }
+    
+    .modal-container {
+        width: 95%;
+    }
+    
+    .modal-header,
+    .modal-body {
+        padding: 1.2rem;
+    }
+}

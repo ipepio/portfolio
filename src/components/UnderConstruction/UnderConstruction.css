@@ -1,0 +1,108 @@
+/* 🔹 Configuración General */
+* {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 🔹 Sección Hero */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 4rem 10%;
+    color: var(--color-text);
+    position: relative;
+}
+.hero light {
+    background-color: rgba(255, 255, 255, 0.567);
+    color: black;
+}
+.hero dark {
+    background-color: rgba(0, 0, 0, 0.567);
+    color: white;
+}
+/* 🔹 Contenido principal */
+.hero-content {
+    max-width: 100%;
+    text-align: center;
+    padding-right: 2rem;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+/* 🔹 Botones */
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.hero-button {
+    font-weight: 600;
+    padding: 0.8rem 1.6rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: 2px solid var(--color-primary);
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.hero-links {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    font-size: 2rem;
+}
+
+.hero-links a {
+    color: var(--color-muted);
+    transition: color 0.3s ease;
+}
+
+.hero-links a:hover {
+    color: var(--color-primary);
+}
+
+/* 🔹 Animación del cursor parpadeante */
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.animate-blink {
+    animation: blink 1s infinite;
+}
+/* 🔹 Sección Hero */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Cambiado de space-between a center */
+    height: 100vh;
+    padding: 4rem 10%;
+    color: var(--color-text);
+    position: relative;
+}
+.hero light {
+    background-color: rgba(255, 255, 255, 0.567);
+    color: black;
+}
+.hero dark {
+    background-color: rgba(0, 0, 0, 0.567);
+    color: white;
+}
+.hero-content {
+    max-width: 100%;
+    text-align: center;
+    padding-right: 2rem;
+}
+.hero-links {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem; /* Ajusta el margen según sea necesario */
+    width: 100%;
+}

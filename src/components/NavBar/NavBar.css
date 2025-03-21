@@ -1,0 +1,356 @@
+/* 🔹 Navbar fija con cambio de tema */
+.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--card-border);
+    background: var(--bg-primary);
+    color: var(--text-color);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar.menu-open {
+    border-bottom: none; /* Eliminar borde cuando el menú está abierto */
+}
+  .navbar.dark.menu-open {
+    background: var(--bg-modal-primary-dark);
+    
+}
+.navbar.light.menu-open {
+    background: var(--bg-modal-primary-light);
+}
+/* 🔹 Contenedor de los elementos alineados a la derecha */
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    width: 100%;
+    justify-content: flex-end; /* Cambiado para alinear a la derecha */
+}
+  
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+  
+/* 🔹 Links en desktop */
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+  
+.nav-links li a {
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; /* Reducido el peso */
+    font-size: 1rem; /* Ajustado el tamaño */
+    transition: color 0.2s;
+    color: var(--text-color);
+}
+  
+.nav-links li a:hover {
+    color: var(--color-primary);
+}
+  
+/* 🔹 Separador */
+.separator {
+    color: inherit;
+    opacity: 0.5;
+}
+  
+/* 🔹 Selector de idioma */
+.language-button {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    color: var(--text-color) !important;
+}
+  
+.language-button:hover {
+    color: var(--color-primary) !important;
+}
+  
+/* 🔹 Personalización del Popover */
+.language-dropdown {
+    z-index: 1100 !important;
+    position: absolute !important;
+    border: 1px solid var(--card-border) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    padding: 0.5rem !important;
+    border-radius: 4px !important;
+    min-width: 160px !important;
+    right: 0 !important;
+    background-color: var(--card-bg) !important;
+}
+.language-dropdown.dark {
+    background-color: var(--bg-modal-secondary-dark) !important;
+    color: var(--text-light) !important;
+}   
+.language-dropdown.light {
+    background-color: var(--bg-modal-primary-light) !important;
+    color: var(--text-light) !important;
+}   
+.language-dropdown button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem !important;
+    background: none;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    color: var(--text-color);
+}
+  
+.language-dropdown button:hover {
+    color: var(--color-primary) !important;
+    background-color: var(--bg-secondary) !important;
+}
+.language-dropdown.dark button:hover {
+    color: var(--color-primary-dark) !important;
+    background-color: var(--bg-secondary) !important;
+}
+.language-dropdown.light button:hover {
+    color: var(--color-primary-light) !important;
+    background-color: var(--bg-secondary) !important;
+}
+/* 🔹 Icono de cambio de tema */
+.theme-button {
+    background: none !important;
+    border: none !important;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s ease;
+    stroke-width: 2;
+}
+  
+.theme-button svg {
+    stroke-width: 2;
+}
+  
+.theme-button:hover {
+    opacity: 0.8;
+    transform: rotate(15deg);
+}
+  
+/* 🔹 Menú hamburguesa solo en móviles */
+.menu-button {
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer;
+    display: none;
+    padding: 0.5rem;
+    transition: transform 0.2s ease;
+}
+  
+.menu-button svg {
+    color: var(--text-color);
+    transition: color 0.3s ease-in-out;
+}
+  
+.menu-button:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+  
+/* 🔹 Menú lateral */
+.mobile-menu {
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 100%;
+    height: auto;
+    max-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: flex-start;
+    padding: 0 1rem;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    color: var(--text-color);
+    overflow: hidden;
+    opacity: 0;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    visibility: hidden;
+}
+
+.mobile-menu.open {
+    max-height: 500px; /* Altura máxima aumentada cuando está abierto */
+    padding: 2rem 1rem 3rem 1rem; /* Padding inferior aumentado */
+    opacity: 1;
+    visibility: visible;
+    overflow-y: auto; /* Permitir scroll cuando está abierto */
+}
+
+/* Usar bg-modal en lugar de bg-primary para quitar transparencia */
+.mobile-menu.light.open {
+    background: var(--bg-modal-primary-light) !important;
+    color: var(--text-light);
+}
+.mobile-menu.dark.open {
+    background: var(--bg-modal-primary-dark) !important;
+    color: var(--text-light);
+}
+
+/* Animación para cierre del menú */
+.mobile-menu.closing {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    visibility: visible; /* Mantenemos visible durante la animación */
+    transition: all 0.3s ease-out;
+}
+  
+.mobile-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+  
+.close-menu {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+  
+.close-icon {
+    color: var(--text-color);
+}
+  
+/* 🔹 Lista de navegación móvil */
+.mobile-nav-links {
+    list-style: none;
+    padding: 0;
+    text-align: center; /* Centrar en móvil */
+    width: 100%; /* Ancho completo */
+    margin-bottom: 3rem; /* Aumentado el espacio entre links y selector de idioma */
+}
+  
+.mobile-nav-links li {
+    margin-bottom: 1rem; /* Reducido el espacio entre ítems */
+}
+  
+.mobile-nav-links a {
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1.2rem;
+    transition: color 0.2s, transform 0.2s ease;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    display: block; /* Hacer que ocupe todo el ancho */
+}
+  
+.mobile-nav-links a:hover {
+    color: var(--color-primary);
+    transform: translateX(5px);
+}
+  
+/* 🔹 Selector de idioma en móvil */
+.mobile-language {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem; /* Espacio entre selector de idioma y botón de tema */
+}
+  
+/* 🔹 Cambio de tema en móvil */
+.mobile-theme {
+    background: none !important;
+    font-size: large;
+    border: none !important;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-top: 1.5rem; /* Más espacio arriba */
+    margin-bottom: 1rem; /* Espacio abajo */
+}
+  
+.mobile-theme svg {
+    stroke-width: 2;
+}
+
+.mobile-theme:hover {
+    transform: rotate(15deg);
+}
+  
+.language-dropdown-mobile {
+    z-index: 1100 !important;
+    position: absolute !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    padding: 0.5rem !important;
+    border-radius: 4px !important;
+    min-width: 160px !important;
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important; /* Centrar correctamente */
+}
+  
+.language-dropdown-mobile button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem !important;
+    background: none;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s ease;
+    color: var(--text-color);
+}
+  
+.language-dropdown-mobile button:hover {
+    background-color: var(--bg-secondary) !important;
+    color: var(--color-primary) !important;
+    transform: translateX(3px);
+}
+  
+@media (max-width: 768px) {
+    .nav-right {
+        display: none;
+    }
+  
+    .menu-button {
+        display: block;
+    }
+    
+    .navbar {
+        padding: 0;
+    }
+    
+    .nav-container {
+        padding: 0 1rem;
+        justify-content: flex-end;
+    }
+}

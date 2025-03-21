@@ -1,0 +1,20 @@
+/* Contenedor de la barra de progreso */
+.progress-container {
+  width: 100%;
+  max-width: 300px;
+  height: 6px;
+  background: var(--progress-bg);
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Barra de progreso */
+.progress-bar {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 5px;
+  position: absolute;
+  left: 0;
+  transition: width 0.5s ease-in-out;
+}

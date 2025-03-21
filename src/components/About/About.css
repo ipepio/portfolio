@@ -1,0 +1,192 @@
+/* 🔹 Sección principal */
+.about-section {
+    padding: 6rem 10% 4rem; /* Ajustado padding */
+    display: flex;
+    justify-content: center;
+    min-height: 100vh; /* Cambiado de height a min-height */
+    position: relative;
+}
+
+.about-section.light {
+    background-color: var(--bg-secondary-light);
+    color: var(--text-light);
+}
+
+.about-section.dark {
+    background-color: var(--bg-secondary-dark);
+    color: var(--text-dark);
+}
+
+/* 🔹 Contenedor */
+.about-container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 🔹 Encabezado */
+.about-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* 🔹 Título */
+.about-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+/* 🔹 Línea decorativa */
+.about-underline {
+    width: 80px;
+    height: 3px;
+    margin: 8px auto 0;
+}
+
+.about-underline.light {
+    background-color: var(--color-primary-light);
+}
+
+.about-underline.dark {
+    background-color: var(--color-primary-dark);
+}
+
+/* 🔹 Contenido */
+.about-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
+}
+
+/* 🔹 Texto */
+.about-text {
+    flex: 1;
+    max-width: 600px;
+}
+
+.about-text h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.about-text p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.about-text.light p {
+    color: var(--color-muted-light);
+}
+
+.about-text.dark p {
+    color: var(--color-muted-dark);
+}
+
+/* 🔹 Tarjetas */
+.about-cards {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.about-card {
+    padding: 1.5rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column; /* Cambiado a columna para mejor adaptación */
+    align-items: flex-start; /* Alineados a la izquierda */
+    gap: 0.8rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+}
+
+.about-card.light {
+    background-color: var(--card-bg-light);
+    border: 1px solid var(--card-border-light);
+}
+
+.about-card.dark {
+    background-color: var(--card-bg-dark);
+    border: 1px solid var(--card-border-dark);
+}
+
+.about-card.light:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.about-card.dark:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* 🔹 Iconos */
+.about-icon {
+    font-size: 2rem;
+}
+
+.about-icon.light {
+    color: var(--color-primary-light);
+}
+
+.about-icon.dark {
+    color: var(--color-primary-dark);
+}
+
+/* 🔹 Responsive */
+@media (max-width: 900px) {
+    .about-section {
+        padding: 5rem 5% 3rem; /* Ajustado para dispositivos móviles */
+    }
+    
+    .about-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem; /* Reducido el gap */
+        margin-bottom: 3.5rem;
+    }
+
+    .about-text {
+        text-align: center;
+        max-width: 100%;
+    }
+    
+    .about-title {
+        font-size: 2rem; /* Título más pequeño en móviles */
+    }
+
+    .about-cards {
+        width: 100%;
+    }
+    
+    .about-card {
+        align-items: center; /* Centrar en móvil */
+        text-align: center;
+    }
+}
+
+/* Ajustes adicionales para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .about-section {
+        padding: 4rem 5% 2rem;
+    }
+    
+    .about-title {
+        font-size: 1.8rem;
+    }
+    
+    .about-text h3 {
+        font-size: 1.3rem;
+    }
+    
+    .about-card {
+        padding: 1.2rem;
+    }
+}
