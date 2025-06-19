@@ -25,6 +25,7 @@ npm run build
 ```bash
 npm run deploy
 ```
+Las builds se compilan y despliegan de forma automática al hacer push a la rama `master` gracias al workflow de GitHub Actions, por lo que no es necesario ejecutar el comando anterior a menos que quieras hacerlo manualmente.
 📄 Licencia
 
 Este proyecto está bajo una licencia abierta. Puedes usarlo y modificarlo libremente, siempre que me menciones como autor original.
