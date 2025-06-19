@@ -30,7 +30,7 @@ Para que el sitio funcione correctamente, asegúrate de que GitHub Pages esté c
 =======
 📄 Licencia
 
-Este proyecto está bajo una licencia abierta. Puedes usarlo y modificarlo libremente, siempre que me menciones como autor original.
+Este proyecto está distribuido bajo la licencia MIT. Puedes usarlo y modificarlo libremente, siempre que conserves este aviso de licencia.
 
 Consulta el archivo LICENSE para más detalles.
 
