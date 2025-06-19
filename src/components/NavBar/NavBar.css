@@ -291,6 +291,8 @@
     transition: transform 0.2s ease;
     margin-top: 1.5rem; /* Más espacio arriba */
     margin-bottom: 1rem; /* Espacio abajo */
+    position: relative; /* Crear contexto de apilamiento */
+    z-index: 900; /* Debajo del desplegable de idioma */
 }
   
 .mobile-theme svg {
@@ -302,7 +304,7 @@
 }
   
 .language-dropdown-mobile {
-    z-index: 1100 !important;
+    z-index: 1200 !important;
     position: absolute !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     padding: 0.5rem !important;
