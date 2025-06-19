@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { SunIcon, MoonIcon, GlobeIcon, MenuIcon, XIcon } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -135,7 +136,13 @@ const NavBar = () => {
           </PopoverContent>
         </Popover>
 
-        <Button onClick={toggleTheme} className="mobile-theme">
+        <Button
+          onClick={toggleTheme}
+          className={cn(
+            "mobile-theme",
+            languageOpenMobile && "mobile-theme-hidden"
+          )}
+        >
           {theme === "light" ? <MoonIcon /> : <SunIcon color="white" />}
         </Button>
       </div>

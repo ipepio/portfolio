@@ -293,6 +293,12 @@
     margin-bottom: 1rem; /* Espacio abajo */
     position: relative; /* Crear contexto de apilamiento */
     z-index: 900; /* Debajo del desplegable de idioma */
+
+}
+
+.mobile-theme-hidden {
+    display: none;
+
 }
   
 .mobile-theme svg {
