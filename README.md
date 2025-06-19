@@ -10,6 +10,12 @@ El objetivo del proyecto es mostrar mis trabajos, habilidades y experiencia como
 - ⚡ Vite
 - 🧠 TypeScript
 
+### Node.js 20
+
+Este proyecto utiliza **Node.js 20** en los workflows de GitHub Actions y en el
+`Dockerfile`. Se recomienda emplear esta versión o una superior para evitar
+problemas de compatibilidad.
+
 🚀 Cómo iniciar el proyecto
 ```bash
 npm install     # Instala las dependencias
