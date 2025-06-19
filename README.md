@@ -21,6 +21,10 @@ Antes de compilar o ejecutar la aplicación crea un archivo `.env` basado en
 ```bash
 npm run build
 ```
+🚀 Despliegue en GitHub Pages
+```bash
+npm run deploy
+```
 📄 Licencia
 
 Este proyecto está bajo una licencia abierta. Puedes usarlo y modificarlo libremente, siempre que me menciones como autor original.
