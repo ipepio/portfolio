@@ -31,9 +31,8 @@ npm run build
 ```bash
 npm run deploy
 ```
-Las builds se compilan y despliegan de forma automática al hacer push a la rama `master` gracias al workflow de GitHub Actions, por lo que no es necesario ejecutar el comando anterior a menos que quieras hacerlo manualmente.
-Para que el sitio funcione correctamente, asegúrate de que GitHub Pages esté configurado para publicar desde la rama `gh-pages`. Si se usa `master` se mostrará una página en blanco porque solo contiene los archivos fuente.
-=======
+Las builds se compilan y despliegan de forma automática al hacer push a las ramas `main` o `master` gracias al workflow de GitHub Actions, por lo que no es necesario ejecutar el comando anterior a menos que quieras hacerlo manualmente.
+Para que el sitio funcione correctamente, asegúrate de que GitHub Pages esté configurado para publicar desde la rama `gh-pages`. Si se usa `main` o `master` se mostrará una página en blanco porque solo contiene los archivos fuente.
 📄 Licencia
 
 Este proyecto está distribuido bajo la licencia MIT. Puedes usarlo y modificarlo libremente, siempre que conserves este aviso de licencia.
