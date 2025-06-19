@@ -1,5 +1,5 @@
 # Etapa 1: Construcción
-FROM node:18 AS app-build
+FROM node:20 AS app-build
 WORKDIR /app
 COPY . .
 RUN npm install
