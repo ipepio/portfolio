@@ -13,6 +13,8 @@ const NavBar = () => {
   const [showMenu, setShowMenu] = useState(window.innerWidth <= 768);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false); // Estado para animar el cierre
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const [languageOpenMobile, setLanguageOpenMobile] = useState(false);
 
   const t = locales[language];
 
@@ -89,16 +91,16 @@ const NavBar = () => {
                 <li><a href="" onClick={(e) => scrollToSection(e, "contacto")}>{t.contacto}</a></li>
               </ul>
 
-              <Popover>
+              <Popover open={languageOpen} onOpenChange={setLanguageOpen}>
                 <PopoverTrigger asChild>
                   <Button variant="ghost" className="language-button">
                     {language.toUpperCase()} ▼
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className={`language-dropdown ${theme}`}>
-                  <button onClick={() => setLanguage("es")}>Español</button>
-                  <button onClick={() => setLanguage("en")}>English</button>
-                  <button onClick={() => setLanguage("ca")}>Català/Valencià</button>
+                  <button onClick={() => { setLanguage("es"); setLanguageOpen(false); }}>Español</button>
+                  <button onClick={() => { setLanguage("en"); setLanguageOpen(false); }}>English</button>
+                  <button onClick={() => { setLanguage("ca"); setLanguageOpen(false); }}>Català/Valencià</button>
                 </PopoverContent>
               </Popover>
 
@@ -120,16 +122,16 @@ const NavBar = () => {
           <li><a onClick={(e) => scrollToSection(e, "contacto")}>{t.contacto}</a></li>
         </ul>
 
-        <Popover>
+        <Popover open={languageOpenMobile} onOpenChange={setLanguageOpenMobile}>
           <PopoverTrigger asChild>
             <Button variant="ghost" className="language-button">
               <GlobeIcon size={20} /> {language.toUpperCase()} ▼
             </Button>
           </PopoverTrigger>
           <PopoverContent className="language-dropdown-mobile">
-            <button onClick={() => setLanguage("es")}>Español</button>
-            <button onClick={() => setLanguage("en")}>English</button>
-            <button onClick={() => setLanguage("ca")}>Català/Valencià</button>
+            <button onClick={() => { setLanguage("es"); setLanguageOpenMobile(false); }}>Español</button>
+            <button onClick={() => { setLanguage("en"); setLanguageOpenMobile(false); }}>English</button>
+            <button onClick={() => { setLanguage("ca"); setLanguageOpenMobile(false); }}>Català/Valencià</button>
           </PopoverContent>
         </Popover>
 

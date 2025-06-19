@@ -249,7 +249,7 @@
     padding: 0;
     text-align: center; /* Centrar en móvil */
     width: 100%; /* Ancho completo */
-    margin-bottom: 3rem; /* Aumentado el espacio entre links y selector de idioma */
+    margin-bottom: 1.5rem; /* Menor espacio entre links y selector de idioma */
 }
   
 .mobile-nav-links li {
@@ -278,8 +278,8 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 0.5rem;
-    margin-bottom: 2rem; /* Espacio entre selector de idioma y botón de tema */
+    margin-top: 0;
+    margin-bottom: 1rem; /* Espacio más reducido */
 }
   
 /* 🔹 Cambio de tema en móvil */
