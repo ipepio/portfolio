@@ -15,6 +15,8 @@ El objetivo del proyecto es mostrar mis trabajos, habilidades y experiencia como
 npm install     # Instala las dependencias
 npm run dev     # Inicia el servidor de desarrollo
 ```
+Antes de compilar o ejecutar la aplicación crea un archivo `.env` basado en
+`.env.example` e introduce tus credenciales de EmailJS.
 📦 Build para producción
 ```bash
 npm run build
@@ -26,5 +28,3 @@ Este proyecto está bajo una licencia abierta. Puedes usarlo y modificarlo libre
 Consulta el archivo LICENSE para más detalles.
 
 👨‍💻 Desarrollado por Isaac Pepió Tàrrega
-
----
