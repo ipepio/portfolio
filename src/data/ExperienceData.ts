@@ -1,5 +1,30 @@
 export const experienceData = [
     {
+      id: "Tineverse",
+      position: {
+        es: "Tech Lead Fullstack",
+        en: "Tech Lead Fullstack",
+        ca: "Tech Lead Fullstack"
+      },
+      company: "Tineverse S.L.",
+      period: {
+        es: "Abril 2025 - Actualidad",
+        en: "April 2025 - Present",
+        ca: "Abril 2025 - Actualitat"
+      },
+      description: {
+        es: "Lidero distintos proyectos abarcando integraciones con IA, control de hardware, aplicaciones web y diseño de producto.",
+        en: "I lead various projects spanning AI integrations, hardware control, web applications and product design.",
+        ca: "Lidero diferents projectes que inclouen integracions amb IA, control de maquinari, aplicacions web i disseny de producte."
+      },
+      fullDescription: {
+        es: "Como Tech Lead fullstack, dirijo varios proyectos de carácter transversal, desde integraciones con IA y control de hardware hasta el desarrollo de aplicaciones web y diseño de producto.",
+        en: "As a fullstack Tech Lead, I oversee multiple cross-functional projects from AI integrations and hardware control to web application development and product design.",
+        ca: "Com a Tech Lead fullstack, dirigeixo diversos projectes transversals, des d'integracions amb IA i control de maquinari fins al desenvolupament d'aplicacions web i disseny de producte."
+      },
+      isCurrent: true,  // Añadimos esta propiedad
+    },
+    {
       id: "Oratrex",
       position: {
         es: "CTO / Tech Lead",
@@ -8,9 +33,9 @@ export const experienceData = [
       },
       company: "Oratrex Tech. S.L.",
       period: {
-        es: "Agosto 2023 - Actualidad",
-        en: "August 2023 - Present",
-        ca: "Agost 2023 - Actualitat"
+        es: "Agosto 2023 - Abril 2025",
+        en: "August 2023 - April 2025",
+        ca: "Agost 2023 - Abril 2025"
       },
       description: {
         es: "Lidero un equipo de desarrollo y diseño estrategias técnicas y de producto, optimizando la operativa y escalabilidad de las plataformas.",
@@ -22,7 +47,7 @@ export const experienceData = [
         en: "As a CTO and Tech Lead at Oratrex Tech, I lead a team of developers, establishing technical and product strategies to enhance system efficiency and scalability. I have built a back-office from scratch to manage internal operations and developed the digital ticket format Smart Ticket (.smtk) along with its application. I also design applications for music festivals and integrate ticketing platforms. I implement a CI/CD system that has reduced deployment time by over 80% and manage an internal ticketing system for issue resolution. I apply agile methodologies and Scrum while integrating advanced strategies in AWS and Kubernetes to achieve a robust and self-scaling architecture.",
         ca: "Com a CTO i Tech Lead a Oratrex Tech, lidero un equip de desenvolupadors, establint estratègies tècniques i de producte per millorar l’eficiència i l’escalabilitat del sistema. He creat un backoffice des de zero per gestionar operacions internes i desenvolupat el format d’entrada digital Smart Ticket (.smtk) amb la seva aplicació. També dissenyo aplicacions per a festivals de música i integro plataformes de ticketing. Implemento un sistema de CI/CD que ha reduït el temps de desplegament en més d’un 80% i gestiono un sistema intern de tickets per a la resolució d’incidències. Aplico metodologies àgils i Scrum, a més d’integrar estratègies avançades en AWS i Kubernetes per aconseguir una arquitectura robusta i auto-escalable."
       },
-      isCurrent: true,  // Añadimos esta propiedad
+      isCurrent: false,  // Añadimos esta propiedad
     },
     {
       id: "Seidor",
