@@ -124,10 +124,13 @@
     
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
+    grid-auto-rows: max-content;
     gap: var(--grid-gap);
     margin: 0;
     padding: 0;
+    padding-bottom: 2rem;
     list-style: none;
+    align-items: start;
     
     @media (max-width: 767px) {
         --card-min-width: 100%;
@@ -139,23 +142,31 @@
     }
 }
 
+/* 🔹 Contenedor de la tarjeta de proyecto */
+.project-card-container {
+    display: contents;
+}
+
 /* 🔹 Tarjeta de proyecto */
 .project-card {
     --card-radius: var(--border-radius-lg);
     --card-padding: var(--spacing-lg);
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.2);
+    --card-height: 480px; /* Altura fija para cards contraídas */
     
     display: flex;
     flex-direction: column;
     border-radius: var(--card-radius);
     overflow: hidden;
     transition: all var(--transition-normal);
-    height: 100%;
+    height: var(--card-height); /* Altura fija cuando contraída */
     position: relative;
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
+    align-self: start;
+    z-index: 1;
     
     @media (hover: hover) {
         &:hover {
@@ -166,6 +177,10 @@
                 transform: scale(1.05);
             }
         }
+    }
+    
+    @media (max-width: 767px) {
+        --card-height: 420px; /* Altura ajustada para móviles */
     }
 }
 
@@ -234,7 +249,7 @@
 /* 🔹 Contenido del proyecto */
 .project-content {
     padding: var(--card-padding);
-    flex: 1;
+    flex: 1; /* Ocupa el espacio disponible */
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
@@ -264,9 +279,14 @@
     margin: 0;
     flex: 1;
     color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     
     @media (min-width: 768px) {
         --description-size: 1rem;
+        -webkit-line-clamp: 3;
     }
 }
 
@@ -327,11 +347,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem;
+    padding: 1rem;
     transition: transform 0.3s ease;
     width: 100%;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 1rem;
+    margin-top: auto; /* Empuja el botón hacia abajo */
+    flex-shrink: 0; /* Evita que se encoja */
 }
 
 .project-expand-button.light {
@@ -339,18 +360,32 @@
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.project-expand-button.dark {
+    color: #999;
+}
+
+.project-expand-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateY(-1px);
+}
+
 .project-expand-button.active {
     transform: rotate(180deg);
+}
+
+.project-expand-button.active:hover {
+    transform: rotate(180deg) translateY(-1px);
 }
 
 /* 🔹 Detalles expandidos */
 .project-details {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
+    transition: max-height 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
     padding: 0;
     background-color: #1a1a1a;
     border-top: 0px solid transparent;
+    margin: 0; /* Asegurar que no haya margen externo */
 }
 
 .project-details.light {
@@ -362,12 +397,20 @@
     overflow-y: auto;
     padding: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    margin: 0; /* Asegurar que no haya margen externo */
+}
+
+.project-details.expanded.light {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.05);
 }
 
 .features-title {
     font-size: 1.1rem;
     font-weight: bold;
     margin-bottom: 1rem;
+    margin-top: 0; /* Eliminar margen superior */
 }
 
 .features-list {
@@ -378,6 +421,7 @@
 .features-list li {
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
+    line-height: 1.4; /* Mejor espaciado de línea */
 }
 
 .features-list li.light {
@@ -393,6 +437,7 @@
     display: flex;
     gap: 0.8rem;
     margin-top: 1.5rem;
+    margin-bottom: 0; /* Eliminar margen inferior */
     flex-wrap: wrap;
 }
 
@@ -720,4 +765,11 @@
     .project-button {
         width: 100%;
     }
+}
+
+/* Cuando la card está expandida, permite altura automática */
+.project-card.expanded {
+    z-index: 10;
+    height: auto; /* Permite que crezca cuando se expande */
+    overflow: visible; /* Permite que el contenido expandido sea visible */
 }

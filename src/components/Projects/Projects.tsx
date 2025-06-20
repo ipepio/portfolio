@@ -30,7 +30,7 @@ const ProjectCard = ({ project, theme, language, t, onOpenModal, expanded, onTog
     return (
         <div className="project-card-container">
             <motion.div
-                className={`project-card ${theme}`}
+                className={`project-card ${theme} ${expanded ? 'expanded' : ''}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -65,14 +65,6 @@ const ProjectCard = ({ project, theme, language, t, onOpenModal, expanded, onTog
                         ))}
                     </div>
                 </div>
-
-                <button
-                    className={`project-expand-button ${theme} ${expanded ? 'active' : ''}`}
-                    onClick={onToggleExpand}
-                    aria-label={expanded ? t.close : t.learnMore}
-                >
-                    <ChevronDown size={20} />
-                </button>
 
                 <div className={`project-details ${theme} ${expanded ? 'expanded' : ''}`}>
                     <h4 className="features-title">{t.keyFeatures}</h4>
@@ -118,6 +110,14 @@ const ProjectCard = ({ project, theme, language, t, onOpenModal, expanded, onTog
                         </button>
                     </div>
                 </div>
+
+                <button
+                    className={`project-expand-button ${theme} ${expanded ? 'active' : ''}`}
+                    onClick={onToggleExpand}
+                    aria-label={expanded ? t.close : t.learnMore}
+                >
+                    <ChevronDown size={20} />
+                </button>
             </motion.div>
         </div>
     );

@@ -137,7 +137,7 @@ export default function Contact() {
               </div>
               <div className="contact-info-content">
                 <h3 className={`contact-info-title ${theme}`}>{t.email}</h3>
-                <p className={`contact-info-text ${theme}`}>ipepio@outlook.es</p>
+                <p className={`contact-info-text ${theme}`}>isaac@ipepio.dev</p>
               </div>
             </div>
 
