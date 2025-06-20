@@ -288,17 +288,19 @@
     font-size: large;
     border: none !important;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease;
     margin-top: 1.5rem; /* Más espacio arriba */
     margin-bottom: 1rem; /* Espacio abajo */
     position: relative; /* Crear contexto de apilamiento */
     z-index: 900; /* Debajo del desplegable de idioma */
-
+    will-change: transform, opacity;
 }
 
 .mobile-theme-hidden {
-    display: none;
-
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
 }
   
 .mobile-theme svg {
@@ -311,15 +313,20 @@
   
 .language-dropdown-mobile {
     z-index: 1200 !important;
-    position: absolute !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    position: fixed !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
     padding: 0.5rem !important;
-    border-radius: 4px !important;
-    min-width: 160px !important;
+    border-radius: 8px !important;
+    min-width: 180px !important;
     background-color: var(--card-bg) !important;
     border: 1px solid var(--card-border) !important;
     left: 50% !important;
-    transform: translateX(-50%) !important; /* Centrar correctamente */
+    transform: translateX(-50%) !important;
+    opacity: 1 !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+    margin-top: 8px;
 }
   
 .language-dropdown-mobile button {
