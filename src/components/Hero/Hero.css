@@ -1,14 +1,28 @@
 /* 🔹 Sección Hero */
 .hero {
+    --hero-padding: var(--spacing-2xl);
+    --hero-gap: 4rem;
+    
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8rem; /* Aumentado a 8rem para mayor separación entre texto y foto */
-    padding: 6rem 10%;
-    max-width: 1200px;
+    gap: var(--hero-gap);
+    padding: calc(var(--spacing-3xl) + 3.5rem) var(--spacing-2xl) var(--spacing-3xl);
+    max-width: var(--breakpoint-large);
     margin: 0 auto;
     min-height: 100vh;
     position: relative;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+        --hero-gap: 8rem;
+        padding-left: var(--hero-padding);
+        padding-right: var(--hero-padding);
+    }
+    
+    @media (min-width: 1200px) {
+        --hero-gap: 10rem;
+    }
 }
 
 .hero.light {
@@ -21,19 +35,39 @@
 
 /* 🔹 Contenido principal */
 .hero-content {
+    --content-max-width: 42rem;
+    
     flex: 1;
-    max-width: 550px; /* Aumentado para dar más espacio al contenido */
+    max-width: var(--content-max-width);
     display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
+    z-index: 1;
+    
+    @media (min-width: 768px) {
+        --content-max-width: 55rem;
+    }
 }
 
 .hero-title {
-    font-size: 3.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    white-space: nowrap; /* Mantiene "Hola, soy Isaac" en una sola línea */
+    --title-size: 2.5rem;
+    --title-line-height: 1.1;
+    
+    font-size: var(--title-size);
+    font-weight: 800;
+    line-height: var(--title-line-height);
+    margin: 0 0 var(--spacing-sm);
+    letter-spacing: -0.02em;
+    
+    @media (min-width: 768px) {
+        --title-size: 3.5rem;
+        white-space: nowrap;
+    }
+    
+    @media (min-width: 1024px) {
+        --title-size: 4rem;
+    }
 }
 
 .hero-title.light {
@@ -45,15 +79,26 @@
 }
 
 .hero-subtitle {
-    font-size: 2rem;
+    --subtitle-size: 1.5rem;
+    --subtitle-line-height: 1.2;
+    
+    font-size: var(--subtitle-size);
     font-weight: 600;
-    margin-bottom: 1rem;
-    height: 2.5rem; /* Altura fija para una sola línea */
-    line-height: 2.5rem;
+    line-height: var(--subtitle-line-height);
+    margin: 0 0 var(--spacing-lg);
+    min-height: 2.5rem;
     display: flex;
     align-items: center;
     overflow: hidden;
-    white-space: nowrap; /* Evita que el texto se divida en dos líneas */
+    
+    @media (min-width: 768px) {
+        --subtitle-size: 2rem;
+        white-space: nowrap;
+    }
+    
+    @media (min-width: 1024px) {
+        --subtitle-size: 2.25rem;
+    }
 }
 
 .hero-subtitle.light {
@@ -65,9 +110,18 @@
 }
 
 .hero-text {
-    font-size: 1.125rem;
+    --text-size: 1.125rem;
+    --text-line-height: 1.7;
+    
+    font-size: var(--text-size);
+    line-height: var(--text-line-height);
     max-width: 40rem;
-    margin-bottom: 2rem;
+    margin: 0 0 var(--spacing-2xl);
+    opacity: 0.9;
+    
+    @media (min-width: 768px) {
+        --text-size: 1.25rem;
+    }
 }
 
 .hero-text.light {
@@ -81,19 +135,52 @@
 /* 🔹 Botones */
 .hero-buttons {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    
+    @media (max-width: 767px) {
+        flex-direction: column;
+        width: 100%;
+    }
 }
 
 .hero-button {
+    --button-padding: 0.875rem 1.75rem;
+    --button-radius: var(--border-radius-md);
+    --button-font-size: 1rem;
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 600;
-    padding: 0.8rem 1.6rem;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: var(--button-padding);
+    border-radius: var(--button-radius);
+    transition: all var(--transition-fast);
     text-decoration: none;
     text-align: center;
     cursor: pointer;
-    font-size: 1rem; /* Asegura que ambos botones tengan el mismo tamaño de fuente */
-    font-family: inherit; /* Asegura que ambos botones usen la misma fuente */
+    font-size: var(--button-font-size);
+    font-family: inherit;
+    border: 2px solid transparent;
+    white-space: nowrap;
+    
+    @media (max-width: 767px) {
+        width: 100%;
+    }
+    
+    @media (min-width: 768px) {
+        --button-padding: 1rem 2rem;
+    }
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
 }
 
 /* 🔹 Botón "Descargar CV" */
@@ -154,21 +241,53 @@
 
 /* 🔹 Imagen */
 .hero-image {
+    --image-size: 18rem;
+    
     flex: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: auto;
-    max-width: 350px;
+    width: 100%;
+    max-width: var(--image-size);
+    margin: 0 auto;
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        padding: 2px;
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+    
+    @media (min-width: 768px) {
+        --image-size: 22rem;
+        margin: 0;
+    }
+    
+    @media (min-width: 1024px) {
+        --image-size: 28rem;
+    }
 }
 
 .hero-image img {
     width: 100%;
-    max-width: 350px;
+    height: auto;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     object-fit: cover;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: transform var(--transition-normal);
+    
+    .hero-image:hover & {
+        transform: scale(1.02);
+    }
 }
 
 .hero-image.light img {
@@ -256,99 +375,62 @@
 }
 
 /* 🔹 Responsive */
-@media (min-width: 1200px) {
+@media (max-width: 767px) {
     .hero {
-        gap: 10rem; /* Aún más separación en pantallas muy grandes */
+        flex-direction: column-reverse;
+        text-align: center;
+        padding-top: calc(var(--spacing-3xl) + 3.5rem);
+        gap: var(--spacing-2xl);
     }
-}
-
-@media (max-width: 1024px) {
-    .hero-title {
-        white-space: normal; /* Permite que el título se divida en pantallas medianas */
+    
+    .hero-content {
+        align-items: center;
+        text-align: center;
+    }
+    
+    .hero-title,
+    .hero-subtitle {
+        white-space: normal;
     }
     
     .hero-subtitle {
-        white-space: normal; /* Permite que el subtítulo se divida en pantallas medianas */
-        height: auto; /* Altura automática para acomodar múltiples líneas */
-        min-height: 2.5rem; /* Altura mínima */
-    }
-}
-
-@media (max-width: 900px) {
-    .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 5rem 5% 3rem;
-        gap: 3rem;
-    }
-
-    .hero-content {
-        max-width: 100%;
-        padding-right: 0;
-    }
-  
-    .hero-title {
-        font-size: 2.5rem;
-    }
-  
-    .hero-subtitle {
-        font-size: 1.5rem;
-        height: auto;
-        min-height: 2rem;
-        line-height: 2rem;
         justify-content: center;
     }
-
-    .hero-buttons {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-  
-    .hero-button {
-        width: 100%;
-        margin-bottom: 0.5rem;
-    }
-
-    .hero-image {
-        margin-bottom: 2.5rem;
-        max-width: 220px;
-        order: -1; /* Mueve la imagen antes del contenido en móvil */
-    }
-  
-    .hero-image img {
-        max-width: 220px;
-    }
-  
+    
     .hero-links {
         justify-content: center;
     }
+    
+    .hero-image {
+        margin-bottom: var(--spacing-lg);
+    }
 }
 
-/* Ajuste adicional para pantallas muy pequeñas */
-@media (max-width: 480px) {
-    .hero {
-        padding-top: 4rem;
+/* 🔹 Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
-  
-    .hero-title {
-        font-size: 2rem;
-    }
-  
-    .hero-subtitle {
-        font-size: 1.2rem;
-        min-height: 1.5rem;
-        line-height: 1.5rem;
-    }
-  
-    .hero-text {
-        font-size: 1rem;
-    }
-  
-    .hero-image {
-        max-width: 180px;
-    }
-  
-    .hero-image img {
-        max-width: 180px;
-    }
+}
+
+/* 🔹 Ajustes para modo oscuro/light */
+.hero.light .hero-title,
+.hero.light .hero-subtitle {
+    color: var(--text-light);
+}
+
+.hero.dark .hero-title,
+.hero.dark .hero-subtitle {
+    color: var(--text-dark);
+}
+
+.hero.light .hero-text {
+    color: var(--color-muted-light);
+}
+
+.hero.dark .hero-text {
+    color: var(--color-muted-dark);
 }

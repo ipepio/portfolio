@@ -294,7 +294,7 @@ export default function Projects() {
                 )}
             </AnimatePresence>
 
-            <ScrollArrow targetId="contacto" />
+            <ScrollArrow targetId="contacto"/>
         </section>
     );
 }

@@ -8,12 +8,12 @@
 }
 
 .contact-section.light {
-    background-color: var(--bg-secondary-light);
+    background-color: var(--bg-primary-light);
     color: var(--text-light);
 }
 
 .contact-section.dark {
-    background-color: var(--bg-secondary-dark);
+    background-color: var(--bg-primary-dark);
     color: var(--text-dark);
 }
 
