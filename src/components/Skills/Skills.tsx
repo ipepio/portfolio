@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useTheme } from "@/context/ThemeContext";
-import { useLanguage } from "@/context/LanguageContext";
+import { useTheme } from "@/hooks/useThemeHook";
+import { useLanguage } from "@/hooks/useLanguageHook";
 import { skillsData } from "@/data/skillsData";
 import { motion, AnimatePresence } from "framer-motion";
 import Progress from "@/components/ui/Progress/Progress"

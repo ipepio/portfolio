@@ -1,5 +1,5 @@
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/hooks/useLanguageHook";
+import { useTheme } from "@/hooks/useThemeHook";
 import { ArrowUpIcon } from "lucide-react";
 import { locales } from "@/data/locales";
 import "./Footer.css";

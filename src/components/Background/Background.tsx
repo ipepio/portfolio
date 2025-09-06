@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useTheme } from "@/context/ThemeContext";
+import { useTheme } from "@/hooks/useThemeHook";
 import "./Background.css";
 
 const Background = () => {

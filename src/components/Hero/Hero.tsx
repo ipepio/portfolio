@@ -3,8 +3,8 @@ import isaacImage from "@/assets/isaac.jpg";
 import ScrollArrow from "@/components/ui/ScrollArrow";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { locales } from "@/data/locales";
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/hooks/useLanguageHook";
+import { useTheme } from "@/hooks/useThemeHook";
 
 import "./Hero.css";
 
@@ -38,13 +38,14 @@ export default function Hero() {
             }
         }, { threshold: 0.5 });
 
-        if (sectionRef.current) {
-            observer.observe(sectionRef.current);
+        const currentRef = sectionRef.current;
+        if (currentRef) {
+            observer.observe(currentRef);
         }
 
         return () => {
-            if (sectionRef.current) {
-                observer.unobserve(sectionRef.current);
+            if (currentRef) {
+                observer.unobserve(currentRef);
             }
         };
     }, [hasAnimated]);
@@ -84,7 +85,7 @@ export default function Hero() {
             setDisplayedText(roleList[0]);
             setIndex(0);
         }
-    }, [language, roleList]);
+    }, [language, roleList, hasAnimated]);
 
     return (
         <section className={`hero ${theme}`} id="hero" ref={sectionRef}>

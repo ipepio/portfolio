@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SunIcon, MoonIcon, GlobeIcon, MenuIcon, XIcon } from "lucide-react";
-import { useTheme } from "@/context/ThemeContext";
-import { useLanguage } from "@/context/LanguageContext";
+import { useTheme } from "@/hooks/useThemeHook";
+import { useLanguage } from "@/hooks/useLanguageHook";
 import { locales } from "@/data/locales";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import "./NavBar.css";
@@ -30,6 +30,17 @@ const NavBar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Función para cerrar con animación
+  const closeMenuWithAnimation = useCallback(() => {
+    if (!isMenuOpen) return;
+    
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsMenuOpen(false);
+      setIsClosing(false);
+    }, 300); // Tiempo de la transición CSS
+  }, [isMenuOpen]);
+
   // Añadir controlador para cerrar menú al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -44,7 +55,7 @@ const NavBar = () => {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMenuOpen]);
+  }, [isMenuOpen, closeMenuWithAnimation]);
 
   const scrollToSection = (event: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     event.preventDefault();
@@ -53,17 +64,6 @@ const NavBar = () => {
       section.scrollIntoView({ behavior: "smooth" });
       closeMenuWithAnimation();
     }
-  };
-
-  // Función para cerrar con animación
-  const closeMenuWithAnimation = () => {
-    if (!isMenuOpen) return;
-    
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsMenuOpen(false);
-      setIsClosing(false);
-    }, 300); // Tiempo de la transición CSS
   };
 
   const toggleMenu = () => {

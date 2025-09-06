@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 // import { locales } from "@/data/locales";
-import { useLanguage } from "@/context/LanguageContext"; // 👈 Importamos el contexto
+import { useLanguage } from "@/hooks/useLanguageHook"; // 👈 Importamos el hook
 
 import "./UnderConstruction.css";
 
@@ -42,7 +42,7 @@ export default function Hero() {
         }
 
         return () => clearTimeout(timeout);
-    }, [displayedText, isDeleting, index, language]); // 🔥 Dependemos del idioma para actualizar dinámicamente
+    }, [displayedText, isDeleting, index, language, roleList]); // 🔥 Dependemos del idioma para actualizar dinámicamente
 
     return (
         <section className="hero" id="">

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/hooks/useLanguageHook";
+import { useTheme } from "@/hooks/useThemeHook";
 import {locales} from "@/data/locales";
 import { experienceData } from "@/data/ExperienceData";
 import { FaArrowRight } from "react-icons/fa";

@@ -12,9 +12,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    target: 'es2020',
+    cssTarget: 'chrome88'
+  },
   preview: {
-    allowedHosts: ["ipepio.dev"], // 🔥 Permitir el dominio personalizado
-    // port: 6173, // 🔥 Asegurar que usa el puerto correcto
-    // host: true, // 🔥 Permitir acceso desde cualquier host
+    allowedHosts: ["ipepio.dev"],
+    port: 6173,
+    host: true,
   },
 })

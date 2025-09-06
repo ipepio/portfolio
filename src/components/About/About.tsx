@@ -1,7 +1,7 @@
 import { FaRocket, FaTrophy } from "react-icons/fa";
 import { GoGraph } from "react-icons/go";
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/hooks/useLanguageHook";
+import { useTheme } from "@/hooks/useThemeHook";
 import { locales } from "@/data/locales";
 import ScrollArrow from "@/components/ui/ScrollArrow";
 import "./About.css";

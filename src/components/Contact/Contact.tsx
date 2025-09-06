@@ -1,5 +1,5 @@
-import { useLanguage } from "@/context/LanguageContext";
-import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/hooks/useLanguageHook";
+import { useTheme } from "@/hooks/useThemeHook";
 import { SendIcon, MailIcon, PhoneIcon, MapPinIcon } from "lucide-react";
 import useContactForm from "@/hooks/useContactForm";
 import { motion } from "framer-motion";
