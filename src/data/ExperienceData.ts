@@ -1,5 +1,30 @@
 export const experienceData = [
     {
+      id: "EasyGoBand",
+      position: {
+        es: "Lead Developer",
+        en: "Lead Developer",
+        ca: "Lead Developer"
+      },
+      company: "EasyGoBand",
+      period: {
+        es: "Septiembre 2025 - Actualidad",
+        en: "September 2025 - Present",
+        ca: "Setembre 2025 - Actualitat"
+      },
+      description: {
+        es: "Lidero diferentes equipos de desarrollo y participo en decisiones técnicas, de negocio y producto.",
+        en: "I lead different development teams and participate in technical, business, and product decisions.",
+        ca: "Lidero diferents equips de desenvolupament i participo en decisions tècniques, de negoci i producte."
+      },
+      fullDescription: {
+        es: "Como Lead Developer en EasyGoBand, lidero múltiples equipos de desarrollo y tengo un rol activo en la toma de decisiones estratégicas tanto técnicas como de negocio y producto. Mi responsabilidad abarca desde la arquitectura de sistemas hasta la coordinación de equipos multidisciplinares, asegurando la alineación entre los objetivos técnicos y de negocio.",
+        en: "As Lead Developer at EasyGoBand, I lead multiple development teams and play an active role in strategic decision-making across technical, business, and product areas. My responsibilities range from system architecture to coordinating multidisciplinary teams, ensuring alignment between technical and business objectives.",
+        ca: "Com a Lead Developer a EasyGoBand, lidero múltiples equips de desenvolupament i tinc un rol actiu en la presa de decisions estratègiques tant tècniques com de negoci i producte. La meva responsabilitat abasta des de l'arquitectura de sistemes fins a la coordinació d'equips multidisciplinaris, assegurant l'alineació entre els objectius tècnics i de negoci."
+      },
+      isCurrent: true,
+    },
+    {
       id: "Tineverse",
       position: {
         es: "Tech Lead Fullstack",
@@ -8,21 +33,21 @@ export const experienceData = [
       },
       company: "Tineverse S.L.",
       period: {
-        es: "Abril 2025 - Actualidad",
-        en: "April 2025 - Present",
-        ca: "Abril 2025 - Actualitat"
+        es: "Abril 2025 - Agosto 2025",
+        en: "April 2025 - August 2025",
+        ca: "Abril 2025 - Agost 2025"
       },
       description: {
-        es: "Lidero distintos proyectos abarcando integraciones con IA, control de hardware, aplicaciones web y diseño de producto.",
-        en: "I lead various projects spanning AI integrations, hardware control, web applications and product design.",
-        ca: "Lidero diferents projectes que inclouen integracions amb IA, control de maquinari, aplicacions web i disseny de producte."
+        es: "Lideré distintos proyectos abarcando integraciones con IA, control de hardware, aplicaciones web y diseño de producto.",
+        en: "I led various projects spanning AI integrations, hardware control, web applications and product design.",
+        ca: "Vaig liderar diferents projectes que inclouen integracions amb IA, control de maquinari, aplicacions web i disseny de producte."
       },
       fullDescription: {
-        es: "Como Tech Lead fullstack, dirijo varios proyectos de carácter transversal, desde integraciones con IA y control de hardware hasta el desarrollo de aplicaciones web y diseño de producto.",
-        en: "As a fullstack Tech Lead, I oversee multiple cross-functional projects from AI integrations and hardware control to web application development and product design.",
-        ca: "Com a Tech Lead fullstack, dirigeixo diversos projectes transversals, des d'integracions amb IA i control de maquinari fins al desenvolupament d'aplicacions web i disseny de producte."
+        es: "Como Tech Lead fullstack, dirigí varios proyectos de carácter transversal, desde integraciones con IA y control de hardware hasta el desarrollo de aplicaciones web y diseño de producto.",
+        en: "As a fullstack Tech Lead, I oversaw multiple cross-functional projects from AI integrations and hardware control to web application development and product design.",
+        ca: "Com a Tech Lead fullstack, vaig dirigir diversos projectes transversals, des d'integracions amb IA i control de maquinari fins al desenvolupament d'aplicacions web i disseny de producte."
       },
-      isCurrent: true,  // Añadimos esta propiedad
+      isCurrent: false,
     },
     {
       id: "Oratrex",

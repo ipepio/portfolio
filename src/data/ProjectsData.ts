@@ -111,7 +111,7 @@ const techColors = {
       },
       image: cardImage,
       githubUrl: null,
-      demoUrl: "https://card.kmbrer.com"
+      demoUrl: null
     },
     {
       id: "kmbrer-kitchen",
@@ -165,7 +165,7 @@ const techColors = {
       },
       image: kitchenImage,
       githubUrl: null,
-      demoUrl: "https://kitchen.kmbrer.com"
+      demoUrl: null
     },
     {
       id: "rosetta",
@@ -223,19 +223,19 @@ const techColors = {
     {
       id: "smartticket",
       title: {
-        es: "Ticket digital seguro y offline",
-        en: "Secure and offline digital ticket",
-        ca: "Tiquet digital segur i offline"
+        es: "SmartTicket",
+        en: "SmartTicket",
+        ca: "SmartTicket"
       },
       description: {
-        es: "Ticket digital con autenticación 2FA y funcionamiento offline.",
-        en: "Digital ticket with 2FA authentication and offline functionality.",
-        ca: "Tiquet digital amb autenticació 2FA i funcionament offline."
+        es: "SmartTicket digital seguro y offline con autenticación 2FA. Lideré este proyecto en Oratrex.",
+        en: "Secure and offline SmartTicket with 2FA authentication. I led this project at Oratrex.",
+        ca: "SmartTicket digital segur i offline amb autenticació 2FA. Vaig liderar aquest projecte a Oratrex."
       },
       fullDescription: {
-        es: "Smartticket es un ticket digital React seguro y funcional sin conexión a internet. Permite la apertura simultánea en un único dispositivo y cuenta con autenticación 2FA mediante teléfono móvil o sesiones de Google y Apple. Utiliza WebSockets para actualizaciones en tiempo real y un backend Node.js con PostgreSQL, desplegado en contenedores. El proyecto puede ejecutarse fácilmente con un Makefile. En este proyecto, he colaborado en el diseño del producto, la arquitectura de las soluciones y el desarrollo de algunas funcionalidades, trabajando con un sistema de diseño.",
-        en: "Smartticket is a secure and functional React digital ticket offline. It allows simultaneous opening on a single device and features 2FA authentication via mobile phone or Google and Apple sessions. It uses WebSockets for real-time updates and a Node.js backend with PostgreSQL, deployed in containers. The project can be easily run with a Makefile. In this project, I collaborated on the product design, solutions architecture, and development of some functionalities, working with a design system.",
-        ca: "Smartticket és un tiquet digital React segur i funcional sense connexió a internet. Permet l'obertura simultània en un únic dispositiu i compta amb autenticació 2FA mitjançant telèfon mòbil o sessions de Google i Apple. Utilitza WebSockets per a actualitzacions en temps real i un backend Node.js amb PostgreSQL, desplegat en contenidors. El projecte es pot executar fàcilment amb un Makefile. En aquest projecte, he col·laborat en el disseny del producte, l'arquitectura de les solucions i el desenvolupament d'algunes funcionalitats, treballant amb un sistema de disseny."
+        es: "SmartTicket es un ticket digital React seguro y funcional sin conexión a internet. Permite la apertura simultánea en un único dispositivo y cuenta con autenticación 2FA mediante teléfono móvil o sesiones de Google y Apple. Utiliza WebSockets para actualizaciones en tiempo real y un backend Node.js con PostgreSQL, desplegado en contenedores. El proyecto puede ejecutarse fácilmente con un Makefile. Lideré este proyecto en Oratrex, siendo responsable del diseño del producto, la arquitectura de las soluciones y la coordinación del equipo de desarrollo, trabajando con un sistema de diseño.",
+        en: "SmartTicket is a secure and functional React digital ticket offline. It allows simultaneous opening on a single device and features 2FA authentication via mobile phone or Google and Apple sessions. It uses WebSockets for real-time updates and a Node.js backend with PostgreSQL, deployed in containers. The project can be easily run with a Makefile. I led this project at Oratrex, being responsible for product design, solution architecture, and development team coordination, working with a design system.",
+        ca: "SmartTicket és un tiquet digital React segur i funcional sense connexió a internet. Permet l'obertura simultània en un únic dispositiu i compta amb autenticació 2FA mitjançant telèfon mòbil o sessions de Google i Apple. Utilitza WebSockets per a actualitzacions en temps real i un backend Node.js amb PostgreSQL, desplegat en contenidors. El projecte es pot executar fàcilment amb un Makefile. Vaig liderar aquest projecte a Oratrex, sent responsable del disseny del producte, l'arquitectura de les solucions i la coordinació de l'equip de desenvolupament, treballant amb un sistema de disseny."
       },
       technologies: [
         { name: "React", color: techColors.React },
@@ -276,7 +276,7 @@ const techColors = {
       },
       image: smtk,
       githubUrl: null,
-      demoUrl: "https://ticket.smtkfile.com"
+      demoUrl: null
     },
     {
       id: "smartticket-backoffice",
@@ -286,14 +286,14 @@ const techColors = {
         ca: "Backoffice de gestió de smarttickets"
       },
       description: {
-        es: "Backoffice para la gestión de tickets digitales y generación de informes.",
-        en: "Backoffice for digital ticket management and report generation.",
-        ca: "Backoffice per a la gestió de tiquets digitals i generació d'informes."
+        es: "Backoffice para la gestión de smarttickets y generación de informes. Lideré este proyecto en Oratrex.",
+        en: "Backoffice for smartticket management and report generation. I led this project at Oratrex.",
+        ca: "Backoffice per a la gestió de smarttickets i generació d'informes. Vaig liderar aquest projecte a Oratrex."
       },
       fullDescription: {
-        es: "Smartticket-Backoffice es una plataforma web para la gestión integral de tickets digitales. Permite la administración de usuarios, la generación de informes detallados y el seguimiento del estado de los tickets. Desarrollado con React para el frontend y Node.js con PostgreSQL para el backend, utiliza WebSockets para actualizaciones en tiempo real y está desplegado en contenedores Docker. El proyecto puede ejecutarse fácilmente con un Makefile. En este proyecto, he colaborado en el diseño del producto, la arquitectura de las soluciones y el desarrollo de algunas funcionalidades, trabajando con un sistema de diseño.",
-        en: "Smartticket-Backoffice is a web platform for comprehensive digital ticket management. It allows user administration, detailed report generation, and ticket status tracking. Developed with React for the frontend and Node.js with PostgreSQL for the backend, it uses WebSockets for real-time updates and is deployed in Docker containers. The project can be easily run with a Makefile. In this project, I collaborated on the product design, solutions architecture, and development of some functionalities, working with a design system.",
-        ca: "Smartticket-Backoffice és una plataforma web per a la gestió integral de tiquets digitals. Permet l'administració d'usuaris, la generació d'informes detallats i el seguiment de l'estat dels tiquets. Desenvolupat amb React per al frontend i Node.js amb PostgreSQL per al backend, utilitza WebSockets per a actualitzacions en temps real i està desplegat en contenidors Docker. El projecte es pot executar fàcilment amb un Makefile. En aquest projecte, he col·laborat en el disseny del producte, l'arquitectura de les solucions i el desenvolupament d'algunes funcionalitats, treballant amb un sistema de disseny."
+        es: "SmartTicket-Backoffice es una plataforma web para la gestión integral de smarttickets. Permite la administración de usuarios, la generación de informes detallados y el seguimiento del estado de los tickets. Desarrollado con React para el frontend y Node.js con PostgreSQL para el backend, utiliza WebSockets para actualizaciones en tiempo real y está desplegado en contenedores Docker. El proyecto puede ejecutarse fácilmente con un Makefile. Lideré este proyecto en Oratrex, siendo responsable del diseño del producto, la arquitectura de las soluciones y la coordinación del equipo de desarrollo, trabajando con un sistema de diseño.",
+        en: "SmartTicket-Backoffice is a web platform for comprehensive smartticket management. It allows user administration, detailed report generation, and ticket status tracking. Developed with React for the frontend and Node.js with PostgreSQL for the backend, it uses WebSockets for real-time updates and is deployed in Docker containers. The project can be easily run with a Makefile. I led this project at Oratrex, being responsible for product design, solution architecture, and development team coordination, working with a design system.",
+        ca: "SmartTicket-Backoffice és una plataforma web per a la gestió integral de smarttickets. Permet l'administració d'usuaris, la generació d'informes detallats i el seguiment de l'estat dels tiquets. Desenvolupat amb React per al frontend i Node.js amb PostgreSQL per al backend, utilitza WebSockets per a actualitzacions en temps real i està desplegat en contenidors Docker. El projecte es pot executar fàcilment amb un Makefile. Vaig liderar aquest projecte a Oratrex, sent responsable del disseny del producte, l'arquitectura de les solucions i la coordinació de l'equip de desenvolupament, treballant amb un sistema de disseny."
       },
       technologies: [
         { name: "React", color: techColors.React },
@@ -331,7 +331,7 @@ const techColors = {
       },
       image: backoffice,
       githubUrl: null,
-      demoUrl: "https://admin.smtkfile.com"
+      demoUrl: null
     },
     {
         id: "personal-portfolio",
