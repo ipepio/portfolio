@@ -2,9 +2,9 @@ export const experienceData = [
     {
       id: "EasyGoBand",
       position: {
-        es: "Lead Developer",
-        en: "Lead Developer",
-        ca: "Lead Developer"
+        es: "CTO",
+        en: "CTO",
+        ca: "CTO"
       },
       company: "EasyGoBand",
       period: {
@@ -13,14 +13,14 @@ export const experienceData = [
         ca: "Setembre 2025 - Actualitat"
       },
       description: {
-        es: "Lidero diferentes equipos de desarrollo y participo en decisiones técnicas, de negocio y producto.",
-        en: "I lead different development teams and participate in technical, business, and product decisions.",
-        ca: "Lidero diferents equips de desenvolupament i participo en decisions tècniques, de negoci i producte."
+        es: "Como CTO en EasyGoBand, dirijo la estrategia tecnológica, la arquitectura global y la coordinación de equipos multidisciplinares.",
+        en: "As CTO at EasyGoBand, I guide technology strategy, global architecture, and the coordination of cross-functional teams.",
+        ca: "Com a CTO a EasyGoBand, dirigeixo l'estratègia tecnològica, l'arquitectura global i la coordinació d'equips multidisciplinaris."
       },
       fullDescription: {
-        es: "Como Lead Developer en EasyGoBand, lidero múltiples equipos de desarrollo y tengo un rol activo en la toma de decisiones estratégicas tanto técnicas como de negocio y producto. Mi responsabilidad abarca desde la arquitectura de sistemas hasta la coordinación de equipos multidisciplinares, asegurando la alineación entre los objetivos técnicos y de negocio.",
-        en: "As Lead Developer at EasyGoBand, I lead multiple development teams and play an active role in strategic decision-making across technical, business, and product areas. My responsibilities range from system architecture to coordinating multidisciplinary teams, ensuring alignment between technical and business objectives.",
-        ca: "Com a Lead Developer a EasyGoBand, lidero múltiples equips de desenvolupament i tinc un rol actiu en la presa de decisions estratègiques tant tècniques com de negoci i producte. La meva responsabilitat abasta des de l'arquitectura de sistemes fins a la coordinació d'equips multidisciplinaris, assegurant l'alineació entre els objectius tècnics i de negoci."
+        es: "Como CTO en EasyGoBand, lidero la estrategia tecnológica y la arquitectura global de la compañía, garantizando que nuestras soluciones de software sean escalables, seguras y diseñadas para operar en entornos complejos. Superviso la evolución de nuestra infraestructura cloud, defino estándares de arquitectura —desde APIs y microservicios hasta data pipelines— y establezco las metodologías de trabajo que rigen a los equipos (DevOps, CI/CD, calidad, documentación y cultura de entrega continua). Colaboro estrechamente con producto y negocio para traducir necesidades estratégicas en decisiones técnicas claras, priorizando eficiencia, sostenibilidad y experiencia del cliente. Coordino equipos multidisciplinares de ingeniería, fomentando buenas prácticas, revisiones técnicas, ownership y una cultura de aprendizaje constante. Además, impulso la innovación interna evaluando nuevas tecnologías y asegurando que el stack evolucione de forma controlada y alineada con los objetivos de la empresa.",
+        en: "As CTO at EasyGoBand, I lead the company's technology strategy and overall architecture, ensuring our software solutions are scalable, secure, and built to operate in complex environments. I oversee the evolution of our cloud infrastructure, define architecture standards—from APIs and microservices to data pipelines—and set the working methodologies that guide the teams (DevOps, CI/CD, quality, documentation, and a culture of continuous delivery). I work closely with product and business to translate strategic needs into clear technical decisions, prioritizing efficiency, sustainability, and customer experience. I coordinate multidisciplinary engineering teams, promoting best practices, technical reviews, ownership, and a culture of continuous learning. I also drive internal innovation by evaluating new technologies and ensuring the stack evolves in a controlled way aligned with the company's goals.",
+        ca: "Com a CTO a EasyGoBand, lidero l'estratègia tecnològica i l'arquitectura global de la companyia, garantint que les nostres solucions de programari siguin escalables, segures i preparades per operar en entorns complexos. Supervise l'evolució de la nostra infraestructura al núvol, defineixo estàndards d'arquitectura —des d'APIs i microserveis fins a data pipelines— i estableixo les metodologies de treball que regeixen els equips (DevOps, CI/CD, qualitat, documentació i cultura de lliurament continu). Col·laboro estretament amb producte i negoci per convertir necessitats estratègiques en decisions tècniques clares, prioritzant eficiència, sostenibilitat i experiència del client. Coordino equips d'enginyeria multidisciplinaris, fomentant bones pràctiques, revisions tècniques, ownership i una cultura d'aprenentatge constant. A més, impulso la innovació interna avaluant noves tecnologies i assegurant que l'stack evolucioni de manera controlada i alineada amb els objectius de l'empresa."
       },
       isCurrent: true,
     },
