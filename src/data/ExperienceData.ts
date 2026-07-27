@@ -13,9 +13,9 @@ export const experienceData = [
         ca: "Setembre 2025 - Actualitat"
       },
       description: {
-        es: "Como CTO en EasyGoBand, dirijo la estrategia tecnológica, la arquitectura global y la coordinación de equipos multidisciplinares.",
-        en: "As CTO at EasyGoBand, I guide technology strategy, global architecture, and the coordination of cross-functional teams.",
-        ca: "Com a CTO a EasyGoBand, dirigeixo l'estratègia tecnològica, l'arquitectura global i la coordinació d'equips multidisciplinaris."
+        es: "Como CTO, lidero la estrategia tecnológica y la arquitectura global de la compañía. Estoy implantando SDD (Spec-Driven Development), agentes de IA y nuevos flujos de trabajo asistidos para mejorar cómo pensamos, construimos y mantenemos software. También defino estándares para APIs, microservicios y data pipelines, y coordino equipos multidisciplinares para que producto, negocio y tecnología avancen en la misma dirección.",
+        en: "As CTO, I lead the company's technology strategy and global architecture. I am introducing SDD (Spec-Driven Development), AI agents and assisted workflows to improve how we think about, build and maintain software. I also define standards for APIs, microservices and data pipelines while coordinating cross-functional teams so product, business and technology move in the same direction.",
+        ca: "Com a CTO, lidere l'estratègia tecnològica i l'arquitectura global de la companyia. Estic implantant SDD (Spec-Driven Development), agents d'IA i nous fluxos de treball assistits per millorar com pensem, construïm i mantenim software. També definisc estàndards per a APIs, microserveis i data pipelines, i coordine equips multidisciplinaris perquè producte, negoci i tecnologia avancen en la mateixa direcció."
       },
       fullDescription: {
         es: "Como CTO en EasyGoBand, lidero la estrategia tecnológica y la arquitectura global de la compañía, garantizando que nuestras soluciones de software sean escalables, seguras y diseñadas para operar en entornos complejos. Superviso la evolución de nuestra infraestructura cloud, defino estándares de arquitectura —desde APIs y microservicios hasta data pipelines— y establezco las metodologías de trabajo que rigen a los equipos (DevOps, CI/CD, calidad, documentación y cultura de entrega continua). Colaboro estrechamente con producto y negocio para traducir necesidades estratégicas en decisiones técnicas claras, priorizando eficiencia, sostenibilidad y experiencia del cliente. Coordino equipos multidisciplinares de ingeniería, fomentando buenas prácticas, revisiones técnicas, ownership y una cultura de aprendizaje constante. Además, impulso la innovación interna evaluando nuevas tecnologías y asegurando que el stack evolucione de forma controlada y alineada con los objetivos de la empresa.",
@@ -38,9 +38,9 @@ export const experienceData = [
         ca: "Abril 2025 - Agost 2025"
       },
       description: {
-        es: "Lideré distintos proyectos abarcando integraciones con IA, control de hardware, aplicaciones web y diseño de producto.",
-        en: "I led various projects spanning AI integrations, hardware control, web applications and product design.",
-        ca: "Vaig liderar diferents projectes que inclouen integracions amb IA, control de maquinari, aplicacions web i disseny de producte."
+        es: "Como Tech Lead Fullstack, lideré proyectos transversales que combinaban integraciones con IA, control de hardware y aplicaciones web. Participé desde la definición del producto y la arquitectura hasta la coordinación del desarrollo y la entrega.",
+        en: "As a Fullstack Tech Lead, I led cross-functional projects combining AI integrations, hardware control and web applications. I worked across product definition, architecture, development coordination and delivery.",
+        ca: "Com a Tech Lead Fullstack, vaig liderar projectes transversals que combinaven integracions amb IA, control de maquinari i aplicacions web. Vaig participar des de la definició del producte i l'arquitectura fins a la coordinació i l'entrega."
       },
       fullDescription: {
         es: "Como Tech Lead fullstack, dirigí varios proyectos de carácter transversal, desde integraciones con IA y control de hardware hasta el desarrollo de aplicaciones web y diseño de producto.",
@@ -63,9 +63,9 @@ export const experienceData = [
         ca: "Agost 2023 - Abril 2025"
       },
       description: {
-        es: "Lidero un equipo de desarrollo y diseño estrategias técnicas y de producto, optimizando la operativa y escalabilidad de las plataformas.",
-        en: "I lead a development team and design technical and product strategies, optimizing platform operations and scalability.",
-        ca: "Lidero un equip de desenvolupament i dissenyo estratègies tècniques i de producte, optimitzant l’operativa i l’escalabilitat de les plataformes."
+        es: "Lideré un equipo de desarrollo y la estrategia técnica y de producto. Construimos desde cero el ecosistema SmartTicket, la capa de integraciones Rosetta y un backoffice operativo; además, implanté un sistema CI/CD que redujo más de un 80% el tiempo de despliegue.",
+        en: "I led a development team and shaped technical and product strategy. We built the SmartTicket ecosystem, Rosetta's integration layer and an operational back office from scratch; I also introduced CI/CD that reduced deployment time by over 80%.",
+        ca: "Vaig liderar un equip de desenvolupament i l'estratègia tècnica i de producte. Vam construir l'ecosistema SmartTicket, la capa d'integracions Rosetta i un backoffice operatiu; també vaig implantar un sistema CI/CD que va reduir més d'un 80% el temps de desplegament."
       },
       fullDescription: {
         es: "Como CTO y Tech Lead en Oratrex Tech, lidero un equipo de desarrolladores, estableciendo estrategias técnicas y de producto para mejorar la eficiencia y escalabilidad del sistema. He creado un backoffice desde cero para gestionar operaciones internas y desarrollado el formato de entrada digital Smart Ticket (.smtk) con su respectiva aplicación. También diseño aplicaciones para festivales de música e integro plataformas de ticketing. Implemento un sistema de CI/CD que ha reducido el tiempo de despliegue en más de un 80% y gestiono un sistema interno de tickets para la resolución de incidencias. Aplico metodologías ágiles y Scrum, además de integrar estrategias avanzadas en AWS y Kubernetes para lograr una arquitectura robusta y auto-escalable.",
@@ -88,9 +88,9 @@ export const experienceData = [
         ca: "Abril 2022 - Agost 2023"
       },
       description: {
-        es: "Especialista en SAP WM y EWM, optimizando procesos logísticos, gestionando resolución de tickets y desarrollando evolutivos y mejoras en los sistemas.",
-        en: "SAP WM and EWM specialist, optimizing logistics processes, managing ticket resolution, and developing enhancements and improvements in systems.",
-        ca: "Especialista en SAP WM i EWM, optimitzant processos logístics, gestionant la resolució de tickets i desenvolupant evolutius i millores en els sistemes."
+        es: "Trabajé como consultor senior especializado en SAP WM y EWM, analizando procesos logísticos y convirtiendo necesidades operativas en mejoras del sistema. También participé en la resolución de incidencias y en evolutivos para entornos empresariales exigentes.",
+        en: "As a senior SAP WM and EWM consultant, I analysed logistics processes and translated operational needs into system improvements. I also worked on incident resolution and enhancements across demanding enterprise deployments.",
+        ca: "Vaig treballar com a consultor sènior especialitzat en SAP WM i EWM, analitzant processos logístics i convertint necessitats operatives en millores del sistema. També vaig participar en la resolució d'incidències i en evolutius per a entorns empresarials exigents."
       },
       fullDescription: {
         es: "En Seidor, trabajé como Consultor Senior WM, donde implementé módulos SAP WM y EWM en entornos logísticos exigentes...",
@@ -113,9 +113,9 @@ export const experienceData = [
         ca: "Desembre 2017 - Abril 2022"
       },
       description: {
-        es: "Lideré la implementación del sistema SAP en plantas secundarias desde cero...",
-        en: "I led the implementation of the SAP system in secondary plants from scratch...",
-        ca: "Vaig liderar la implementació del sistema SAP en plantes secundàries des de zero..."
+        es: "Lideré la implantación de SAP en plantas secundarias desde cero, coordinando requisitos, configuración, pruebas y puesta en producción. Fue una etapa de responsabilidad completa sobre el ciclo de despliegue y la adopción del sistema.",
+        en: "I led the SAP implementation across secondary plants from scratch, coordinating requirements, configuration, testing and go-live. It was an end-to-end role covering the deployment lifecycle and system adoption.",
+        ca: "Vaig liderar la implantació de SAP en plantes secundàries des de zero, coordinant requisits, configuració, proves i posada en producció. Va ser una etapa de responsabilitat completa sobre el cicle de desplegament i l'adopció del sistema."
       },
       fullDescription: {
         es: "En mi rol como Desarrollador Senior en Grupo Gil Comes...",
@@ -138,9 +138,9 @@ export const experienceData = [
         ca: "Agost 2017 - Desembre 2017"
       },
       description: {
-        es: "Mi primer trabajo dentro del sector IT, aquí descubrí mi pasión por el desarrollo y fue la introducción a algunas de las herramientas que aún utilizo a día de hoy.",
-        en: "My first job in the IT sector, where I discovered my passion for development and was introduced to some of the tools I still use today.",
-        ca: "El meu primer treball dins del sector IT, on vaig descobrir la meva passió pel desenvolupament i vaig conèixer algunes de les eines que encara utilitzo avui en dia."
+        es: "Mi primera experiencia en el sector tecnológico. Aquí descubrí mi pasión por desarrollar software, aprendí a trabajar con requisitos reales y construí las bases técnicas y profesionales de mi carrera.",
+        en: "My first role in the technology sector. I discovered my passion for software development, learned to work with real requirements and built the technical and professional foundations of my career.",
+        ca: "La meua primera experiència en el sector tecnològic. Ací vaig descobrir la passió pel desenvolupament, vaig aprendre a treballar amb requisits reals i vaig construir les bases tècniques i professionals de la meua carrera."
       },
       fullDescription: {
         es: "En Nath 2004 S.L. di mis primeros pasos en el mundo del desarrollo de software. Durante este período, adquirí conocimientos fundamentales en programación y buenas prácticas. Participé en pequeños proyectos de desarrollo, familiarizándome con distintas tecnologías y metodologías de trabajo. Esta experiencia me permitió construir una base sólida para mi carrera profesional en IT.",

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import isaacImage from "@/assets/isaac.jpg";
+import isaacImage from "@/assets/isaac.png";
 import ScrollArrow from "@/components/ui/ScrollArrow";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { locales } from "@/data/locales";

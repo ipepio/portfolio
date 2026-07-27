@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { LanguageContext, type Language } from "@/lib/language-context";
+import { LanguageContext, type Language } from "./language-context";
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const storedLanguage = localStorage.getItem("language") as Language | null;
-  const [language, setLanguage] = useState<Language>(storedLanguage || "es");
+  const [language, setLanguage] = useState<Language>(
+    () => (localStorage.getItem("language") as Language) || "es"
+  );
 
   useEffect(() => {
     localStorage.setItem("language", language);
+    document.documentElement.lang = language;
   }, [language]);
 
   return (

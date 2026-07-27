@@ -16,7 +16,23 @@ interface FormErrors {
   message?: string;
 }
 
-const useContactForm = () => {
+interface ValidationMessages {
+  nameRequired: string;
+  emailRequired: string;
+  emailInvalid: string;
+  subjectRequired: string;
+  messageRequired: string;
+}
+
+const defaultMessages: ValidationMessages = {
+  nameRequired: "El nombre es obligatorio",
+  emailRequired: "El email es obligatorio",
+  emailInvalid: "El email no es válido",
+  subjectRequired: "El asunto es obligatorio",
+  messageRequired: "El mensaje es obligatorio",
+};
+
+const useContactForm = (messages: ValidationMessages = defaultMessages) => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -37,25 +53,25 @@ const useContactForm = () => {
     let isValid = true;
 
     if (!formData.name.trim()) {
-      errors.name = "El nombre es obligatorio";
+      errors.name = messages.nameRequired;
       isValid = false;
     }
 
     if (!formData.email.trim()) {
-      errors.email = "El email es obligatorio";
+      errors.email = messages.emailRequired;
       isValid = false;
     } else if (!validateEmail(formData.email)) {
-      errors.email = "El email no es válido";
+      errors.email = messages.emailInvalid;
       isValid = false;
     }
 
     if (!formData.subject.trim()) {
-      errors.subject = "El asunto es obligatorio";
+      errors.subject = messages.subjectRequired;
       isValid = false;
     }
 
     if (!formData.message.trim()) {
-      errors.message = "El mensaje es obligatorio";
+      errors.message = messages.messageRequired;
       isValid = false;
     }
 
