@@ -1,6 +1,5 @@
-:root {
-  --font-mono: 'Roboto Mono', monospace;
-}
+/* Template placeholder styles for the demo home page.
+   Design tokens live in globals.css; this file must not redefine them. */
 
 * {
   box-sizing: border-box;

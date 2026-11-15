@@ -1,0 +1,246 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+/* Dark is the default theme. `data-theme="light"` on <html> opts into light. */
+@custom-variant dark (&:where(html:not([data-theme='light']) *));
+
+@theme inline {
+  --font-sans: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* ipepio brand extras */
+  --color-peach: var(--peach);
+  --color-grid: var(--grid);
+  --color-nav: var(--nav);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ---------------------------------------------------------------------------
+   ipepio design tokens (extracted from portfolio_ipepio.html)
+   DARK is the default; LIGHT lives on :root[data-theme="light"].
+   --------------------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+
+  --background: #0b0d0d;
+  --foreground: #f0f3ed;
+  --card: #131717;
+  --card-foreground: #f0f3ed;
+  --popover: #111515;
+  --popover-foreground: #f0f3ed;
+  --primary: #d1ff65;
+  --primary-foreground: #101608;
+  --secondary: #171c1b;
+  --secondary-foreground: #f0f3ed;
+  --muted: #758079;
+  --muted-foreground: #a1aaa3;
+  --accent: #f0ae88;
+  --accent-foreground: #101608;
+  --destructive: #e35b4f;
+  --border: #2a3230;
+  --input: #414b44;
+  --ring: #d1ff65;
+
+  --radius: 0.75rem;
+
+  /* brand extras */
+  --peach: #f0ae88;
+  --grid: rgba(209, 255, 101, 0.06);
+  --nav: rgba(11, 13, 13, 0.83);
+  --shadow: 0 22px 65px rgba(0, 0, 0, 0.24);
+  --container-page: 1280px;
+
+  /* chart + sidebar defaults mapped onto the brand */
+  --chart-1: #d1ff65;
+  --chart-2: #f0ae88;
+  --chart-3: #a1aaa3;
+  --chart-4: #414b44;
+  --chart-5: #2a3230;
+  --sidebar: #111515;
+  --sidebar-foreground: #f0f3ed;
+  --sidebar-primary: #d1ff65;
+  --sidebar-primary-foreground: #101608;
+  --sidebar-accent: #171c1b;
+  --sidebar-accent-foreground: #f0f3ed;
+  --sidebar-border: #2a3230;
+  --sidebar-ring: #d1ff65;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --background: #f1f1e9;
+  --foreground: #111914;
+  --card: #fbfcf7;
+  --card-foreground: #111914;
+  --popover: #fcfcf5;
+  --popover-foreground: #111914;
+  --primary: #b3ec36;
+  --primary-foreground: #151d07;
+  --secondary: #ebefe5;
+  --secondary-foreground: #111914;
+  --muted: #708177;
+  --muted-foreground: #536259;
+  --accent: #bc654b;
+  --accent-foreground: #fdfbf6;
+  --destructive: #b5473b;
+  --border: #cdd7cb;
+  --input: #a6b5a7;
+  --ring: #b3ec36;
+
+  /* brand extras */
+  --peach: #bc654b;
+  --grid: rgba(20, 55, 28, 0.07);
+  --nav: rgba(241, 241, 233, 0.85);
+  --shadow: 0 22px 65px rgba(30, 55, 26, 0.09);
+
+  /* chart + sidebar defaults mapped onto the brand */
+  --chart-1: #b3ec36;
+  --chart-2: #bc654b;
+  --chart-3: #536259;
+  --chart-4: #a6b5a7;
+  --chart-5: #cdd7cb;
+  --sidebar: #fcfcf5;
+  --sidebar-foreground: #111914;
+  --sidebar-primary: #b3ec36;
+  --sidebar-primary-foreground: #151d07;
+  --sidebar-accent: #ebefe5;
+  --sidebar-accent-foreground: #111914;
+  --sidebar-border: #cdd7cb;
+  --sidebar-ring: #b3ec36;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+    -webkit-font-smoothing: antialiased;
+    scroll-padding-top: 104px;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  ::selection {
+    color: var(--primary-foreground);
+    background: var(--primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 4px;
+  }
+}
+
+@layer components {
+  /* Small mono label with the rotated accent square, as in the reference. */
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+
+  .eyebrow::before {
+    content: '';
+    flex: 0 0 auto;
+    width: 7px;
+    height: 7px;
+    background: var(--primary);
+    border-radius: 2px;
+    transform: rotate(45deg);
+  }
+
+  /* Mono meta text. */
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Faint blueprint grid, as in the reference topology / project visuals. */
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
