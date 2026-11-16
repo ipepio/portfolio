@@ -25,7 +25,11 @@ export function ContactSection({ contact, heading = '¿Hablamos?' }: ContactSect
   const socials = (contact.socials ?? []).filter((social) => social.label && social.url)
 
   return (
-    <section aria-labelledby={HEADING_ID} className="px-6 pt-4 pb-20 sm:pb-24 lg:pb-28">
+    <section
+      id="contact"
+      aria-labelledby={HEADING_ID}
+      className="scroll-mt-24 px-6 pt-4 pb-20 sm:pb-24 lg:pb-28"
+    >
       <div className="mx-auto flex w-full max-w-(--container-page) flex-col gap-10 lg:gap-12">
         <header className="flex flex-col gap-5">
           <span className="eyebrow">{EYEBROW}</span>

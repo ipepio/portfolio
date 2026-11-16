@@ -46,7 +46,11 @@ export function AboutSection({ about }: AboutSectionProps) {
   const bioData = (about.bio ?? null) as unknown as RichTextData | null
 
   return (
-    <section aria-labelledby={HEADING_ID} className="px-6 pt-16 pb-16 sm:pt-20 lg:pt-24">
+    <section
+      id="about"
+      aria-labelledby={HEADING_ID}
+      className="scroll-mt-24 px-6 pt-16 pb-16 sm:pt-20 lg:pt-24"
+    >
       <div className="mx-auto flex w-full max-w-(--container-page) flex-col gap-14 lg:gap-16">
         <header className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex min-w-0 flex-col gap-6">
