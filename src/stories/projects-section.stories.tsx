@@ -20,6 +20,7 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     allLabel: 'Todos',
+    locale: 'es',
     statusLabels: {
       live: 'En producción',
       wip: 'En desarrollo',

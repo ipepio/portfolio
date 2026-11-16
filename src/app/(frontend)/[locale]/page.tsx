@@ -71,6 +71,7 @@ export default async function HomePage({ params }: HomePageProps) {
         heading={dict.projects.heading}
         note={dict.projects.note}
         projects={projects.docs}
+        locale={locale}
         allLabel={dict.projects.allLabel}
         statusLabels={dict.projects.statusLabels}
         gridLabels={dict.projects.gridLabels}

@@ -2,9 +2,10 @@
 
 import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 
-import type { ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
+import type { Locale, ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
 
 /** Tag as returned by Payload at `depth >= 1` (or as a raw id at `depth 0`). */
 export type ProjectTag = { id?: string | number; name?: string | null }
@@ -34,6 +35,8 @@ export type ProjectItem = {
 
 export type ProjectsGridProps = {
   projects: ProjectItem[]
+  /** Current locale, used to build the detail-page links. */
+  locale: Locale
   /** Catch-all filter label, e.g. "Todos" / "All". */
   allLabel: string
   /** Localized status pill labels, keyed by Payload's `status` value. */
@@ -99,14 +102,22 @@ function projectLink(project: ProjectItem): string | null {
   return github || null
 }
 
+/** Internal route of the project's detail page, or `null` when it has no slug. */
+function projectHref(project: ProjectItem, locale: Locale): string | null {
+  const slug = project.slug?.trim()
+  return slug ? `/${locale}/projects/${slug}` : null
+}
+
 function ProjectCard({
   project,
   position,
+  locale,
   statusLabels,
   labels,
 }: {
   project: ProjectItem
   position: number
+  locale: Locale
   statusLabels: Record<ProjectStatus, string>
   labels: ProjectsGridLabels
 }) {
@@ -115,34 +126,48 @@ function ProjectCard({
   const cover = coverImageOf(project)
   const coverUrl = cover?.url ?? null
   const link = projectLink(project)
+  const href = projectHref(project, locale)
   const status = project.status ?? 'live'
   const statusLabel = statusLabels[status]
 
+  const media =
+    cover && coverUrl ? (
+      <Image
+        src={coverUrl}
+        alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
+        fill
+        sizes={CARD_SIZES}
+        className="object-cover transition duration-500 motion-safe:group-hover:scale-[1.03]"
+      />
+    ) : (
+      <div aria-hidden className="relative flex h-full items-center justify-center">
+        <div className="grid-lines absolute inset-0" />
+        <span className="mono relative select-none text-[76px] font-bold leading-none tracking-[-0.06em] text-primary/15">
+          {indexLabel}
+        </span>
+        {tags[0] ? (
+          <span className="mono absolute top-4 right-5 max-w-[60%] truncate text-[10px] uppercase leading-none tracking-[0.16em] text-muted-foreground">
+            {tags[0]}
+          </span>
+        ) : null}
+      </div>
+    )
+
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition hover:border-primary/40 motion-safe:hover:-translate-y-1">
-      <div className="relative h-[200px] overflow-hidden bg-secondary">
-        {cover && coverUrl ? (
-          <Image
-            src={coverUrl}
-            alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
-            fill
-            sizes={CARD_SIZES}
-            className="object-cover transition duration-500 motion-safe:group-hover:scale-[1.03]"
-          />
-        ) : (
-          <div aria-hidden className="relative flex h-full items-center justify-center">
-            <div className="grid-lines absolute inset-0" />
-            <span className="mono relative select-none text-[76px] font-bold leading-none tracking-[-0.06em] text-primary/15">
-              {indexLabel}
-            </span>
-            {tags[0] ? (
-              <span className="mono absolute top-4 right-5 max-w-[60%] truncate text-[10px] uppercase leading-none tracking-[0.16em] text-muted-foreground">
-                {tags[0]}
-              </span>
-            ) : null}
-          </div>
-        )}
-      </div>
+      {href ? (
+        // Decorative duplicate of the title link: skipped by keyboard and AT.
+        <Link
+          href={href}
+          aria-hidden
+          tabIndex={-1}
+          className="relative block h-[200px] overflow-hidden bg-secondary"
+        >
+          {media}
+        </Link>
+      ) : (
+        <div className="relative h-[200px] overflow-hidden bg-secondary">{media}</div>
+      )}
 
       <div className="flex flex-1 flex-col gap-3 p-5">
         <span
@@ -152,7 +177,13 @@ function ProjectCard({
         </span>
 
         <h3 className="font-heading text-[22px] font-semibold leading-snug tracking-[-0.03em]">
-          {project.title}
+          {href ? (
+            <Link href={href} className="transition-colors hover:text-primary">
+              {project.title}
+            </Link>
+          ) : (
+            project.title
+          )}
         </h3>
 
         {project.shortDescription ? (
@@ -196,7 +227,13 @@ function ProjectCard({
  * keeps every card mounted and toggles the `hidden` attribute on the ones that
  * do not match, so layout and the live counter stay trivial.
  */
-export function ProjectsGrid({ projects, allLabel, statusLabels, labels }: ProjectsGridProps) {
+export function ProjectsGrid({
+  projects,
+  locale,
+  allLabel,
+  statusLabels,
+  labels,
+}: ProjectsGridProps) {
   const filters = buildFilters(projects, allLabel)
   const [active, setActive] = useState(ALL_FILTER)
 
@@ -244,6 +281,7 @@ export function ProjectsGrid({ projects, allLabel, statusLabels, labels }: Proje
             <ProjectCard
               project={project}
               position={index}
+              locale={locale}
               statusLabels={statusLabels}
               labels={labels}
             />

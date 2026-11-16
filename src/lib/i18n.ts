@@ -27,6 +27,23 @@ export type ProjectsGridLabels = {
   openPrefix: string
 }
 
+/** Copy for a single project detail page (server-rendered, outside the grid). */
+export type ProjectDetailLabels = {
+  backToProjects: string
+  viewLive: string
+  repository: string
+  /** Prefix used to describe a cover image that has no alt text of its own. */
+  imageAltPrefix: string
+  /** Localized status pill labels; the same map the projects grid uses. */
+  statusLabels: Record<ProjectStatus, string>
+}
+
+/** The subset of `ProjectDetailLabels` that lives verbatim in the dictionary. */
+export type ProjectDetailCopy = Pick<
+  ProjectDetailLabels,
+  'backToProjects' | 'viewLive' | 'repository'
+>
+
 /** Copy rendered by the sticky site header (a client component). */
 export type NavLabels = {
   ariaLabel: string
@@ -64,6 +81,8 @@ export type Dictionary = {
     allLabel: string
     statusLabels: Record<ProjectStatus, string>
     gridLabels: ProjectsGridLabels
+    /** Copy for the `/projects/[slug]` detail page. */
+    detail: ProjectDetailCopy
   }
   contact: {
     eyebrow: string
@@ -114,6 +133,11 @@ const dictionaries: Record<Locale, Dictionary> = {
         imageAltPrefix: 'Imagen de',
         openPrefix: 'Abrir',
       },
+      detail: {
+        backToProjects: 'Volver a proyectos',
+        viewLive: 'Ver en producción',
+        repository: 'Repositorio',
+      },
     },
     contact: {
       eyebrow: '04 / CONTACTO',
@@ -161,6 +185,11 @@ const dictionaries: Record<Locale, Dictionary> = {
         countOther: 'projects',
         imageAltPrefix: 'Image of',
         openPrefix: 'Open',
+      },
+      detail: {
+        backToProjects: 'Back to projects',
+        viewLive: 'View live',
+        repository: 'Repository',
       },
     },
     contact: {

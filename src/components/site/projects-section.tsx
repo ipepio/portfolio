@@ -1,5 +1,5 @@
 import { ProjectsGrid, type ProjectItem, type ProjectTag } from '@/components/site/projects-grid'
-import type { ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
+import type { Locale, ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
 
 export type { ProjectItem, ProjectTag }
 
@@ -8,6 +8,8 @@ export type ProjectsSectionProps = {
   heading: string
   note?: string
   projects: ProjectItem[]
+  /** Current locale, passed through to the cards' detail links. */
+  locale: Locale
   /** Catch-all filter label. */
   allLabel: string
   /** Localized status pill labels. */
@@ -27,6 +29,7 @@ export function ProjectsSection({
   heading,
   note,
   projects,
+  locale,
   allLabel,
   statusLabels,
   gridLabels,
@@ -53,6 +56,7 @@ export function ProjectsSection({
 
         <ProjectsGrid
           projects={projects}
+          locale={locale}
           allLabel={allLabel}
           statusLabels={statusLabels}
           labels={gridLabels}
