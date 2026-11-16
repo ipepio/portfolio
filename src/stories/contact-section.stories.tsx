@@ -15,6 +15,8 @@ type Story = StoryObj<typeof meta>
 /** Seeded shape: no email/phone yet, only the GitHub social. */
 export const Default: Story = {
   args: {
+    eyebrow: '04 / CONTACTO',
+    heading: '¿Hablamos?',
     contact: {
       id: 1,
       email: null,
@@ -27,6 +29,8 @@ export const Default: Story = {
 /** Full contact block: email link, phone link and several socials. */
 export const WithEmailAndPhone: Story = {
   args: {
+    eyebrow: '04 / CONTACTO',
+    heading: '¿Hablamos?',
     contact: {
       id: 2,
       email: 'hola@ipepio.dev',
@@ -42,6 +46,7 @@ export const WithEmailAndPhone: Story = {
 /** Heading override keeps the section reusable outside the home page. */
 export const CustomHeading: Story = {
   args: {
+    eyebrow: '04 / CONTACTO',
     heading: '¿Construimos algo juntos?',
     contact: {
       id: 3,

@@ -1,4 +1,5 @@
 import { ProjectsGrid, type ProjectItem, type ProjectTag } from '@/components/site/projects-grid'
+import type { ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
 
 export type { ProjectItem, ProjectTag }
 
@@ -7,6 +8,12 @@ export type ProjectsSectionProps = {
   heading: string
   note?: string
   projects: ProjectItem[]
+  /** Catch-all filter label. */
+  allLabel: string
+  /** Localized status pill labels. */
+  statusLabels: Record<ProjectStatus, string>
+  /** Remaining grid chrome copy. */
+  gridLabels: ProjectsGridLabels
 }
 
 const HEADING_ID = 'projects-section-heading'
@@ -15,7 +22,15 @@ const HEADING_ID = 'projects-section-heading'
  * Presentational Projects section: eyebrow, display heading, note and the
  * filterable project grid (the only interactive part lives in `ProjectsGrid`).
  */
-export function ProjectsSection({ eyebrow, heading, note, projects }: ProjectsSectionProps) {
+export function ProjectsSection({
+  eyebrow,
+  heading,
+  note,
+  projects,
+  allLabel,
+  statusLabels,
+  gridLabels,
+}: ProjectsSectionProps) {
   return (
     <section
       id="projects"
@@ -36,7 +51,12 @@ export function ProjectsSection({ eyebrow, heading, note, projects }: ProjectsSe
           ) : null}
         </header>
 
-        <ProjectsGrid projects={projects} />
+        <ProjectsGrid
+          projects={projects}
+          allLabel={allLabel}
+          statusLabels={statusLabels}
+          labels={gridLabels}
+        />
       </div>
     </section>
   )

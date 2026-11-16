@@ -4,6 +4,8 @@ import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
 
+import type { ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
+
 /** Tag as returned by Payload at `depth >= 1` (or as a raw id at `depth 0`). */
 export type ProjectTag = { id?: string | number; name?: string | null }
 
@@ -25,33 +27,28 @@ export type ProjectItem = {
   tags?: (ProjectTag | number)[] | null
   liveUrl?: string | null
   githubUrl?: string | null
-  status?: 'live' | 'wip' | 'archived' | null
+  status?: ProjectStatus | null
   year?: number | null
   order?: number | null
 }
 
 export type ProjectsGridProps = {
   projects: ProjectItem[]
+  /** Catch-all filter label, e.g. "Todos" / "All". */
+  allLabel: string
+  /** Localized status pill labels, keyed by Payload's `status` value. */
+  statusLabels: Record<ProjectStatus, string>
+  /** Remaining grid chrome copy (filter group, counter, per-card a11y text). */
+  labels: ProjectsGridLabels
 }
 
 const ALL_FILTER = '__all__'
 
-const STATUS_META: Record<
-  NonNullable<ProjectItem['status']>,
-  { label: string; className: string }
-> = {
-  live: {
-    label: 'En producción',
-    className: 'border-primary/40 bg-primary/12 text-primary',
-  },
-  wip: {
-    label: 'En desarrollo',
-    className: 'border-accent/40 bg-accent/12 text-accent',
-  },
-  archived: {
-    label: 'Archivado',
-    className: 'border-border bg-secondary text-muted-foreground',
-  },
+/** Only the label is localized; the pill palette stays design-owned. */
+const STATUS_CLASSNAMES: Record<ProjectStatus, string> = {
+  live: 'border-primary/40 bg-primary/12 text-primary',
+  wip: 'border-accent/40 bg-accent/12 text-accent',
+  archived: 'border-border bg-secondary text-muted-foreground',
 }
 
 const CARD_SIZES = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
@@ -64,10 +61,10 @@ function tagNames(project: ProjectItem): string[] {
     .filter((name): name is string => Boolean(name))
 }
 
-/** Unique tag names in first-seen order, plus the "Todos" catch-all. */
-function buildFilters(projects: ProjectItem[]): FilterOption[] {
+/** Unique tag names in first-seen order, preceded by the "all" catch-all. */
+function buildFilters(projects: ProjectItem[], allLabel: string): FilterOption[] {
   const seen = new Set<string>()
-  const filters: FilterOption[] = [{ key: ALL_FILTER, label: 'Todos' }]
+  const filters: FilterOption[] = [{ key: ALL_FILTER, label: allLabel }]
 
   for (const project of projects) {
     for (const name of tagNames(project)) {
@@ -102,13 +99,24 @@ function projectLink(project: ProjectItem): string | null {
   return github || null
 }
 
-function ProjectCard({ project, position }: { project: ProjectItem; position: number }) {
+function ProjectCard({
+  project,
+  position,
+  statusLabels,
+  labels,
+}: {
+  project: ProjectItem
+  position: number
+  statusLabels: Record<ProjectStatus, string>
+  labels: ProjectsGridLabels
+}) {
   const indexLabel = String(position + 1).padStart(2, '0')
   const tags = tagNames(project)
   const cover = coverImageOf(project)
   const coverUrl = cover?.url ?? null
   const link = projectLink(project)
-  const status = STATUS_META[project.status ?? 'live']
+  const status = project.status ?? 'live'
+  const statusLabel = statusLabels[status]
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition hover:border-primary/40 motion-safe:hover:-translate-y-1">
@@ -116,7 +124,7 @@ function ProjectCard({ project, position }: { project: ProjectItem; position: nu
         {cover && coverUrl ? (
           <Image
             src={coverUrl}
-            alt={cover.alt?.trim() || `Imagen de ${project.title}`}
+            alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
             fill
             sizes={CARD_SIZES}
             className="object-cover transition duration-500 motion-safe:group-hover:scale-[1.03]"
@@ -138,9 +146,9 @@ function ProjectCard({ project, position }: { project: ProjectItem; position: nu
 
       <div className="flex flex-1 flex-col gap-3 p-5">
         <span
-          className={`mono inline-flex w-fit rounded-full border px-2.5 py-1 text-[10px] uppercase leading-none tracking-[0.14em] ${status.className}`}
+          className={`mono inline-flex w-fit rounded-full border px-2.5 py-1 text-[10px] uppercase leading-none tracking-[0.14em] ${STATUS_CLASSNAMES[status]}`}
         >
-          {status.label}
+          {statusLabel}
         </span>
 
         <h3 className="font-heading text-[22px] font-semibold leading-snug tracking-[-0.03em]">
@@ -171,7 +179,7 @@ function ProjectCard({ project, position }: { project: ProjectItem; position: nu
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Abrir ${project.title}`}
+              aria-label={`${labels.openPrefix} ${project.title}`}
               className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary"
             >
               <ArrowUpRight aria-hidden className="size-3.5" />
@@ -188,8 +196,8 @@ function ProjectCard({ project, position }: { project: ProjectItem; position: nu
  * keeps every card mounted and toggles the `hidden` attribute on the ones that
  * do not match, so layout and the live counter stay trivial.
  */
-export function ProjectsGrid({ projects }: ProjectsGridProps) {
-  const filters = buildFilters(projects)
+export function ProjectsGrid({ projects, allLabel, statusLabels, labels }: ProjectsGridProps) {
+  const filters = buildFilters(projects, allLabel)
   const [active, setActive] = useState(ALL_FILTER)
 
   const isVisible = (project: ProjectItem) =>
@@ -199,7 +207,7 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div role="group" aria-label="Filtrar proyectos" className="flex flex-wrap gap-2">
+        <div role="group" aria-label={labels.filterGroup} className="flex flex-wrap gap-2">
           {filters.map((filter) => {
             const pressed = filter.key === active
 
@@ -225,14 +233,20 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
           aria-live="polite"
           className="mono text-[11px] uppercase leading-none tracking-[0.16em] text-muted"
         >
-          {String(visibleCount).padStart(2, '0')} {visibleCount === 1 ? 'proyecto' : 'proyectos'}
+          {String(visibleCount).padStart(2, '0')}{' '}
+          {visibleCount === 1 ? labels.countOne : labels.countOther}
         </p>
       </div>
 
       <ul role="list" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((project, index) => (
           <li key={projectKey(project, index)} hidden={!isVisible(project)}>
-            <ProjectCard project={project} position={index} />
+            <ProjectCard
+              project={project}
+              position={index}
+              statusLabels={statusLabels}
+              labels={labels}
+            />
           </li>
         ))}
       </ul>

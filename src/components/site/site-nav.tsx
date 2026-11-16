@@ -1,17 +1,19 @@
 'use client'
 
 import { Menu, X } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import { ThemeToggle } from '@/components/site/theme-toggle'
+import { isLocale, otherLocale, type Locale, type NavLabels } from '@/lib/i18n'
 
-/** Section anchors mirror the page composition: About → Skills → Projects → Contact. */
-const NAV_LINKS = [
-  { href: '#about', label: 'Sobre mí' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#projects', label: 'Proyectos' },
-  { href: '#contact', label: 'Contacto' },
-] as const
+export type SiteNavProps = {
+  /** Active locale, used to point the switcher at its counterpart. */
+  locale: Locale
+  /** Header copy for the active locale, resolved on the server. */
+  labels: NavLabels
+}
 
 const MENU_ID = 'site-nav-menu'
 /** Matches the `md` breakpoint used by the link list and the menu button. */
@@ -43,12 +45,33 @@ function Monogram() {
 }
 
 /**
- * Sticky site header: monogram brand, section anchors, theme toggle, contact CTA and,
- * below the `md` breakpoint, a disclosure menu that mirrors the same anchors.
+ * Same page in the counterpart locale: swap the leading locale segment and keep the
+ * rest, so anchors and any future sub-route survive the switch.
  */
-export function SiteNav() {
+function localeHref(pathname: string, target: Locale): string {
+  const segments = pathname.split('/').filter(Boolean)
+  const rest = isLocale(segments[0]) ? segments.slice(1) : segments
+
+  return `/${[target, ...rest].join('/')}`
+}
+
+/**
+ * Sticky site header: monogram brand, section anchors, language switcher, theme toggle,
+ * contact CTA and, below the `md` breakpoint, a disclosure menu mirroring the anchors.
+ */
+export function SiteNav({ locale, labels }: SiteNavProps) {
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
+
+  /** Section anchors mirror the page composition: About → Skills → Projects → Contact. */
+  const navLinks = [
+    { href: '#about', label: labels.links.about },
+    { href: '#skills', label: labels.links.skills },
+    { href: '#projects', label: labels.links.projects },
+    { href: '#contact', label: labels.links.contact },
+  ]
+  const other = otherLocale(locale)
 
   useEffect(() => {
     if (!open) return
@@ -75,12 +98,12 @@ export function SiteNav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-nav backdrop-blur-[18px]">
       <nav
-        aria-label="Principal"
+        aria-label={labels.ariaLabel}
         className="mx-auto flex h-16 w-full max-w-(--container-page) items-center px-6 md:h-[69px]"
       >
         <a
           href="#about"
-          aria-label="ipepio — inicio"
+          aria-label={labels.homeLabel}
           className="flex items-center gap-[13px] whitespace-nowrap"
         >
           <Monogram />
@@ -95,7 +118,7 @@ export function SiteNav() {
         </a>
 
         <ul className="ml-auto hidden items-center gap-[clamp(16px,2.4vw,36px)] md:flex">
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
@@ -109,11 +132,19 @@ export function SiteNav() {
 
         <div className="ml-auto flex items-center gap-2 md:ml-[clamp(16px,2.4vw,36px)]">
           <ThemeToggle />
+          <Link
+            href={localeHref(pathname, other)}
+            hrefLang={other}
+            aria-label={labels.languageSwitcher.ariaLabel}
+            className="mono inline-flex h-[38px] shrink-0 items-center rounded-[10px] border border-border px-2.5 text-[11px] leading-none font-bold tracking-[0.14em] text-muted-foreground transition-colors hover:border-input hover:bg-card hover:text-foreground"
+          >
+            {labels.languageSwitcher.code}
+          </Link>
           <a
             href="#contact"
             className="mono hidden h-[39px] items-center gap-[15px] rounded-[10px] bg-primary px-[15px] text-[11px] leading-none font-bold text-primary-foreground hover:brightness-105 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5 md:inline-flex"
           >
-            Hablemos
+            {labels.cta}
             <span aria-hidden>↗</span>
           </a>
           <button
@@ -121,7 +152,7 @@ export function SiteNav() {
             type="button"
             aria-expanded={open}
             aria-controls={MENU_ID}
-            aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+            aria-label={open ? labels.menuClose : labels.menuOpen}
             onClick={() => setOpen((value) => !value)}
             className="inline-flex size-[34px] items-center justify-center rounded-[10px] border border-border text-muted-foreground transition-colors hover:border-input hover:bg-card hover:text-foreground md:hidden"
           >
@@ -140,7 +171,7 @@ export function SiteNav() {
           className="absolute inset-x-0 top-full border-b border-border bg-popover shadow-[var(--shadow)] md:hidden"
         >
           <ul className="mx-auto flex w-full max-w-(--container-page) flex-col px-6 py-2">
-            {NAV_LINKS.map((link) => (
+            {navLinks.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
@@ -157,7 +188,7 @@ export function SiteNav() {
             onClick={closeMenu}
             className="mono mx-6 mb-4 inline-flex h-10 items-center gap-2 rounded-[10px] bg-primary px-4 text-[11px] leading-none font-bold text-primary-foreground"
           >
-            Hablemos
+            {labels.cta}
             <span aria-hidden>↗</span>
           </a>
         </div>

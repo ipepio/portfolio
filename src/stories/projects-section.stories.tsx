@@ -19,6 +19,19 @@ type Story = StoryObj<typeof meta>
  */
 export const Default: Story = {
   args: {
+    allLabel: 'Todos',
+    statusLabels: {
+      live: 'En producción',
+      wip: 'En desarrollo',
+      archived: 'Archivado',
+    },
+    gridLabels: {
+      filterGroup: 'Filtrar proyectos',
+      countOne: 'proyecto',
+      countOther: 'proyectos',
+      imageAltPrefix: 'Imagen de',
+      openPrefix: 'Abrir',
+    },
     eyebrow: '02 / PROYECTOS SELECCIONADOS',
     heading: 'Ideas que se convierten en sistemas.',
     note: 'Una mezcla de productos propios, investigación aplicada y arquitectura profesional. Algunos están en desarrollo o son privados.',

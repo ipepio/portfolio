@@ -18,6 +18,8 @@ type Story = StoryObj<typeof meta>
  */
 export const Default: Story = {
   args: {
+    educationHeading: 'Formación',
+    languagesHeading: 'Idiomas',
     about: {
       id: 1,
       name: 'Isaac Pepió',
@@ -114,6 +116,8 @@ export const Default: Story = {
 /** Sparse content: only the required name, so every optional block collapses. */
 export const Minimal: Story = {
   args: {
+    educationHeading: 'Formación',
+    languagesHeading: 'Idiomas',
     about: {
       id: 2,
       name: 'Isaac Pepió',

@@ -4,12 +4,13 @@ import type { Contact } from '@/payload-types'
 
 export type ContactSectionProps = {
   contact: Contact
-  /** Display heading; defaults to the reference copy. */
-  heading?: string
+  /** Section eyebrow, e.g. "04 / CONTACTO". */
+  eyebrow: string
+  /** Display heading, e.g. "¿Hablamos?". */
+  heading: string
 }
 
 const HEADING_ID = 'contact-section-heading'
-const EYEBROW = '04 / CONTACTO'
 
 function isExternal(url: string) {
   return /^https?:\/\//i.test(url)
@@ -19,7 +20,7 @@ function isExternal(url: string) {
  * Presentational Contact section: eyebrow, display heading, primary email link,
  * muted phone link and every social as an outline link.
  */
-export function ContactSection({ contact, heading = '¿Hablamos?' }: ContactSectionProps) {
+export function ContactSection({ contact, eyebrow, heading }: ContactSectionProps) {
   const email = contact.email?.trim() || null
   const phone = contact.phone?.trim() || null
   const socials = (contact.socials ?? []).filter((social) => social.label && social.url)
@@ -32,7 +33,7 @@ export function ContactSection({ contact, heading = '¿Hablamos?' }: ContactSect
     >
       <div className="mx-auto flex w-full max-w-(--container-page) flex-col gap-10 lg:gap-12">
         <header className="flex flex-col gap-5">
-          <span className="eyebrow">{EYEBROW}</span>
+          <span className="eyebrow">{eyebrow}</span>
           <h2
             id={HEADING_ID}
             className="font-heading text-[clamp(38px,4.5vw,64px)] font-bold leading-[1.03] tracking-[-0.06em] text-balance"

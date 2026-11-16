@@ -5,6 +5,10 @@ import type { About } from '@/payload-types'
 
 export type AboutSectionProps = {
   about: About
+  /** Label for the education list heading. */
+  educationHeading: string
+  /** Label for the languages list heading. */
+  languagesHeading: string
 }
 
 /** Lexical editor state accepted by the official Payload `RichText` renderer. */
@@ -33,7 +37,7 @@ function languageKey(language: NonNullable<About['languages']>[number], index: n
  * Presentational About section: availability pill, display name, role, location,
  * optional photo, rich-text bio, principles grid plus education and languages.
  */
-export function AboutSection({ about }: AboutSectionProps) {
+export function AboutSection({ about, educationHeading, languagesHeading }: AboutSectionProps) {
   const photo = about.photo && typeof about.photo === 'object' ? about.photo : null
   const photoUrl = photo?.url ?? null
   const principles = about.principles ?? []
@@ -132,7 +136,7 @@ export function AboutSection({ about }: AboutSectionProps) {
             {education.length > 0 ? (
               <section aria-labelledby={EDUCATION_ID} className="flex flex-col gap-5">
                 <h2 id={EDUCATION_ID} className="eyebrow">
-                  Formación
+                  {educationHeading}
                 </h2>
                 <ul role="list" className="flex flex-col gap-3">
                   {education.map((item, index) => (
@@ -159,7 +163,7 @@ export function AboutSection({ about }: AboutSectionProps) {
             {languages.length > 0 ? (
               <section aria-labelledby={LANGUAGES_ID} className="flex flex-col gap-5">
                 <h2 id={LANGUAGES_ID} className="eyebrow">
-                  Idiomas
+                  {languagesHeading}
                 </h2>
                 <ul role="list" className="flex flex-wrap gap-2">
                   {languages.map((language, index) => {
