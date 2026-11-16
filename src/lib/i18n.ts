@@ -74,6 +74,13 @@ export type Dictionary = {
     heading: string
     subheading: string
   }
+  experience: {
+    eyebrow: string
+    heading: string
+    note?: string
+    /** Label shown in place of a missing `endDate` (current role). */
+    present: string
+  }
   projects: {
     eyebrow: string
     heading: string
@@ -115,6 +122,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       heading: 'Habilidades técnicas por área.',
       subheading:
         'Un perfil transversal que abarca desde el código hasta la infraestructura, pasando por la IA, la calidad y la seguridad.',
+    },
+    experience: {
+      eyebrow: '03 / TRAYECTORIA',
+      heading: 'Dónde he trabajado.',
+      present: 'Actualidad',
     },
     projects: {
       eyebrow: '02 / PROYECTOS SELECCIONADOS',
@@ -168,6 +180,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       heading: 'Technical skills by area.',
       subheading:
         'A cross-cutting profile that spans from code to infrastructure, through AI, quality, and security.',
+    },
+    experience: {
+      eyebrow: '03 / TRACK RECORD',
+      heading: "Where I've worked.",
+      present: 'Present',
     },
     projects: {
       eyebrow: '02 / SELECTED WORK',

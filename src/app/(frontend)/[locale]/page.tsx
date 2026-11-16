@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import config from '@payload-config'
 import { AboutSection } from '@/components/site/about-section'
 import { ContactSection } from '@/components/site/contact-section'
+import { ExperienceSection } from '@/components/site/experience-section'
 import { ProjectsSection } from '@/components/site/projects-section'
 import { SkillsSection } from '@/components/site/skills-section'
 import { getDictionary, isLocale, locales } from '@/lib/i18n'
@@ -18,8 +19,8 @@ type HomePageProps = {
 }
 
 /**
- * Home page: composes the four storefront sections from Payload content
- * (About and Contact globals plus the SkillGroups and Projects collections),
+ * Home page: composes the storefront sections from Payload content (About and
+ * Contact globals plus the Experience, SkillGroups and Projects collections),
  * read in the locale of the URL segment.
  */
 export default async function HomePage({ params }: HomePageProps) {
@@ -34,9 +35,16 @@ export default async function HomePage({ params }: HomePageProps) {
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
 
-  const [about, contact, skillGroups, projects] = await Promise.all([
+  const [about, contact, experiences, skillGroups, projects] = await Promise.all([
     payload.findGlobal({ slug: 'about', locale, depth: 1 }),
     payload.findGlobal({ slug: 'contact', locale, depth: 1 }),
+    payload.find({
+      collection: 'experience',
+      locale,
+      sort: '-startDate',
+      limit: 100,
+      depth: 1,
+    }),
     payload.find({
       collection: 'skill-groups',
       locale,
@@ -59,6 +67,14 @@ export default async function HomePage({ params }: HomePageProps) {
         about={about}
         educationHeading={dict.about.educationHeading}
         languagesHeading={dict.about.languagesHeading}
+      />
+      <ExperienceSection
+        eyebrow={dict.experience.eyebrow}
+        heading={dict.experience.heading}
+        note={dict.experience.note}
+        presentLabel={dict.experience.present}
+        locale={locale}
+        experiences={experiences.docs}
       />
       <SkillsSection
         eyebrow={dict.skills.eyebrow}
