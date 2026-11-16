@@ -93,6 +93,7 @@ export default async function HomePage({ params }: HomePageProps) {
       <SkillsSection
         eyebrow={dict.skills.eyebrow}
         heading={dict.skills.heading}
+        headingAccent={dict.skills.headingAccent}
         subheading={dict.skills.subheading}
         groups={skillGroups.docs}
       />

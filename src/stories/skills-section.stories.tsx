@@ -14,8 +14,9 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    eyebrow: 'LO QUE HAGO',
-    heading: 'Habilidades técnicas por área.',
+    eyebrow: '— LO QUE HAGO',
+    heading: 'Habilidades técnicas',
+    headingAccent: 'por área.',
     subheading:
       'Un perfil transversal que abarca desde el código hasta la infraestructura, pasando por la IA, la calidad y la seguridad.',
     groups: [

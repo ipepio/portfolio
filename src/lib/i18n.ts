@@ -82,6 +82,8 @@ export type Dictionary = {
   skills: {
     eyebrow: string
     heading: string
+    /** Trailing part of the heading, rendered in the lima accent. */
+    headingAccent: string
     subheading: string
   }
   experience: {
@@ -137,7 +139,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     skills: {
       eyebrow: 'LO QUE HAGO',
-      heading: 'Habilidades técnicas por área.',
+      heading: 'Habilidades técnicas',
+      headingAccent: 'por área.',
       subheading:
         'Un perfil transversal que abarca desde el código hasta la infraestructura, pasando por la IA, la calidad y la seguridad.',
     },
@@ -203,7 +206,8 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     skills: {
       eyebrow: 'WHAT I DO',
-      heading: 'Technical skills by area.',
+      heading: 'Technical skills',
+      headingAccent: 'by area.',
       subheading:
         'A cross-cutting profile that spans from code to infrastructure, through AI, quality, and security.',
     },
