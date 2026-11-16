@@ -643,6 +643,53 @@ export interface About {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Ej. 01 / ENFOQUE
+   */
+  sectionEyebrow?: string | null;
+  sectionHeading?: string | null;
+  /**
+   * Se pinta en lima y se añade tras el título.
+   */
+  sectionHeadingAccent?: string | null;
+  heroLines?:
+    | {
+        text: string;
+        style?: ('plain' | 'outlined' | 'accent') | null;
+        id?: string | null;
+      }[]
+    | null;
+  heroIntro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroMeta?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  stats?:
+    | {
+        /**
+         * Ej. 8+
+         */
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   principles?:
     | {
         /**
@@ -704,6 +751,30 @@ export interface AboutSelect<T extends boolean = true> {
   photo?: T;
   location?: T;
   bio?: T;
+  sectionEyebrow?: T;
+  sectionHeading?: T;
+  sectionHeadingAccent?: T;
+  heroLines?:
+    | T
+    | {
+        text?: T;
+        style?: T;
+        id?: T;
+      };
+  heroIntro?: T;
+  heroMeta?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
   principles?:
     | T
     | {

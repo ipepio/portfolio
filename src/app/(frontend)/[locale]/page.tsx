@@ -6,6 +6,7 @@ import config from '@payload-config'
 import { AboutSection } from '@/components/site/about-section'
 import { ContactSection } from '@/components/site/contact-section'
 import { ExperienceSection } from '@/components/site/experience-section'
+import { HeroSection } from '@/components/site/hero-section'
 import { ProjectsSection } from '@/components/site/projects-section'
 import { SkillsSection } from '@/components/site/skills-section'
 import { getDictionary, isLocale, locales } from '@/lib/i18n'
@@ -63,10 +64,23 @@ export default async function HomePage({ params }: HomePageProps) {
 
   return (
     <div className="flex flex-col">
+      <HeroSection
+        name={about.name}
+        availability={about.availability}
+        heroLines={about.heroLines}
+        heroIntro={about.heroIntro}
+        heroMeta={about.heroMeta}
+        primaryCta={dict.hero.primaryCta}
+        secondaryCta={dict.hero.secondaryCta}
+        statusNote={dict.hero.statusNote}
+      />
       <AboutSection
         about={about}
+        eyebrow={dict.about.eyebrow}
+        heading={dict.about.heading}
         educationHeading={dict.about.educationHeading}
         languagesHeading={dict.about.languagesHeading}
+        presentLabel={dict.experience.present}
       />
       <ExperienceSection
         eyebrow={dict.experience.eyebrow}

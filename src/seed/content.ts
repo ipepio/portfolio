@@ -5,6 +5,8 @@
  * Fields without a source stay empty.
  */
 
+import type { RichTextRun } from './lexical'
+
 export type Localized = { es: string; en: string }
 
 export type SkillGroupIcon =
@@ -212,12 +214,24 @@ export const projectSeeds: ProjectSeed[] = [
   },
 ]
 
+export type HeroLineStyle = 'plain' | 'outlined' | 'accent'
+
+/** Hero intro runs per locale; the bolded run renders as `<strong>` (see ./lexical). */
+export type LocalizedRuns = { es: RichTextRun[]; en: RichTextRun[] }
+
 export type AboutSeed = {
   name: string
   role: Localized
   availability: Localized
   location: Localized
+  sectionEyebrow: Localized
+  sectionHeading: Localized
+  sectionHeadingAccent: Localized
   bio: { es: string[]; en: string[] }
+  heroLines: { text: Localized; style: HeroLineStyle }[]
+  heroIntro: LocalizedRuns
+  heroMeta: Localized[]
+  stats: { value: string; label: Localized }[]
   principles: { index: string; title: Localized; body: Localized }[]
   education: { title: Localized; institution: string; note: Localized }[]
   languages: { name: string; level: string }[]
@@ -231,6 +245,9 @@ export const aboutSeed: AboutSeed = {
     en: 'CTO · Architecture · Applied AI',
   },
   location: { es: 'Vinaròs, España', en: 'Vinaròs, Spain' },
+  sectionEyebrow: { es: '01 / ENFOQUE', en: '01 / APPROACH' },
+  sectionHeading: { es: 'Menos ruido. Más sistemas', en: 'Less noise. More systems' },
+  sectionHeadingAccent: { es: 'que funcionan.', en: 'that work.' },
   bio: {
     es: [
       'Ingeniero de telecomunicaciones con 8+ años de experiencia. He trabajado en consultoría, industria y empresas de producto donde el software es el centro.',
@@ -241,6 +258,35 @@ export const aboutSeed: AboutSeed = {
       'I enjoy understanding complex systems and turning ambiguous requirements into practical, reliable solutions. I have led teams, introduced agile methodologies, and explored how AI can transform the way we build software.',
     ],
   },
+  heroLines: [
+    { text: { es: 'HAGO', en: 'MAKE' }, style: 'plain' },
+    { text: { es: 'SIMPLE', en: 'COMPLEX' }, style: 'outlined' },
+    { text: { es: 'LO COMPLEJO.', en: 'FEEL SIMPLE.' }, style: 'accent' },
+  ],
+  heroIntro: {
+    es: [
+      { text: 'Soy ' },
+      { text: 'Isaac Pepió', bold: true },
+      {
+        text: '. Diseño y construyo producto, plataformas cloud y sistemas de IA. Desde la primera línea de código hasta su operación en producción.',
+      },
+    ],
+    en: [
+      { text: "I'm " },
+      { text: 'Isaac Pepió', bold: true },
+      {
+        text: '. I design and build products, cloud platforms and AI systems. From the first line of code to running them in production.',
+      },
+    ],
+  },
+  heroMeta: [
+    { es: 'CTO', en: 'CTO' },
+    { es: 'Software Architect', en: 'Software Architect' },
+    { es: 'Cloud / AI / DevOps', en: 'Cloud / AI / DevOps' },
+    { es: 'Desde España', en: 'Based in Spain' },
+  ],
+  // Only the years-of-experience figure survived; it now renders in the About section.
+  stats: [{ value: '8+', label: { es: 'AÑOS EN SOFTWARE', en: 'YEARS IN SOFTWARE' } }],
   principles: [
     {
       index: '01 — ARCHITECTURE',

@@ -19,27 +19,21 @@ const MENU_ID = 'site-nav-menu'
 /** Matches the `md` breakpoint used by the link list and the menu button. */
 const DESKTOP_QUERY = '(min-width: 768px)'
 
-/** Hexagon monogram, stroke colors taken from the brand tokens. */
-function Monogram() {
+/** Geometric brand mark (parallel lines), light on the dark theme and dark on the light one. */
+function BrandLogo() {
   return (
     <svg
-      viewBox="0 0 64 64"
+      viewBox="58 52 215 228"
       fill="none"
       aria-hidden="true"
+      shapeRendering="geometricPrecision"
       className="size-8 shrink-0 md:size-[37px]"
     >
       <path
-        d="M32 3.8 56.4 17.9v28.2L32 60.2 7.6 46.1V17.9L32 3.8Z"
-        stroke="currentColor"
-        strokeWidth="2.6"
+        fill="currentColor"
+        d="M170 60L128 86L128 126L170 100L228.1538 136L228.1538 192L176.4615 224L176.4615 248L157.0769 236L157.0769 192L195.8461 168L195.8461 136L182.923 128L131.2307 160L131.2307 248L170 272L260.4614 216L260.4614 116L170 60Z"
       />
-      <path
-        d="M23 22v24M23 15.8v1.3M32 46V22h8.3c5.6 0 8.7 3.1 8.7 7.6 0 4.5-3.1 7.5-8.7 7.5H32"
-        stroke="var(--primary)"
-        strokeWidth="3.7"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
-      />
+      <path fill="currentColor" d="M108 100L72.4615 122L72.4615 218L108 240Z" />
     </svg>
   )
 }
@@ -56,16 +50,18 @@ function localeHref(pathname: string, target: Locale): string {
 }
 
 /**
- * Sticky site header: monogram brand, section anchors, language switcher, theme toggle,
- * contact CTA and, below the `md` breakpoint, a disclosure menu mirroring the anchors.
+ * Sticky site header: brand mark, section anchors (starting at the hero), language
+ * switcher, theme toggle, contact CTA and, below the `md` breakpoint, a disclosure menu
+ * mirroring the anchors.
  */
 export function SiteNav({ locale, labels }: SiteNavProps) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
 
-  /** Section anchors mirror the page composition: About → Skills → Projects → Contact. */
+  /** Section anchors mirror the page composition: Hero → About → Skills → Projects → Contact. */
   const navLinks = [
+    { href: '#hero', label: labels.links.home },
     { href: '#about', label: labels.links.about },
     { href: '#skills', label: labels.links.skills },
     { href: '#projects', label: labels.links.projects },
@@ -102,11 +98,11 @@ export function SiteNav({ locale, labels }: SiteNavProps) {
         className="mx-auto flex h-16 w-full max-w-(--container-page) items-center px-6 md:h-[69px]"
       >
         <a
-          href="#about"
+          href="#hero"
           aria-label={labels.homeLabel}
           className="flex items-center gap-[13px] whitespace-nowrap"
         >
-          <Monogram />
+          <BrandLogo />
           <span className="flex flex-col">
             <span className="font-heading text-[17px] leading-none font-bold tracking-[-0.06em] md:text-[19px]">
               ipepio

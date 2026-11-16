@@ -5,10 +5,19 @@ import type { About } from '@/payload-types'
 
 export type AboutSectionProps = {
   about: About
-  /** Label for the education list heading. */
+  /** Fallback eyebrow for when the Payload `sectionEyebrow` field is empty. */
+  eyebrow?: string
+  /**
+   * Fallback display heading for when the Payload `sectionHeading` field is empty.
+   * The hero owns the page `h1`, so the section renders a single `h2`.
+   */
+  heading?: string
+  /** Label for the education card heading. */
   educationHeading: string
-  /** Label for the languages list heading. */
+  /** Label for the languages card heading. */
   languagesHeading: string
+  /** Word for the current period in the photo caption, e.g. "Actualidad". */
+  presentLabel?: string
 }
 
 /** Lexical editor state accepted by the official Payload `RichText` renderer. */
@@ -17,6 +26,13 @@ type RichTextData = Parameters<typeof RichText>[0]['data']
 const HEADING_ID = 'about-section-heading'
 const EDUCATION_ID = 'about-education-heading'
 const LANGUAGES_ID = 'about-languages-heading'
+
+/**
+ * The reference `.about-description`: big, tight, with `<strong>` promoted to the
+ * foreground and italic runs stepped back to the muted tone.
+ */
+const BIO_CLASS =
+  'max-w-[680px] text-[clamp(19px,2vw,27px)] leading-[1.48] tracking-[-0.03em] text-muted-foreground [&_a]:text-primary [&_a]:underline [&_em]:text-muted [&_i]:text-muted [&_p]:m-0 [&_p+p]:mt-[0.6em] [&_strong]:font-semibold [&_strong]:text-foreground'
 
 function principleKey(
   principle: NonNullable<About['principles']>[number],
@@ -33,16 +49,51 @@ function languageKey(language: NonNullable<About['languages']>[number], index: n
   return language.id ?? `${language.name ?? 'language'}-${index}`
 }
 
+/** The years-of-experience figure, rendered compactly next to the portrait. */
+function AboutStat({ stat }: { stat: NonNullable<About['stats']>[number] }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="font-heading text-[clamp(44px,6vw,58px)] font-semibold leading-[0.85] tracking-[-0.06em] text-foreground">
+        {stat.value}
+      </span>
+      <span className="mono text-[10px] font-semibold uppercase leading-[1.5] tracking-[0.14em] text-muted-foreground">
+        {stat.label}
+      </span>
+    </div>
+  )
+}
+
 /**
- * Presentational About section: availability pill, display name, role, location,
- * optional photo, rich-text bio, principles grid plus education and languages.
+ * Presentational About section, rebuilt on the reference's `.about` layout:
+ * a `.43fr / .57fr` header grid (eyebrow + display heading / big rich-text bio),
+ * a portrait row carrying the mono location caption and the single stat, the
+ * three-column principles grid, and two rounded cards for education and languages.
+ * The name, role and availability pill live in the hero.
  */
-export function AboutSection({ about, educationHeading, languagesHeading }: AboutSectionProps) {
+export function AboutSection({
+  about,
+  eyebrow,
+  heading,
+  educationHeading,
+  languagesHeading,
+  presentLabel,
+}: AboutSectionProps) {
   const photo = about.photo && typeof about.photo === 'object' ? about.photo : null
-  const photoUrl = photo?.url ?? null
   const principles = about.principles ?? []
   const education = about.education ?? []
   const languages = about.languages ?? []
+  // Only the years-of-experience figure is kept; it renders next to the photo.
+  const stat = (about.stats ?? []).find((item) => item.value?.trim() && item.label?.trim()) ?? null
+
+  // Section copy is editable in Payload; the dictionary only acts as a fallback.
+  const eyebrowText = about.sectionEyebrow?.trim() || eyebrow?.trim() || ''
+  const headingText = about.sectionHeading?.trim() || heading?.trim() || ''
+  const headingAccent = about.sectionHeadingAccent?.trim() ?? ''
+  const photoUrl = photo?.url ?? null
+  const caption = [about.location?.trim(), presentLabel?.trim()]
+    .filter((part): part is string => Boolean(part))
+    .join(' · ')
+
   // SAFETY: `bio` is a stored Payload lexical editor state. The generated type only
   // describes `root`/`children` loosely (e.g. `type: string` instead of `'root'`), while
   // `RichText` expects the full `SerializedEditorState` node union. The runtime shape is
@@ -52,108 +103,115 @@ export function AboutSection({ about, educationHeading, languagesHeading }: Abou
   return (
     <section
       id="about"
-      aria-labelledby={HEADING_ID}
-      className="scroll-mt-24 px-6 pt-16 pb-16 sm:pt-20 lg:pt-24"
+      aria-labelledby={headingText ? HEADING_ID : undefined}
+      className="scroll-mt-24 px-6 pt-16 pb-16 sm:pt-20 min-[780px]:pt-[126px] min-[780px]:pb-[120px]"
     >
-      <div className="mx-auto flex w-full max-w-(--container-page) flex-col gap-14 lg:gap-16">
-        <header className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
-          <div className="flex min-w-0 flex-col gap-6">
-            {about.availability ? (
-              <p className="mono inline-flex w-fit items-center gap-2.5 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-[10px] uppercase leading-none tracking-[0.16em] text-muted-foreground">
-                <span
-                  aria-hidden
-                  className="size-1.5 shrink-0 rounded-full bg-primary motion-safe:animate-pulse"
-                />
-                {about.availability}
-              </p>
-            ) : null}
-
-            <div className="flex flex-col gap-3">
-              <h1
+      <div className="mx-auto flex w-full max-w-(--container-page) flex-col gap-12 min-[780px]:gap-[52px]">
+        {/* Header: eyebrow + display heading on the left, the bio as big description. */}
+        <div className="grid grid-cols-1 gap-[30px] min-[780px]:grid-cols-[.43fr_.57fr] min-[780px]:gap-[9%]">
+          <div className="flex min-w-0 flex-col">
+            {eyebrowText ? <p className="eyebrow">{eyebrowText}</p> : null}
+            {headingText ? (
+              <h2
                 id={HEADING_ID}
-                className="font-heading text-[clamp(48px,7vw,96px)] font-bold leading-[0.95] tracking-[-0.08em] text-balance"
+                className="mt-[15px] max-w-[580px] font-heading text-[clamp(37px,4.7vw,61px)] font-semibold leading-[1.08] tracking-[-0.065em] text-balance min-[780px]:max-w-[310px]"
               >
-                {about.name}
-              </h1>
-              {about.role ? (
-                <p className="font-heading text-[clamp(19px,2.2vw,28px)] font-semibold leading-tight tracking-[-0.03em] text-primary">
-                  {about.role}
-                </p>
-              ) : null}
-              {about.location ? (
-                <p className="mono text-[11px] uppercase tracking-[0.16em] text-muted">
-                  {about.location}
-                </p>
-              ) : null}
-            </div>
+                {headingText}
+                {headingAccent ? (
+                  <>
+                    {' '}
+                    <span className="text-primary">{headingAccent}</span>
+                  </>
+                ) : null}
+              </h2>
+            ) : null}
           </div>
 
-          {photo && photoUrl ? (
-            <Image
-              src={photoUrl}
-              alt={photo.alt || about.name}
-              width={photo.width ?? 480}
-              height={photo.height ?? 480}
-              priority
-              className="size-40 shrink-0 rounded-2xl border border-border object-cover"
-            />
-          ) : null}
-        </header>
+          {bioData ? <RichText className={BIO_CLASS} data={bioData} /> : null}
+        </div>
 
-        {bioData ? (
-          <RichText
-            className="flex max-w-[68ch] flex-col gap-4 text-base leading-[1.75] text-muted-foreground [&_a]:text-primary [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_li]:my-1 [&_p]:m-0 [&_strong]:text-foreground [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-5"
-            data={bioData}
-          />
+        {/* Portrait + mono caption, with the single stat beside them. */}
+        {photoUrl || caption || stat ? (
+          <div className="flex flex-col gap-8 min-[520px]:flex-row min-[520px]:items-end min-[520px]:justify-between min-[520px]:gap-12">
+            {photoUrl || caption ? (
+              <figure className="flex min-w-0 flex-col gap-3">
+                {photoUrl ? (
+                  <Image
+                    src={photoUrl}
+                    alt={photo?.alt || about.name}
+                    width={photo?.width ?? 480}
+                    height={photo?.height ?? 480}
+                    className="aspect-square w-[clamp(160px,42vw,230px)] rounded-2xl border border-border object-cover"
+                  />
+                ) : null}
+                {caption ? (
+                  <figcaption className="mono text-[10px] font-semibold uppercase leading-[1.5] tracking-[0.14em] text-muted-foreground">
+                    {caption}
+                  </figcaption>
+                ) : null}
+              </figure>
+            ) : null}
+
+            {stat ? <AboutStat stat={stat} /> : null}
+          </div>
         ) : null}
 
+        {/* Principles: top rule, mono accent index, 21px title, 13px muted body. */}
         {principles.length > 0 ? (
-          <ul role="list" className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <ul
+            role="list"
+            className="grid grid-cols-1 gap-[16px] min-[780px]:grid-cols-3 min-[780px]:gap-[22px]"
+          >
             {principles.map((principle, index) => (
-              <li key={principleKey(principle, index)}>
-                <article className="flex h-full flex-col gap-3 rounded-xl border border-border bg-card p-6">
-                  {principle.index ? (
-                    <span className="mono text-[10px] uppercase leading-none tracking-[0.16em] text-accent">
-                      {principle.index}
-                    </span>
-                  ) : null}
-                  {principle.title ? (
-                    <h2 className="font-heading text-[17px] font-semibold leading-snug tracking-[-0.02em]">
-                      {principle.title}
-                    </h2>
-                  ) : null}
-                  {principle.body ? (
-                    <p className="text-sm leading-[1.7] text-muted-foreground">{principle.body}</p>
-                  ) : null}
-                </article>
+              <li
+                key={principleKey(principle, index)}
+                className="border-t border-input pt-[23px] pr-[5px] pb-[10px]"
+              >
+                {principle.index ? (
+                  <span className="mono text-[11px] font-bold leading-none text-primary">
+                    {principle.index}
+                  </span>
+                ) : null}
+                {principle.title ? (
+                  <h3 className="mt-[24px] mb-[10px] font-heading text-[21px] font-semibold leading-[1.25] tracking-[-0.045em]">
+                    {principle.title}
+                  </h3>
+                ) : null}
+                {principle.body ? (
+                  <p className="max-w-[350px] text-[13px] leading-[1.8] text-muted">
+                    {principle.body}
+                  </p>
+                ) : null}
               </li>
             ))}
           </ul>
         ) : null}
 
+        {/* Education and languages as two rounded cards. */}
         {education.length > 0 || languages.length > 0 ? (
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-12">
+          <div className="grid grid-cols-1 gap-4 min-[780px]:grid-cols-2">
             {education.length > 0 ? (
-              <section aria-labelledby={EDUCATION_ID} className="flex flex-col gap-5">
-                <h2 id={EDUCATION_ID} className="eyebrow">
+              <section
+                aria-labelledby={EDUCATION_ID}
+                className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-6"
+              >
+                <h3 id={EDUCATION_ID} className="eyebrow">
                   {educationHeading}
-                </h2>
-                <ul role="list" className="flex flex-col gap-3">
+                </h3>
+                <ul role="list" className="flex flex-col gap-5">
                   {education.map((item, index) => (
-                    <li key={educationKey(item, index)}>
-                      <article className="flex h-full flex-col gap-1.5 rounded-xl border border-border bg-card p-6">
-                        {item.title ? (
-                          <h3 className="font-heading text-[16px] font-semibold leading-snug tracking-[-0.02em]">
-                            {item.title}
-                          </h3>
-                        ) : null}
-                        {item.institution ? (
-                          <p className="text-sm text-muted-foreground">{item.institution}</p>
-                        ) : null}
-                        {item.note ? (
-                          <p className="text-sm leading-[1.6] text-accent">{item.note}</p>
-                        ) : null}
-                      </article>
+                    <li key={educationKey(item, index)} className="flex flex-col gap-1.5">
+                      {item.title ? (
+                        <h4 className="font-heading text-[17px] font-semibold leading-snug tracking-[-0.02em]">
+                          {item.title}
+                        </h4>
+                      ) : null}
+                      {item.institution ? (
+                        <p className="text-sm text-muted-foreground">{item.institution}</p>
+                      ) : null}
+                      {item.note ? (
+                        <p className="text-sm leading-[1.6] text-peach">{item.note}</p>
+                      ) : null}
                     </li>
                   ))}
                 </ul>
@@ -161,10 +219,13 @@ export function AboutSection({ about, educationHeading, languagesHeading }: Abou
             ) : null}
 
             {languages.length > 0 ? (
-              <section aria-labelledby={LANGUAGES_ID} className="flex flex-col gap-5">
-                <h2 id={LANGUAGES_ID} className="eyebrow">
+              <section
+                aria-labelledby={LANGUAGES_ID}
+                className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-6"
+              >
+                <h3 id={LANGUAGES_ID} className="eyebrow">
                   {languagesHeading}
-                </h2>
+                </h3>
                 <ul role="list" className="flex flex-wrap gap-2">
                   {languages.map((language, index) => {
                     const label = [language.name, language.level]

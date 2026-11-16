@@ -13,13 +13,16 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
- * Photo-less seeded shape: hero, bio, three principles, one education item and
- * three languages. Payload returns `photo: null` when no image is uploaded.
+ * Photo-less seeded shape: section eyebrow and display heading (editable in Payload),
+ * the big bio description, three principles, one education item and three languages.
+ * Payload returns `photo: null` when no image is uploaded, so only the mono caption
+ * and the years-of-experience stat render in the portrait row.
  */
 export const Default: Story = {
   args: {
     educationHeading: 'Formación',
     languagesHeading: 'Idiomas',
+    presentLabel: 'Actualidad',
     about: {
       id: 1,
       name: 'Isaac Pepió',
@@ -27,6 +30,10 @@ export const Default: Story = {
       availability: 'CTO · Arquitectura · IA aplicada',
       photo: null,
       location: 'Vinaròs, España',
+      sectionEyebrow: '01 / ENFOQUE',
+      sectionHeading: 'Menos ruido. Más sistemas',
+      sectionHeadingAccent: 'que funcionan.',
+      stats: [{ id: 'stat-1', value: '8+', label: 'AÑOS EN SOFTWARE' }],
       bio: {
         root: {
           type: 'root',
@@ -118,6 +125,7 @@ export const Minimal: Story = {
   args: {
     educationHeading: 'Formación',
     languagesHeading: 'Idiomas',
+    presentLabel: 'Actualidad',
     about: {
       id: 2,
       name: 'Isaac Pepió',

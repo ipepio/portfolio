@@ -61,11 +61,25 @@ async function seedGlobals() {
     role: aboutSeed.role,
     availability: aboutSeed.availability,
     location: aboutSeed.location,
+    sectionEyebrow: aboutSeed.sectionEyebrow,
+    sectionHeading: aboutSeed.sectionHeading,
+    sectionHeadingAccent: aboutSeed.sectionHeadingAccent,
     photo: null,
     bio: {
       es: richText(aboutSeed.bio.es),
       en: richText(aboutSeed.bio.en),
     },
+    // Arrays are shared across locales; only their `text`/`label` fields are localized.
+    heroLines: aboutSeed.heroLines.map((line) => ({
+      text: line.text,
+      style: line.style,
+    })),
+    heroIntro: {
+      es: richText([aboutSeed.heroIntro.es]),
+      en: richText([aboutSeed.heroIntro.en]),
+    },
+    heroMeta: aboutSeed.heroMeta.map((item) => ({ text: item })),
+    stats: aboutSeed.stats.map((stat) => ({ value: stat.value, label: stat.label })),
     principles: aboutSeed.principles,
     education: aboutSeed.education,
     languages: aboutSeed.languages,

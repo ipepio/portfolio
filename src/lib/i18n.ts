@@ -49,6 +49,8 @@ export type NavLabels = {
   ariaLabel: string
   homeLabel: string
   links: {
+    /** Anchor to the top of the page, first item in the link list. */
+    home: string
     about: string
     skills: string
     projects: string
@@ -65,7 +67,15 @@ export type NavLabels = {
 
 export type Dictionary = {
   nav: NavLabels
+  hero: {
+    primaryCta: string
+    secondaryCta: string
+    /** Status line inside the decorative architecture panel. */
+    statusNote: string
+  }
   about: {
+    eyebrow: string
+    heading: string
     educationHeading: string
     languagesHeading: string
   }
@@ -103,6 +113,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       ariaLabel: 'Principal',
       homeLabel: 'ipepio — inicio',
       links: {
+        home: 'Inicio',
         about: 'Sobre mí',
         skills: 'Skills',
         projects: 'Proyectos',
@@ -113,7 +124,14 @@ const dictionaries: Record<Locale, Dictionary> = {
       menuClose: 'Cerrar menú',
       languageSwitcher: { ariaLabel: 'Cambiar a inglés', code: 'EN' },
     },
+    hero: {
+      primaryCta: 'De la implementación al liderazgo técnico',
+      secondaryCta: 'Escríbeme',
+      statusNote: 'Diseñado para ser observable y mantenible',
+    },
     about: {
+      eyebrow: '01 / SOBRE MÍ',
+      heading: 'Cómo trabajo.',
       educationHeading: 'Formación',
       languagesHeading: 'Idiomas',
     },
@@ -161,6 +179,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       ariaLabel: 'Main',
       homeLabel: 'ipepio — home',
       links: {
+        home: 'Home',
         about: 'About',
         skills: 'Skills',
         projects: 'Projects',
@@ -171,7 +190,14 @@ const dictionaries: Record<Locale, Dictionary> = {
       menuClose: 'Close menu',
       languageSwitcher: { ariaLabel: 'Switch to Spanish', code: 'ES' },
     },
+    hero: {
+      primaryCta: 'From implementation to technical leadership',
+      secondaryCta: 'Get in touch',
+      statusNote: 'Designed to stay observable and maintainable',
+    },
     about: {
+      eyebrow: '01 / ABOUT',
+      heading: 'How I work.',
       educationHeading: 'Education',
       languagesHeading: 'Languages',
     },
