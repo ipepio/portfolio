@@ -44,6 +44,48 @@ export type ProjectDetailCopy = Pick<
   'backToProjects' | 'viewLive' | 'repository'
 >
 
+/**
+ * Copy for the contact form (a client component): its chrome and its four states —
+ * idle, sending, sent and error.
+ */
+export type ContactFormLabels = {
+  /** Card heading over the fields. */
+  title: string
+  /** Mono line under the title. */
+  subtitle: string
+  nameLabel: string
+  emailLabel: string
+  messageLabel: string
+  namePlaceholder: string
+  emailPlaceholder: string
+  messagePlaceholder: string
+  /** Submit button, idle. */
+  send: string
+  /** Submit button while the request is in flight. */
+  sending: string
+  /** Announced after a 200. */
+  sent: string
+  /** Announced when the request fails for any other reason. */
+  error: string
+  /** Announced when the server rejects the payload (400). */
+  invalid: string
+  /** Announced when the server has no SMTP transport or no destination (503). */
+  notConfigured: string
+}
+
+/** Copy for the contact section (05): the reference `footer.contact`. */
+export type ContactLabels = {
+  eyebrow: string
+  /** First line of the display heading, above the accent. */
+  heading: string
+  /** Accented second line of the display heading. */
+  headingAccent: string
+  description: string
+  /** Label of the GitHub link closing the copy column. */
+  github: string
+  form: ContactFormLabels
+}
+
 /** Copy rendered by the sticky site header (a client component). */
 export type NavLabels = {
   ariaLabel: string
@@ -160,10 +202,7 @@ export type Dictionary = {
     /** Copy for the `/projects/[slug]` detail page. */
     detail: ProjectDetailCopy
   }
-  contact: {
-    eyebrow: string
-    heading: string
-  }
+  contact: ContactLabels
 }
 
 const dictionaries: Record<Locale, Dictionary> = {
@@ -261,7 +300,28 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     contact: {
       eyebrow: '05 / CONTACTO',
-      heading: '¿Hablamos?',
+      heading: '¿Hacemos',
+      headingAccent: 'algo serio?',
+      description:
+        'Si tienes un producto complejo, un reto de arquitectura o una idea con IA que llevar a producción, cuéntamelo. Me interesa entender el problema antes de hablar de herramientas.',
+      github: 'También estoy en GitHub',
+      form: {
+        title: 'Cuéntame tu idea.',
+        subtitle: 'UN MENSAJE / SIN REUNIONES INNECESARIAS',
+        nameLabel: 'Tu nombre *',
+        emailLabel: 'Tu email *',
+        messageLabel: 'El mensaje *',
+        namePlaceholder: '¿Cómo te llamas?',
+        emailPlaceholder: 'tu@empresa.com',
+        messagePlaceholder: '¿Qué estás construyendo? ¿Cuál es el reto?',
+        send: 'Enviar mensaje',
+        sending: 'Enviando…',
+        sent: 'Mensaje enviado correctamente. Gracias por contactar.',
+        error: 'No se pudo enviar el mensaje. Inténtalo de nuevo.',
+        invalid:
+          'Completa los campos requeridos y revisa el email. El mensaje debe tener al menos 15 caracteres.',
+        notConfigured: 'El envío aún no está configurado. No se ha enviado ningún mensaje.',
+      },
     },
   },
   en: {
@@ -358,7 +418,28 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     contact: {
       eyebrow: '05 / CONTACT',
-      heading: 'Shall we talk?',
+      heading: "Let's build",
+      headingAccent: 'something real.',
+      description:
+        "Have a complex product, an architecture challenge or an AI idea to ship? Tell me what you're building. I'd rather understand the problem before talking tools.",
+      github: 'Also on GitHub',
+      form: {
+        title: 'Tell me about it.',
+        subtitle: 'ONE MESSAGE / NO UNNECESSARY MEETINGS',
+        nameLabel: 'Your name *',
+        emailLabel: 'Your email *',
+        messageLabel: 'Your message *',
+        namePlaceholder: 'What should I call you?',
+        emailPlaceholder: 'you@company.com',
+        messagePlaceholder: 'What are you building? What is the challenge?',
+        send: 'Send message',
+        sending: 'Sending…',
+        sent: 'Message sent successfully. Thanks for reaching out.',
+        error: 'Could not send the message. Please try again.',
+        invalid:
+          'Fill in the required fields, check the email, and write at least 15 characters in the message.',
+        notConfigured: 'Sending is not configured yet. Nothing has been sent.',
+      },
     },
   },
 }

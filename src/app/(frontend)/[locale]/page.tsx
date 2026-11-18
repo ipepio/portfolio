@@ -120,11 +120,7 @@ export default async function HomePage({ params }: HomePageProps) {
         currentLabel={dict.experience.current}
         experiences={experiences.docs}
       />
-      <ContactSection
-        contact={contact}
-        eyebrow={dict.contact.eyebrow}
-        heading={dict.contact.heading}
-      />
+      <ContactSection contact={contact} copy={dict.contact} />
     </div>
   )
 }

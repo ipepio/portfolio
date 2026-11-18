@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { ContactSection } from '@/components/site/contact-section'
+import { getDictionary } from '@/lib/i18n'
+
+const es = getDictionary('es')
+const en = getDictionary('en')
 
 const meta = {
   title: 'Site/ContactSection',
@@ -12,11 +16,10 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-/** Seeded shape: no email/phone yet, only the GitHub social. */
+/** Seeded shape: the GitHub social exists, the destination email lives server-side. */
 export const Default: Story = {
   args: {
-    eyebrow: '04 / CONTACTO',
-    heading: '¿Hablamos?',
+    copy: es.contact,
     contact: {
       id: 1,
       email: null,
@@ -26,31 +29,26 @@ export const Default: Story = {
   },
 }
 
-/** Full contact block: email link, phone link and several socials. */
-export const WithEmailAndPhone: Story = {
+/** English dictionary: `Let's build / something real.` and the English form copy. */
+export const English: Story = {
   args: {
-    eyebrow: '04 / CONTACTO',
-    heading: '¿Hablamos?',
+    copy: en.contact,
     contact: {
       id: 2,
       email: 'hola@ipepio.dev',
       phone: '+34 600 000 000',
-      socials: [
-        { id: 'social-1', label: 'GitHub', url: 'https://github.com/ipepio' },
-        { id: 'social-2', label: 'LinkedIn', url: 'https://www.linkedin.com/in/ipepio' },
-      ],
+      socials: [{ id: 'social-1', label: 'GitHub', url: 'https://github.com/ipepio' }],
     },
   },
 }
 
-/** Heading override keeps the section reusable outside the home page. */
-export const CustomHeading: Story = {
+/** No GitHub social in the global: the copy column closes after the description. */
+export const WithoutSocial: Story = {
   args: {
-    eyebrow: '04 / CONTACTO',
-    heading: '¿Construimos algo juntos?',
+    copy: es.contact,
     contact: {
       id: 3,
-      email: 'hola@ipepio.dev',
+      email: null,
       socials: [],
     },
   },
