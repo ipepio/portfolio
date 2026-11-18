@@ -1,0 +1,702 @@
+/* ---------------------------------------------------------------------------
+   Skills orbit — React port of the "expertise" reference HTML.
+
+   Structure, spacing, proportions and every keyframe are kept from the
+   reference. Its hardcoded palette is mapped onto the portfolio tokens, one
+   reference variable at a time:
+
+     --bg     -> var(--background)
+     --surface -> var(--card)
+     --line   -> var(--border)
+     --muted  -> var(--muted-foreground)
+     --fg     -> var(--foreground)
+     --accent -> var(--primary)
+     --mono   -> var(--font-mono)
+
+   Deliberately dropped: `.experience` (the reference used `min-height: 100svh`,
+   the About section owns its own height), `.topline` and `.footer-hint` (page
+   chrome, not part of the widget). `--orbit-size` moves from `:root` onto
+   `.root` so the widget stays self-contained.
+   --------------------------------------------------------------------------- */
+
+.root {
+  --orbit-size: min(620px, 76vw, 68svh);
+  /* Horizontal breathing room for the outboard node labels. On desktop the centred
+     ring already leaves ~330px of slack each side; the gutter is what keeps the
+     labels off the page edge once the ring fills the column on small screens. */
+  --orbit-gutter: clamp(24px, 4vw, 30px);
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: var(--orbit-gutter);
+  isolation: isolate;
+}
+
+.orbit {
+  position: relative;
+  /* Capped at 100% of the widget's content box: on narrow screens the ring shrinks
+     with the column (and with it every percentage-based node offset) instead of
+     pushing the side labels off the page. */
+  width: min(var(--orbit-size), 100%);
+  aspect-ratio: 1 / 1;
+  flex: none;
+  margin: 0 auto;
+  /* Every node is positioned on this same coordinate system; --x/--y come from the
+     ring math in the component, so all nodes share one radius and one angle step. */
+}
+
+.orbitRing,
+.centerWash {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.orbitRing {
+  border: 1px solid var(--border);
+}
+
+.orbitRingOuter {
+  width: 82%;
+  height: 82%;
+}
+
+.orbitRingMiddle {
+  width: 57%;
+  height: 57%;
+  opacity: 0.75;
+}
+
+.orbitRingInner {
+  width: 34%;
+  height: 34%;
+  opacity: 0.68;
+}
+
+.centerWash {
+  width: 55%;
+  height: 55%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--primary) 3.2%, transparent),
+    transparent 68%
+  );
+  filter: blur(12px);
+}
+
+.orbitRingOuter::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 78%,
+    color-mix(in srgb, var(--primary) 11%, transparent) 84%,
+    transparent 91%
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  animation: orbit-trace 24s linear infinite;
+}
+
+@keyframes orbit-trace {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.centerContent {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.centerStack {
+  width: 54%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: translateY(3px);
+}
+
+.sceneWindow {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 310 / 215;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(8px) scale(0.95);
+  filter: blur(5px);
+  transition:
+    opacity 360ms ease,
+    transform 480ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 300ms ease;
+  visibility: hidden;
+}
+
+.scene.sceneActive {
+  visibility: visible;
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0) scale(1);
+}
+
+.scene svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.stageCategory {
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: clamp(9px, 1.1vw, 11px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 3px;
+  text-shadow: 0 0 15px color-mix(in srgb, var(--primary) 24%, transparent);
+}
+
+.stageIndex {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--muted-foreground) 55%, var(--background));
+  letter-spacing: 0.1em;
+  margin-top: 7px;
+}
+
+.node {
+  position: absolute;
+  z-index: 3;
+  /* Ring coordinates from the component: one radius and one angle step for all nodes. */
+  top: var(--y);
+  left: var(--x);
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  padding: 0;
+  width: 58px;
+  height: 58px;
+  color: color-mix(in srgb, var(--foreground) 45%, var(--muted-foreground));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.node:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 8px;
+}
+
+.nodeDisc {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  transition:
+    border-color 250ms ease,
+    color 250ms ease,
+    transform 250ms ease,
+    box-shadow 250ms ease,
+    background 250ms ease;
+}
+
+.nodeDisc svg {
+  width: 21px;
+  height: 21px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nodeLabel {
+  position: absolute;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--muted-foreground) 65%, var(--background));
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.135em;
+  transition: color 200ms ease;
+  pointer-events: none;
+}
+
+.node[data-label='top'] .nodeLabel {
+  bottom: calc(100% + 11px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.node[data-label='bottom'] .nodeLabel {
+  top: calc(100% + 11px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.node[data-label='right'] .nodeLabel {
+  left: calc(100% + 11px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.node[data-label='left'] .nodeLabel {
+  right: calc(100% + 11px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.node:hover .nodeDisc {
+  transform: scale(1.1);
+  color: color-mix(in srgb, var(--foreground) 82%, var(--primary));
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+}
+
+.node:hover .nodeLabel {
+  color: color-mix(in srgb, var(--foreground) 70%, var(--muted-foreground));
+}
+
+.node.nodeActive {
+  z-index: 4;
+  color: var(--primary);
+}
+
+.node.nodeActive .nodeDisc {
+  color: var(--primary);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--primary) 14%, var(--card)),
+    var(--background) 80%
+  );
+  border-color: var(--primary);
+  box-shadow:
+    0 0 0 4px var(--background-elevated),
+    0 0 0 6px var(--primary),
+    0 0 23px 6px color-mix(in srgb, var(--primary) 24%, transparent),
+    inset 0 0 15px color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.node.nodeActive .nodeLabel {
+  color: var(--primary);
+}
+
+.node.nodeActive .nodeDisc::after {
+  content: '';
+  position: absolute;
+  inset: -13px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--primary) 24%, transparent);
+  animation: halo 2.8s ease-out infinite;
+}
+
+@keyframes halo {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.65;
+  }
+
+  80%,
+  100% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+
+.detail {
+  text-align: center;
+  width: min(510px, 95%);
+  min-height: 93px;
+  margin-top: -5px;
+}
+
+.detailKicker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: color-mix(in srgb, var(--muted-foreground) 60%, var(--background));
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.16em;
+}
+
+.detailKicker::before,
+.detailKicker::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 24px;
+  background: var(--border);
+}
+
+.detailTitle {
+  margin: 7px 0 3px;
+  color: var(--foreground);
+  font-family: var(--font-heading);
+  font-size: clamp(18px, 2.1vw, 23px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.detailCopy {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Shared illustration tokens. The scene SVGs are inline and reference these
+   classes, so the shared stroke/fill weights live in one place.
+   -------------------------------------------------------------------------- */
+.sMono {
+  font-family: var(--font-mono);
+}
+
+.sceneActive .draw {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation: draw-on 1.7s ease forwards;
+}
+
+@keyframes draw-on {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.sceneActive .blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.18;
+  }
+}
+
+.sceneActive .flow {
+  stroke-dasharray: 3 9;
+  animation: dash 1.5s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -48;
+  }
+}
+
+.sceneActive .rise {
+  animation: rise 2.7s ease-in-out infinite;
+}
+
+@keyframes rise {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.sceneActive .float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.sceneActive .pulse {
+  animation: pulse 2.2s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.4;
+    transform: scale(0.92);
+  }
+}
+
+.sceneActive .dashOffset {
+  stroke-dasharray: 4 8;
+  animation: dash 1.8s linear infinite;
+}
+
+.sceneActive .growBar {
+  transform-origin: center bottom;
+  animation: grow 2.7s ease-in-out infinite alternate;
+}
+
+.sceneActive .growBar:nth-of-type(odd) {
+  animation-delay: -1s;
+}
+
+@keyframes grow {
+  0% {
+    transform: scaleY(0.58);
+  }
+
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.sceneActive .sweep {
+  animation: sweep 2.7s ease-in-out infinite;
+}
+
+@keyframes sweep {
+  0%,
+  7% {
+    transform: translateY(-55px);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  72% {
+    opacity: 1;
+  }
+
+  95%,
+  100% {
+    transform: translateY(68px);
+    opacity: 0;
+  }
+}
+
+.sceneActive .nodeLight {
+  animation: node-light 2.6s ease-in-out infinite;
+}
+
+.sceneActive .nodeLight:nth-of-type(2n) {
+  animation-delay: -0.6s;
+}
+
+.sceneActive .nodeLight:nth-of-type(3n) {
+  animation-delay: -1.2s;
+}
+
+@keyframes node-light {
+  0%,
+  100% {
+    opacity: 0.32;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.sceneActive .rotateSlow {
+  animation: rotate-slow 18s linear infinite;
+  transform-origin: 155px 105px;
+}
+
+@keyframes rotate-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sceneActive .ping {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: ping 2.8s ease-out infinite;
+}
+
+@keyframes ping {
+  0% {
+    opacity: 0.65;
+    transform: scale(0.55);
+  }
+
+  90%,
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+.sceneActive .enter {
+  animation: enter 700ms both;
+}
+
+.sceneActive .enterDelay {
+  animation: enter 850ms 160ms both;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 740px) {
+  .root {
+    --orbit-size: min(90vw, 500px);
+  }
+
+  .node {
+    width: 46px;
+    height: 46px;
+  }
+
+  .nodeDisc {
+    width: 44px;
+    height: 44px;
+  }
+
+  .nodeDisc svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .nodeLabel {
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .node[data-label='left'] .nodeLabel {
+    right: calc(100% + 5px);
+  }
+
+  .node[data-label='right'] .nodeLabel {
+    left: calc(100% + 5px);
+  }
+
+  .node[data-label='top'] .nodeLabel {
+    bottom: calc(100% + 7px);
+  }
+
+  .node[data-label='bottom'] .nodeLabel {
+    top: calc(100% + 7px);
+  }
+
+  .stageCategory {
+    font-size: 9px;
+  }
+
+  .stageIndex {
+    font-size: 8px;
+    margin-top: 4px;
+  }
+
+  .detail {
+    margin-top: 22px;
+    min-height: 100px;
+  }
+}
+
+@media (max-width: 420px) {
+  .root {
+    --orbit-size: min(93vw, 380px);
+  }
+
+  .node {
+    width: 38px;
+    height: 38px;
+  }
+
+  .nodeDisc {
+    width: 37px;
+    height: 37px;
+  }
+
+  .nodeDisc svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .nodeLabel {
+    font-size: 7px;
+  }
+
+  .node[data-label='left'] .nodeLabel {
+    right: calc(100% + 4px);
+  }
+
+  .node[data-label='right'] .nodeLabel {
+    left: calc(100% + 4px);
+  }
+
+  .node.nodeActive .nodeDisc {
+    box-shadow:
+      0 0 0 2px var(--background-elevated),
+      0 0 0 4px var(--primary),
+      0 0 16px 2px color-mix(in srgb, var(--primary) 26%, transparent);
+  }
+
+  .stageCategory {
+    font-size: 8px;
+    margin-top: 0;
+  }
+
+  .stageIndex {
+    font-size: 7px;
+    margin-top: 3px;
+  }
+}
+
+/* Compact widths: the ring fills the column and ENTERPRISE — the widest label, on the
+   extreme-left node — no longer fits beside its disc, so it sits above it instead.
+   Only the placement changes: the side itself still comes from the node's angle. Kept
+   last so it wins over the side rules above at equal specificity. */
+@media (max-width: 740px) {
+  .node[data-section='enterprise'] .nodeLabel {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: calc(100% + 7px);
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root *,
+  .root *::before,
+  .root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .sceneActive .draw {
+    stroke-dashoffset: 0;
+  }
+}

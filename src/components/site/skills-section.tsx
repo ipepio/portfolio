@@ -1,5 +1,4 @@
-import type { LucideIcon } from 'lucide-react'
-import { Building2, Cloud, Code2, Database, ShieldCheck, Sparkles, Workflow } from 'lucide-react'
+import { skillIcon } from '@/lib/skill-icons'
 
 export type SkillGroupItem = { name: string; key?: boolean | null }
 
@@ -19,17 +18,6 @@ export type SkillsSectionProps = {
   headingAccent?: string
   subheading?: string
   groups: SkillGroup[]
-}
-
-/** Payload `icon` select values mapped onto lucide glyphs. */
-const groupIcons: Record<string, LucideIcon> = {
-  code: Code2,
-  cloud: Cloud,
-  ai: Sparkles,
-  shield: ShieldCheck,
-  database: Database,
-  enterprise: Building2,
-  engineering: Workflow,
 }
 
 const HEADING_ID = 'skills-section-heading'
@@ -69,7 +57,7 @@ export function SkillsSection({
     <section
       id="skills"
       aria-labelledby={HEADING_ID}
-      className="scroll-mt-24 px-6 py-20 sm:py-24 lg:py-28"
+      className="px-6 py-20 sm:py-24 lg:py-28"
     >
       <div className="mx-auto flex w-full max-w-(--container-page) flex-col gap-10 lg:gap-14">
         {/* Header: eyebrow + display heading on the left, muted subheading on the right. */}
@@ -102,7 +90,7 @@ export function SkillsSection({
           className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3"
         >
           {groups.map((group, index) => {
-            const Icon = groupIcons[group.icon ?? ''] ?? groupIcons.code
+            const Icon = skillIcon(group.icon)
             const meta = groupMeta(group)
             const items = group.items ?? []
 
