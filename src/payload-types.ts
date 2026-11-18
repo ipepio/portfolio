@@ -296,6 +296,7 @@ export interface Project {
     [k: string]: unknown;
   } | null;
   coverImage?: (number | null) | Media;
+  visual: 'code-stack' | 'agent-orbit' | 'mock-shell' | 'echo-ring' | 'svc-map' | 'chat-lines';
   tags?: (number | Tag)[] | null;
   liveUrl?: string | null;
   githubUrl?: string | null;
@@ -552,6 +553,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   shortDescription?: T;
   longDescription?: T;
   coverImage?: T;
+  visual?: T;
   tags?: T;
   liveUrl?: T;
   githubUrl?: T;

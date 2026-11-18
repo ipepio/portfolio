@@ -48,6 +48,21 @@ export const Projects: CollectionConfig = {
       label: 'Imagen de cabecera',
     },
     {
+      name: 'visual',
+      type: 'select',
+      required: true,
+      defaultValue: 'code-stack',
+      label: 'Diagrama (sin imagen de cabecera)',
+      options: [
+        { label: 'Code stack', value: 'code-stack' },
+        { label: 'Agent orbit', value: 'agent-orbit' },
+        { label: 'Mock shell', value: 'mock-shell' },
+        { label: 'Echo ring', value: 'echo-ring' },
+        { label: 'Service map', value: 'svc-map' },
+        { label: 'Chat lines', value: 'chat-lines' },
+      ],
+    },
+    {
       name: 'tags',
       type: 'relationship',
       relationTo: 'tags',
