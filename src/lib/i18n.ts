@@ -65,17 +65,49 @@ export type NavLabels = {
   }
 }
 
+/** Copy rendered by the hero portrait showcase (photo card, caption and terminal card). */
+export type PortraitLabels = {
+  /** Prefix of the figure's accessible name; the Payload `name` is appended. */
+  figureLabel: string
+  /** Chip over the photo, mono uppercase. */
+  topline: string
+  /** Second half of the lime caption index, after the fixed `01 — `. */
+  index: string
+  /** Mono role line under the name; the Payload `role` wins when it is set. */
+  roleLine: string
+  /** Path in the floating terminal card header. */
+  floatPath: string
+  /** State label next to the lime LED in the terminal header. */
+  floatStatus: string
+  /** Shell prompt symbol of the fake build command. */
+  floatPrompt: string
+  /** Command name, after the prompt. */
+  floatCommand: string
+  /** Command flags, rendered in the lime accent one per line. */
+  floatFlags: string[]
+  /** Human sentence in the terminal footer. */
+  floatNote: string
+  /** Exit status in the terminal footer. */
+  floatExit: string
+  /** Words either side of the lime rule under the showcase. */
+  decoration: string
+  /** Mono index closing the decoration row. */
+  decorationIndex: string
+}
+
 export type Dictionary = {
   nav: NavLabels
   hero: {
     primaryCta: string
     secondaryCta: string
-    /** Status line inside the decorative architecture panel. */
-    statusNote: string
   }
+  /** Copy for the hero's right column (portrait showcase). */
+  portrait: PortraitLabels
   about: {
     eyebrow: string
     heading: string
+    /** Accessible name for the skill orbit graph. */
+    orbitLabel: string
     educationHeading: string
     languagesHeading: string
   }
@@ -127,13 +159,28 @@ const dictionaries: Record<Locale, Dictionary> = {
       languageSwitcher: { ariaLabel: 'Cambiar a inglés', code: 'EN' },
     },
     hero: {
-      primaryCta: 'De la implementación al liderazgo técnico',
+      primaryCta: '¿Quién soy?',
       secondaryCta: 'Escríbeme',
-      statusNote: 'Diseñado para ser observable y mantenible',
+    },
+    portrait: {
+      figureLabel: 'Retrato de',
+      topline: 'THE HUMAN BEHIND THE SYSTEMS',
+      index: 'PERSON / ENGINEER',
+      roleLine: 'CTO · SOFTWARE ARCHITECT · BUILDER',
+      floatPath: '~/ipepio/about.sh',
+      floatStatus: 'RUNNING',
+      floatPrompt: '$',
+      floatCommand: 'build',
+      floatFlags: ['--pragmatic', '--secure --scalable'],
+      floatNote: 'De la idea a producción.',
+      floatExit: 'exit 0 ✓',
+      decoration: 'DESIGN · CODE · OPERATE',
+      decorationIndex: '001/∞',
     },
     about: {
       eyebrow: '01 / SOBRE MÍ',
       heading: 'Cómo trabajo.',
+      orbitLabel: 'Áreas de especialidad',
       educationHeading: 'Formación',
       languagesHeading: 'Idiomas',
     },
@@ -194,13 +241,28 @@ const dictionaries: Record<Locale, Dictionary> = {
       languageSwitcher: { ariaLabel: 'Switch to Spanish', code: 'ES' },
     },
     hero: {
-      primaryCta: 'From implementation to technical leadership',
+      primaryCta: 'Who am I?',
       secondaryCta: 'Get in touch',
-      statusNote: 'Designed to stay observable and maintainable',
+    },
+    portrait: {
+      figureLabel: 'Portrait of',
+      topline: 'THE HUMAN BEHIND THE SYSTEMS',
+      index: 'PERSON / ENGINEER',
+      roleLine: 'CTO · SOFTWARE ARCHITECT · BUILDER',
+      floatPath: '~/ipepio/about.sh',
+      floatStatus: 'RUNNING',
+      floatPrompt: '$',
+      floatCommand: 'build',
+      floatFlags: ['--pragmatic', '--secure --scalable'],
+      floatNote: 'From idea to production.',
+      floatExit: 'exit 0 ✓',
+      decoration: 'DESIGN · CODE · OPERATE',
+      decorationIndex: '001/∞',
     },
     about: {
       eyebrow: '01 / ABOUT',
       heading: 'How I work.',
+      orbitLabel: 'Areas of expertise',
       educationHeading: 'Education',
       languagesHeading: 'Languages',
     },

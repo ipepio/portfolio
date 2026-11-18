@@ -72,15 +72,16 @@ export default async function HomePage({ params }: HomePageProps) {
         heroMeta={about.heroMeta}
         primaryCta={dict.hero.primaryCta}
         secondaryCta={dict.hero.secondaryCta}
-        statusNote={dict.hero.statusNote}
+        photo={about.photo}
+        role={about.role}
+        portrait={dict.portrait}
       />
       <AboutSection
         about={about}
         eyebrow={dict.about.eyebrow}
         heading={dict.about.heading}
-        educationHeading={dict.about.educationHeading}
-        languagesHeading={dict.about.languagesHeading}
-        presentLabel={dict.experience.present}
+        groups={skillGroups.docs}
+        orbitLabel={dict.about.orbitLabel}
       />
       <ExperienceSection
         eyebrow={dict.experience.eyebrow}

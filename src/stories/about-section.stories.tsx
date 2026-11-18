@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { AboutSection } from '@/components/site/about-section'
+import { richText } from '@/seed/lexical'
+
+import type { About } from '@/payload-types'
+
+import type { OrbitGroup } from '@/components/site/skills-orbit'
 
 const meta = {
   title: 'Site/AboutSection',
@@ -12,110 +17,115 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
+/** The seeded copy: two-line heading built from a real `\n`, one bio paragraph. */
+const BIO_ES = [
+  'Me muevo entre estrategia técnica y ejecución. Puedo definir una arquitectura, construir el producto, automatizar su despliegue y analizar qué ocurre cuando llega tráfico real. Creo en soluciones claras, escalables, observables y sin complejidad gratuita.',
+]
+
+const PRINCIPLES: NonNullable<About['principles']> = [
+  {
+    id: 'principle-1',
+    index: '01 — ARCHITECTURE',
+    title: 'Pensar en sistemas',
+    body: 'Arquitecturas event-driven, APIs, límites entre dominios y decisiones técnicas que sigan teniendo sentido en dos años.',
+  },
+  {
+    id: 'principle-2',
+    index: '02 — ENGINEERING',
+    title: 'Construir de extremo a extremo',
+    body: 'Backend, frontend, infraestructura y pipelines. Me interesa más que todo encaje que defender una tecnología concreta.',
+  },
+  {
+    id: 'principle-3',
+    index: '03 — AI / AUTOMATION',
+    title: 'IA que hace trabajo real',
+    body: 'Agentes, inferencia local, gateways y automatización. Menos demos espectaculares; más sistemas que aportan valor y control.',
+  },
+]
+
+const EDUCATION: NonNullable<About['education']> = [
+  {
+    id: 'education-1',
+    title: 'Grado en Ingeniería de Telecomunicaciones',
+    institution: 'Universitat Oberta de Catalunya',
+    note: 'Matrícula de Honor en el TFG (aplicaciones multimedia de nueva generación)',
+  },
+]
+
+const LANGUAGES: NonNullable<About['languages']> = [
+  { id: 'language-1', name: 'Español', level: 'Nativo' },
+  { id: 'language-2', name: 'Catalán/Valenciano', level: 'Nativo' },
+  { id: 'language-3', name: 'Inglés', level: 'C1' },
+]
+
+/** The seven seeded skill areas, as the orbit graph renders them (order = node position). */
+const GROUPS: OrbitGroup[] = [
+  { id: 'backend', label: 'BACKEND', title: 'Backend & Architecture', icon: 'code' },
+  { id: 'cloud', label: 'CLOUD', title: 'Cloud & DevOps', icon: 'cloud' },
+  { id: 'ai', label: 'AI', title: 'Artificial Intelligence', icon: 'ai' },
+  { id: 'quality', label: 'QUALITY', title: 'Quality & Security', icon: 'shield' },
+  { id: 'data', label: 'DATA', title: 'Databases', icon: 'database' },
+  { id: 'enterprise', label: 'ENTERPRISE', title: 'Enterprise & SAP', icon: 'enterprise' },
+  { id: 'engineering', label: 'ENGINEERING', title: 'Engineering', icon: 'engineering' },
+]
+
 /**
- * Photo-less seeded shape: section eyebrow and display heading (editable in Payload),
- * the big bio description, three principles, one education item and three languages.
- * Payload returns `photo: null` when no image is uploaded, so only the mono caption
- * and the years-of-experience stat render in the portrait row.
+ * Seeded shape with an uploaded portrait: the photo (rounded, from Payload) sits on the
+ * left above its mono caption, the two-line heading sits on the right, the bio runs
+ * underneath, and the principles / education / languages blocks close the section.
+ * There is no stat block any more.
  */
 export const Default: Story = {
   args: {
-    educationHeading: 'Formación',
-    languagesHeading: 'Idiomas',
-    presentLabel: 'Actualidad',
     about: {
       id: 1,
       name: 'Isaac Pepió',
       role: 'CTO · Software Architect',
       availability: 'CTO · Arquitectura · IA aplicada',
+      photo: {
+        id: 1,
+        alt: 'Isaac Pepió',
+        url: '/api/media/file/isaac.png',
+        filename: 'isaac.png',
+        mimeType: 'image/png',
+        filesize: 2118299,
+        width: 1122,
+        height: 1402,
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '2026-01-01T00:00:00.000Z',
+      },
+      location: 'Vinaròs, España',
+      sectionEyebrow: '01 / ENFOQUE',
+      sectionHeading: 'Menos ruido.\nMás sistemas',
+      sectionHeadingAccent: 'que funcionan.',
+      bio: richText(BIO_ES),
+      principles: PRINCIPLES,
+      education: EDUCATION,
+      languages: LANGUAGES,
+    },
+    groups: GROUPS,
+    orbitLabel: 'Áreas de especialidad',
+  },
+}
+
+/**
+ * No photo uploaded in Payload: the left column collapses, the heading spans the grid
+ * and the mono caption moves underneath it. Nothing renders as an empty box.
+ */
+export const WithoutPhoto: Story = {
+  args: {
+    about: {
+      id: 2,
+      name: 'Isaac Pepió',
       photo: null,
       location: 'Vinaròs, España',
       sectionEyebrow: '01 / ENFOQUE',
-      sectionHeading: 'Menos ruido. Más sistemas',
+      sectionHeading: 'Menos ruido.\nMás sistemas',
       sectionHeadingAccent: 'que funcionan.',
-      stats: [{ id: 'stat-1', value: '8+', label: 'AÑOS EN SOFTWARE' }],
-      bio: {
-        root: {
-          type: 'root',
-          format: '',
-          indent: 0,
-          version: 1,
-          direction: 'ltr',
-          children: [
-            {
-              type: 'paragraph',
-              version: 1,
-              format: '',
-              indent: 0,
-              direction: 'ltr',
-              textFormat: 0,
-              children: [
-                {
-                  type: 'text',
-                  text: 'Ingeniero de telecomunicaciones con 8+ años de experiencia. He trabajado en consultoría, industria y empresas de producto donde el software es el centro.',
-                  version: 1,
-                  format: 0,
-                  detail: 0,
-                  mode: 'normal',
-                  style: '',
-                },
-              ],
-            },
-            {
-              type: 'paragraph',
-              version: 1,
-              format: '',
-              indent: 0,
-              direction: 'ltr',
-              textFormat: 0,
-              children: [
-                {
-                  type: 'text',
-                  text: 'Me gusta entender sistemas complejos y convertir requisitos ambiguos en soluciones prácticas y fiables.',
-                  version: 1,
-                  format: 0,
-                  detail: 0,
-                  mode: 'normal',
-                  style: '',
-                },
-              ],
-            },
-          ],
-        },
-      },
-      principles: [
-        {
-          id: 'principle-1',
-          index: '01 — ARCHITECTURE',
-          title: 'Pensar en sistemas',
-          body: 'Arquitecturas event-driven, APIs, límites entre dominios y decisiones técnicas que sigan teniendo sentido en dos años.',
-        },
-        {
-          id: 'principle-2',
-          index: '02 — ENGINEERING',
-          title: 'Construir de extremo a extremo',
-          body: 'Backend, frontend, infraestructura y pipelines. Me interesa más que todo encaje que defender una tecnología concreta.',
-        },
-        {
-          id: 'principle-3',
-          index: '03 — AI / AUTOMATION',
-          title: 'IA que hace trabajo real',
-          body: 'Agentes, inferencia local, gateways y automatización. Menos demos espectaculares; más sistemas que aportan valor y control.',
-        },
-      ],
-      education: [
-        {
-          id: 'education-1',
-          title: 'Grado en Ingeniería de Telecomunicaciones',
-          institution: 'Universitat Oberta de Catalunya',
-          note: 'Matrícula de Honor en el TFG (aplicaciones multimedia de nueva generación)',
-        },
-      ],
-      languages: [
-        { id: 'language-1', name: 'Español', level: 'Nativo' },
-        { id: 'language-2', name: 'Catalán/Valenciano', level: 'Nativo' },
-        { id: 'language-3', name: 'Inglés', level: 'C1' },
-      ],
+      bio: richText(BIO_ES),
+      principles: PRINCIPLES,
+      education: EDUCATION,
+      languages: LANGUAGES,
     },
   },
 }
@@ -123,11 +133,8 @@ export const Default: Story = {
 /** Sparse content: only the required name, so every optional block collapses. */
 export const Minimal: Story = {
   args: {
-    educationHeading: 'Formación',
-    languagesHeading: 'Idiomas',
-    presentLabel: 'Actualidad',
     about: {
-      id: 2,
+      id: 3,
       name: 'Isaac Pepió',
       photo: null,
     },

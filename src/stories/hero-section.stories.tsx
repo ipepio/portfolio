@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { HeroSection } from '@/components/site/hero-section'
+import { getDictionary } from '@/lib/i18n'
 import { richText } from '@/seed/lexical'
+
+const portrait = getDictionary('es').portrait
 
 const meta = {
   title: 'Site/HeroSection',
@@ -13,7 +16,7 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-/** Seeded shape: three headline lines, intro, four meta tags and the panel. */
+/** Seeded shape: three headline lines, intro, four meta tags and the portrait. */
 export const Default: Story = {
   args: {
     name: 'Isaac Pepió',
@@ -40,7 +43,8 @@ export const Default: Story = {
     ],
     primaryCta: 'De la implementación al liderazgo técnico',
     secondaryCta: 'Escríbeme',
-    statusNote: 'Diseñado para ser observable y mantenible',
+    role: 'CTO · Software Architect',
+    portrait,
   },
 }
 
@@ -51,6 +55,6 @@ export const Minimal: Story = {
     heroLines: [{ text: 'HAGO SISTEMAS.', style: 'plain' }],
     primaryCta: 'De la implementación al liderazgo técnico',
     secondaryCta: 'Escríbeme',
-    statusNote: 'Diseñado para ser observable y mantenible',
+    portrait,
   },
 }
