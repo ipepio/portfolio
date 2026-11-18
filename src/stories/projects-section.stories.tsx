@@ -1,11 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { ProjectsSection } from '@/components/site/projects-section'
+import { getDictionary } from '@/lib/i18n'
+import { LocaleProvider } from '@/lib/locale-context'
 
 const meta = {
   title: 'Site/ProjectsSection',
   component: ProjectsSection,
   parameters: { layout: 'fullscreen' },
+  // The grid reads the locale from context, so the story has to publish one too.
+  decorators: [
+    (Story) => (
+      <LocaleProvider locale="es" dict={getDictionary('es')}>
+        <Story />
+      </LocaleProvider>
+    ),
+  ],
 } satisfies Meta<typeof ProjectsSection>
 
 export default meta
@@ -20,7 +30,6 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     allLabel: 'Todos',
-    locale: 'es',
     statusLabels: {
       live: 'En producción',
       wip: 'En desarrollo',

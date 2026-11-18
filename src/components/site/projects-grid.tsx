@@ -7,6 +7,7 @@ import { useState } from 'react'
 
 import type { Locale, ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
 import { ProjectVisual, type ProjectVisualName } from '@/components/site/project-visuals'
+import { useLocale } from '@/lib/locale-context'
 
 /** Tag as returned by Payload at `depth >= 1` (or as a raw id at `depth 0`). */
 export type ProjectTag = { id?: string | number; name?: string | null }
@@ -38,8 +39,6 @@ export type ProjectItem = {
 
 export type ProjectsGridProps = {
   projects: ProjectItem[]
-  /** Current locale, used to build the detail-page links. */
-  locale: Locale
   /** Catch-all filter label, e.g. "Todos" / "All". */
   allLabel: string
   /** Localized status pill labels, keyed by Payload's `status` value. */
@@ -118,16 +117,16 @@ function projectHref(project: ProjectItem, locale: Locale): string | null {
 function ProjectCard({
   project,
   position,
-  locale,
   statusLabels,
   labels,
 }: {
   project: ProjectItem
   position: number
-  locale: Locale
   statusLabels: Record<ProjectStatus, string>
   labels: ProjectsGridLabels
 }) {
+  // The layout publishes the locale, so cards read it instead of receiving it twice.
+  const locale = useLocale()
   const indexLabel = position + 1
   const tags = tagNames(project)
   const cover = coverImageOf(project)
@@ -221,7 +220,6 @@ function ProjectCard({
  */
 export function ProjectsGrid({
   projects,
-  locale,
   allLabel,
   statusLabels,
   labels,
@@ -272,7 +270,6 @@ export function ProjectsGrid({
             <ProjectCard
               project={project}
               position={index}
-              locale={locale}
               statusLabels={statusLabels}
               labels={labels}
             />
