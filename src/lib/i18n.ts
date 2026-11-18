@@ -96,6 +96,7 @@ export type NavLabels = {
     about: string
     skills: string
     projects: string
+    experience: string
     contact: string
   }
   cta: string
@@ -215,6 +216,7 @@ const dictionaries: Record<Locale, Dictionary> = {
         about: 'Sobre mí',
         skills: 'Skills',
         projects: 'Proyectos',
+        experience: 'Experiencia',
         contact: 'Contacto',
       },
       cta: 'Hablemos',
@@ -333,6 +335,7 @@ const dictionaries: Record<Locale, Dictionary> = {
         about: 'About',
         skills: 'Skills',
         projects: 'Projects',
+        experience: 'Experience',
         contact: 'Contact',
       },
       cta: "Let's talk",

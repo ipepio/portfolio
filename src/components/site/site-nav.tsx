@@ -58,12 +58,13 @@ export function SiteNav() {
   const [open, setOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
 
-  /** Section anchors mirror the page composition: Hero → About → Skills → Projects → Contact. */
+  /** Section anchors mirror the page composition: Hero → About → Skills → Projects → Experience → Contact. */
   const navLinks = [
     { href: '#hero', label: labels.links.home },
     { href: '#about', label: labels.links.about },
     { href: '#skills', label: labels.links.skills },
     { href: '#projects', label: labels.links.projects },
+    { href: '#experience', label: labels.links.experience },
     { href: '#contact', label: labels.links.contact },
   ]
   const other = otherLocale(locale)
