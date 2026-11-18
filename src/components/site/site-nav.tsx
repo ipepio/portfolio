@@ -6,14 +6,8 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import { ThemeToggle } from '@/components/site/theme-toggle'
-import { isLocale, otherLocale, type Locale, type NavLabels } from '@/lib/i18n'
-
-export type SiteNavProps = {
-  /** Active locale, used to point the switcher at its counterpart. */
-  locale: Locale
-  /** Header copy for the active locale, resolved on the server. */
-  labels: NavLabels
-}
+import { isLocale, otherLocale, type Locale } from '@/lib/i18n'
+import { useDictionary, useLocale } from '@/lib/locale-context'
 
 const MENU_ID = 'site-nav-menu'
 /** Matches the `md` breakpoint used by the link list and the menu button. */
@@ -53,8 +47,13 @@ function localeHref(pathname: string, target: Locale): string {
  * Sticky site header: brand mark, section anchors (starting at the hero), language
  * switcher, theme toggle, contact CTA and, below the `md` breakpoint, a disclosure menu
  * mirroring the anchors.
+ *
+ * Locale and copy come from `useLocale()` / `useDictionary()`; the header is rendered by
+ * the `[locale]` layout inside `<LocaleProvider>`, so it needs no props.
  */
-export function SiteNav({ locale, labels }: SiteNavProps) {
+export function SiteNav() {
+  const locale = useLocale()
+  const labels = useDictionary().nav
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
@@ -128,9 +127,13 @@ export function SiteNav({ locale, labels }: SiteNavProps) {
 
         <div className="ml-auto flex items-center gap-2 md:ml-[clamp(16px,2.4vw,36px)]">
           <ThemeToggle />
+          {/* Real client navigation: `next/link` swaps the route without loading a new
+              document, and `scroll={false}` keeps the reader where they were instead of
+              jumping to the top (which read as a full reload). */}
           <Link
             href={localeHref(pathname, other)}
             hrefLang={other}
+            scroll={false}
             aria-label={labels.languageSwitcher.ariaLabel}
             className="mono inline-flex h-[38px] shrink-0 items-center rounded-[10px] border border-border px-2.5 text-[11px] leading-none font-bold tracking-[0.14em] text-muted-foreground transition-colors hover:border-input hover:bg-card hover:text-foreground"
           >

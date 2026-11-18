@@ -1,11 +1,14 @@
 import React from 'react'
 import '../globals.css'
 
+import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
 import { SiteNav } from '@/components/site/site-nav'
 import { getDictionary, isLocale, type Locale } from '@/lib/i18n'
+import { LocaleProvider } from '@/lib/locale-context'
+import { parseTheme, THEME_COOKIE_NAME } from '@/lib/theme'
 
 const metadataByLocale: Record<Locale, Metadata> = {
   es: {
@@ -27,21 +30,6 @@ export async function generateMetadata(props: {
   return isLocale(locale) ? metadataByLocale[locale] : metadataByLocale.es
 }
 
-/**
- * Applies the persisted theme before the first paint so a light-theme visitor never
- * sees a dark flash. Mirrors `THEME_STORAGE_KEY` / `Theme` in `site/theme-toggle.tsx`.
- */
-const THEME_BOOTSTRAP_SCRIPT =
-  "try{var t=localStorage.getItem('ipepio-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}"
-
-/**
- * Head script that runs before hydration. `THEME_BOOTSTRAP_SCRIPT` is a hardcoded
- * authored literal with no user input, and React escapes text children of `<script>`,
- * so raw HTML is the only way to inline it.
- */
-// pi-lens-ignore: dangerously-set-inner-html -- hardcoded literal, no user input, must run before first paint
-const themeBootstrap = <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
-
 export default async function RootLayout(props: {
   children: React.ReactNode
   params: Promise<{ locale: string }>
@@ -54,14 +42,21 @@ export default async function RootLayout(props: {
     notFound()
   }
 
+  // Read the persisted theme on the server so the first paint already carries it.
+  // This replaces the old inline bootstrap script, which React never executed on the
+  // client and which caused a hydration mismatch.
+  const theme = parseTheme((await cookies()).get(THEME_COOKIE_NAME)?.value)
+  const dict = getDictionary(locale)
+
   return (
-    // The bootstrap script rewrites `data-theme` before hydration, so the attribute
-    // intentionally differs from the server markup once a stored theme exists.
-    <html lang={locale} data-theme="dark" suppressHydrationWarning>
-      <head>{themeBootstrap}</head>
+    // `data-scroll-behavior="smooth"` declares the global smooth scrolling from
+    // `globals.css`, so Next disables it during route transitions instead of fighting it.
+    <html lang={locale} data-theme={theme} data-scroll-behavior="smooth">
       <body>
-        <SiteNav locale={locale} labels={getDictionary(locale).nav} />
-        <main>{children}</main>
+        <LocaleProvider locale={locale} dict={dict}>
+          <SiteNav />
+          <main>{children}</main>
+        </LocaleProvider>
       </body>
     </html>
   )

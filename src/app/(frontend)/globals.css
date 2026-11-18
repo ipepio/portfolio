@@ -11,6 +11,7 @@
   --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 
   --color-background: var(--background);
+  --color-background-elevated: var(--background-elevated);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -66,6 +67,7 @@
   color-scheme: dark;
 
   --background: #0b0d0d;
+  --background-elevated: #111515;
   --foreground: #f0f3ed;
   --card: #131717;
   --card-foreground: #f0f3ed;
@@ -113,6 +115,7 @@
   color-scheme: light;
 
   --background: #f1f1e9;
+  --background-elevated: #fcfcf5;
   --foreground: #111914;
   --card: #fbfcf7;
   --card-foreground: #111914;
@@ -162,7 +165,9 @@
     @apply font-sans;
     -webkit-font-smoothing: antialiased;
     scroll-behavior: smooth;
-    scroll-padding-top: 104px;
+    /* No scroll-padding: sections start exactly at the viewport boundary, and their
+       own top padding keeps the content clear of the sticky header. */
+    scroll-padding-top: 0;
   }
 
   body {

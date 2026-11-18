@@ -3,22 +3,12 @@
 import { Moon, Sun } from 'lucide-react'
 import { useSyncExternalStore } from 'react'
 
-/** localStorage key shared with the inline bootstrap script in the root layout. */
-export const THEME_STORAGE_KEY = 'ipepio-theme'
-
-export type Theme = 'light' | 'dark'
-
-/** Dark is the design default: `globals.css` only defines light under `[data-theme="light"]`. */
-const DEFAULT_THEME: Theme = 'dark'
-
-function readTheme(): Theme {
-  return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
-}
+import { DEFAULT_THEME, parseTheme, themeCookie, type Theme } from '@/lib/theme'
 
 /**
  * `data-theme` lives on `<html>`, so the store watches that attribute instead of
- * duplicating state: the toggle, the bootstrap script and any external writer all
- * converge on the same source of truth.
+ * duplicating state: the toggle and the server-rendered attribute (from the theme
+ * cookie) converge on the same source of truth.
  */
 function subscribe(onStoreChange: () => void) {
   const observer = new MutationObserver(onStoreChange)
@@ -31,13 +21,22 @@ function subscribe(onStoreChange: () => void) {
 }
 
 /** React only ever renders this on the client (click handler) or from the server snapshot. */
+function readTheme(): Theme {
+  return parseTheme(document.documentElement.dataset.theme)
+}
+
+/**
+ * Applies the theme for this document and persists it in the cookie the server layout
+ * reads on the next request: no round-trip, and the preference survives reloads and
+ * locale changes so the first paint is always correct.
+ */
 function applyTheme(theme: Theme) {
   document.documentElement.dataset.theme = theme
 
   try {
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme)
+    document.cookie = themeCookie(theme)
   } catch {
-    // Storage may be unavailable (private mode, blocked cookies). The attribute still
+    // Cookies may be blocked (private mode, strict settings). The attribute still
     // applies the theme for this session; only the persistence is lost.
   }
 }
