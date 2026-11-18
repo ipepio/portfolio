@@ -10,7 +10,6 @@ import { ExpertiseSection } from '@/components/site/expertise-section'
 import { HeroSection } from '@/components/site/hero-section'
 import { ManifestoBand } from '@/components/site/manifesto-band'
 import { ProjectsSection } from '@/components/site/projects-section'
-import { SectionSeparator } from '@/components/site/section-separator'
 import { getDictionary, isLocale, locales } from '@/lib/i18n'
 
 export function generateStaticParams() {
@@ -122,7 +121,6 @@ export default async function HomePage({ params }: HomePageProps) {
         cv={dict.cv}
         experiences={experiences.docs}
       />
-      <SectionSeparator />
       <ContactSection contact={contact} copy={dict.contact} ownerName={about.name} />
     </div>
   )

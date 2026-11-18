@@ -1,4 +1,5 @@
 import { ContactForm } from '@/components/site/contact-form'
+import { SectionSeparator } from '@/components/site/section-separator'
 
 import type { Contact } from '@/payload-types'
 import type { ContactLabels } from '@/lib/i18n'
@@ -110,8 +111,10 @@ export function ContactSection({ contact, copy, ownerName }: ContactSectionProps
     <section
       id="contact"
       aria-labelledby={HEADING_ID}
-      className="bg-background-elevated px-6 pt-[100px] pb-11 min-[781px]:pt-[120px]"
+      className="relative bg-background-elevated px-6 pt-[100px] pb-11 min-[781px]:pt-[120px]"
     >
+      {/* Centred on the section's top edge, so the rules land exactly on the surface change. */}
+      <SectionSeparator className="pointer-events-none absolute inset-x-0 top-0 z-[1] -translate-y-1/2" />
       <div className="mx-auto grid w-full max-w-(--container-page) grid-cols-1 items-start gap-10 pb-[70px] min-[781px]:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] min-[781px]:gap-9 min-[781px]:pb-[93px] min-[1021px]:gap-[clamp(40px,7vw,110px)]">
         <div>
           <p className="eyebrow">{copy.eyebrow}</p>

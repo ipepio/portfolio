@@ -6,7 +6,8 @@
  *
  * Reference measurements are kept; only the variables are mapped onto the app tokens:
  * `--max`→`--container-page`, `--border-strong`→`--input`, `--accent`→`--primary`,
- * `--accent-soft`→`--primary` at 10%, `--bg`→`--background`.
+ * `--accent-soft`→`--primary` at 10%, `--bg`→`--background-elevated` (the separator
+ * straddles the top edge of section 05, which is the elevated surface).
  *
  * It is decorative, so it is hidden from assistive technology.
  */
@@ -18,11 +19,11 @@ const RULE_CLASS =
   "before:h-px before:flex-1 before:bg-[linear-gradient(to_right,transparent,var(--input))] before:content-[''] after:h-px after:flex-1 after:bg-[linear-gradient(to_left,transparent,var(--input))] after:content-['']"
 
 const MARK_CLASS =
-  'size-3 flex-none rotate-45 border border-primary bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] [box-shadow:0_0_0_5px_var(--background)]'
+  'size-3 flex-none rotate-45 border border-primary bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] [box-shadow:0_0_0_5px_var(--background-elevated)]'
 
-export function SectionSeparator() {
+export function SectionSeparator({ className }: { className?: string }) {
   return (
-    <div aria-hidden="true" className={`${SEPARATOR_CLASS} ${RULE_CLASS}`}>
+    <div aria-hidden="true" className={`${SEPARATOR_CLASS} ${RULE_CLASS} ${className ?? ''}`}>
       <span className={MARK_CLASS} />
     </div>
   )
