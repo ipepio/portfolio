@@ -10,6 +10,7 @@ import { ExpertiseSection } from '@/components/site/expertise-section'
 import { HeroSection } from '@/components/site/hero-section'
 import { ManifestoBand } from '@/components/site/manifesto-band'
 import { ProjectsSection } from '@/components/site/projects-section'
+import { SectionSeparator } from '@/components/site/section-separator'
 import { getDictionary, isLocale, locales } from '@/lib/i18n'
 
 export function generateStaticParams() {
@@ -28,7 +29,7 @@ type HomePageProps = {
  * Section order is the one the navigation promises: Inicio, Sobre mí, Skills, Proyectos,
  * Experiencia, Contacto. The expertise global feeds the skills band; the About orbit is
  * the self-contained expertise graph and no longer reads it. The manifesto band closes
- * the skills section.
+ * the skills section, and the diamond separator bridges sections 04 and 05.
  */
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params
@@ -118,9 +119,11 @@ export default async function HomePage({ params }: HomePageProps) {
         intro={dict.experience.intro}
         statLabel={dict.experience.stat}
         currentLabel={dict.experience.current}
+        cv={dict.cv}
         experiences={experiences.docs}
       />
-      <ContactSection contact={contact} copy={dict.contact} />
+      <SectionSeparator />
+      <ContactSection contact={contact} copy={dict.contact} ownerName={about.name} />
     </div>
   )
 }

@@ -401,5 +401,12 @@ export const experienceSeeds: ExperienceSeed[] = [
 export const contactSeed = {
   /** Inbox the section 05 form delivers to; the route reads it from the contact global. */
   email: 'isaac@ipepio.dev',
-  socials: [{ label: 'GitHub', url: 'https://github.com/ipepio' }],
+  /**
+   * The profiles rendered by section 05, in the reference order. A row's icon and handle
+   * are derived from its url, so a new social needs no component change.
+   */
+  socials: [
+    { label: 'GitHub', url: 'https://github.com/ipepio' },
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/ipepio/' },
+  ],
 }

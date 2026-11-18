@@ -81,9 +81,19 @@ export type ContactLabels = {
   /** Accented second line of the display heading. */
   headingAccent: string
   description: string
-  /** Label of the GitHub link closing the copy column. */
-  github: string
+  /** Mono label over the social links; each link's own label comes from the global. */
+  findMe: string
   form: ContactFormLabels
+}
+
+/** Copy for the CV callout that closes the experience intro column (`cv.*`). */
+export type CvLabels = {
+  /** Strong line: the CV title. */
+  title: string
+  /** Mono line under the title. */
+  subtitle: string
+  /** Link text; the reference appends a `↓` glyph after it. */
+  download: string
 }
 
 /** Copy rendered by the sticky site header (a client component). */
@@ -188,6 +198,8 @@ export type Dictionary = {
     /** Badge on the role that has no end date yet. */
     current: string
   }
+  /** CV callout under the experience stats. */
+  cv: CvLabels
   /** Philosophy band that closes the skills section. */
   manifesto: {
     /** Accessible name for the band; its two visible strings are untranslated. */
@@ -274,6 +286,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       stat: 'Ingeniería de software, arquitectura y dirección técnica',
       current: 'ACTUAL',
     },
+    cv: {
+      title: 'Trayectoria en PDF',
+      subtitle: 'Experiencia · formación · competencias',
+      download: 'Descargar CV',
+    },
     manifesto: {
       label: 'Filosofía',
     },
@@ -306,7 +323,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       headingAccent: 'algo serio?',
       description:
         'Si tienes un producto complejo, un reto de arquitectura o una idea con IA que llevar a producción, cuéntamelo. Me interesa entender el problema antes de hablar de herramientas.',
-      github: 'También estoy en GitHub',
+      findMe: 'ENCUÉNTRAME TAMBIÉN EN',
       form: {
         title: 'Cuéntame tu idea.',
         subtitle: 'UN MENSAJE / SIN REUNIONES INNECESARIAS',
@@ -393,6 +410,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       stat: 'Software engineering, architecture and technical leadership',
       current: 'CURRENT',
     },
+    cv: {
+      title: 'Career in PDF',
+      subtitle: 'Experience · education · skills',
+      download: 'Download CV',
+    },
     manifesto: {
       label: 'Philosophy',
     },
@@ -425,7 +447,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       headingAccent: 'something real.',
       description:
         "Have a complex product, an architecture challenge or an AI idea to ship? Tell me what you're building. I'd rather understand the problem before talking tools.",
-      github: 'Also on GitHub',
+      findMe: 'FIND ME ALSO ON',
       form: {
         title: 'Tell me about it.',
         subtitle: 'ONE MESSAGE / NO UNNECESSARY MEETINGS',

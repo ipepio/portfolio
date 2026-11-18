@@ -27,6 +27,11 @@ export const Default: Story = {
       'He pasado de construir aplicaciones a liderar equipos y definir la arquitectura de plataformas completas, sin alejarme de la ingeniería.',
     statLabel: 'Ingeniería de software, arquitectura y dirección técnica',
     currentLabel: 'ACTUAL',
+    cv: {
+      title: 'Trayectoria en PDF',
+      subtitle: 'Experiencia · formación · competencias',
+      download: 'Descargar CV',
+    },
     experiences: experienceSeeds.map((seed, index) => ({
       id: index + 1,
       company: seed.company,
@@ -55,6 +60,11 @@ export const English: Story = {
       'I have gone from building applications to leading teams and designing entire platforms, while staying close to engineering.',
     statLabel: 'Software engineering, architecture and technical leadership',
     currentLabel: 'CURRENT',
+    cv: {
+      title: 'Career in PDF',
+      subtitle: 'Experience · education · skills',
+      download: 'Download CV',
+    },
     experiences: experienceSeeds.map((seed, index) => ({
       id: index + 1,
       company: seed.company,

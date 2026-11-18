@@ -1,4 +1,5 @@
 import type { Experience } from '@/payload-types'
+import type { CvLabels } from '@/lib/i18n'
 
 export type ExperienceSectionProps = {
   /** Fallback eyebrow; the section ordinal lives in the dictionary. */
@@ -16,11 +17,20 @@ export type ExperienceSectionProps = {
   statLabel?: string
   /** Badge on the role that has no `endDate` yet. */
   currentLabel: string
+  /** Copy of the CV callout closing the intro column (`cv.*`). */
+  cv: CvLabels
   /** Experience docs as Payload returns them at `depth: 1`, newest first. */
   experiences: Experience[]
 }
 
 const HEADING_ID = 'experienceTitle'
+
+/**
+ * The CV served by the app itself (`public/CV_Isaac_Pepio.pdf`). The reference points at
+ * an external host; the file ships with the build so the download works locally too.
+ */
+const CV_HREF = '/CV_Isaac_Pepio.pdf'
+const CV_FILE = 'CV_Isaac_Pepio.pdf'
 
 const CARD_CLASS =
   'rounded-[16px] border border-border bg-card px-[18px] pt-5 pb-[25px] transition-[border-color,transform] duration-200 hover:translate-x-[3px] hover:border-input min-[521px]:px-[26px] min-[521px]:pt-6'
@@ -37,6 +47,10 @@ const CURRENT_MARKER_CLASS = `${MARKER_CLASS} border-primary bg-primary shadow-[
 const TAG_CLASS =
   'mono rounded-[6px] border border-border bg-background-elevated px-[9px] py-[7px] text-[9px] leading-[1.3] font-semibold tracking-normal text-muted'
 
+/** The `.cv-callout` of the reference: lime-tinted box with a document icon and a link. */
+const CV_CALLOUT_CLASS =
+  'mt-[27px] flex items-center justify-between gap-[14px] rounded-[12px] border border-input bg-[color-mix(in_srgb,var(--primary)_10%,transparent)] px-[17px] py-4 max-[520px]:gap-[9px] max-[520px]:px-3 max-[520px]:py-[13px]'
+
 /**
  * Year of the earliest role, used by the reference's `2017 →` stat. It is derived from
  * the seeded `startDate`s instead of hardcoded, so the stat follows the timeline.
@@ -52,9 +66,9 @@ function firstRoleYear(experiences: Experience[]): string | null {
 /**
  * Presentational Experience section, copied verbatim from the `section.experience` of
  * `/Users/ipepio/Desktop/portfolio_ipepio_experiencia_contacto.html`: a sticky intro
- * column (eyebrow, display heading, description, the `2017 →` stat) next to the roles
- * timeline — a lime-headed rail with a diamond marker per card, the first one marked as
- * current, and mono tags closing each card.
+ * column (eyebrow, display heading, description, the `2017 →` stat, the CV callout) next to
+ * the roles timeline — a lime-headed rail with a diamond marker per card, the first one
+ * marked as current, and mono tags closing each card.
  *
  * Every figure of the reference CSS is kept; only the variables are mapped onto the app
  * tokens: `--bg`→`--background`, `--card`→`--card`, `--border`→`--border`,
@@ -69,6 +83,7 @@ export function ExperienceSection({
   intro,
   statLabel,
   currentLabel,
+  cv,
   experiences,
 }: ExperienceSectionProps) {
   // The collection may be empty again: no roles, no section. Returning null keeps the
@@ -110,6 +125,40 @@ export function ExperienceSection({
               </strong>
             ) : null}
             {statLabel ? <span>{statLabel}</span> : null}
+          </div>
+
+          <div className={CV_CALLOUT_CLASS}>
+            <div className="flex min-w-0 items-center gap-[11px] max-[520px]:gap-2">
+              <span
+                aria-hidden="true"
+                className="grid size-[35px] flex-none place-items-center rounded-[9px] border border-input bg-card text-primary max-[520px]:size-[30px]"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="size-[17px] fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.7]"
+                >
+                  <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM13 2v7h7M8 14h8M8 18h6" />
+                </svg>
+              </span>
+              <span className="min-w-0">
+                <strong className="block text-[12px] leading-[1.4] text-foreground">
+                  {cv.title}
+                </strong>
+                <small className="mono mt-0.5 block text-[10px] leading-[1.5] font-medium text-muted">
+                  {cv.subtitle}
+                </small>
+              </span>
+            </div>
+
+            <a
+              href={CV_HREF}
+              download={CV_FILE}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mono inline-flex flex-none items-center gap-[7px] border-b border-current py-1.5 text-[10px] leading-[1.4] font-bold text-primary transition-colors hover:text-foreground max-[520px]:text-[9px]"
+            >
+              <span>{cv.download}</span> ↓
+            </a>
           </div>
         </div>
 
