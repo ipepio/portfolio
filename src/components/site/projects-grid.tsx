@@ -218,12 +218,7 @@ function ProjectCard({
  * keeps every card mounted and toggles the `hidden` attribute on the ones that
  * do not match, so layout and the live counter stay trivial.
  */
-export function ProjectsGrid({
-  projects,
-  allLabel,
-  statusLabels,
-  labels,
-}: ProjectsGridProps) {
+export function ProjectsGrid({ projects, allLabel, statusLabels, labels }: ProjectsGridProps) {
   const filters = buildFilters(projects, allLabel)
   const [active, setActive] = useState(ALL_FILTER)
 

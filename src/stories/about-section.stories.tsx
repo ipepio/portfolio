@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { AboutSection } from '@/components/site/about-section'
+import { capabilitySeeds } from '@/seed/content'
 import { richText } from '@/seed/lexical'
 
 import type { About } from '@/payload-types'
 
-import type { OrbitGroup } from '@/components/site/skills-orbit'
+import type { OrbitCapability } from '@/components/site/skills-orbit'
 
 const meta = {
   title: 'Site/AboutSection',
@@ -58,21 +59,21 @@ const LANGUAGES: NonNullable<About['languages']> = [
   { id: 'language-3', name: 'Inglés', level: 'C1' },
 ]
 
-/** The seven seeded skill areas, as the orbit graph renders them (order = node position). */
-const GROUPS: OrbitGroup[] = [
-  { id: 'backend', label: 'BACKEND', title: 'Backend & Architecture', icon: 'code' },
-  { id: 'cloud', label: 'CLOUD', title: 'Cloud & DevOps', icon: 'cloud' },
-  { id: 'ai', label: 'AI', title: 'Artificial Intelligence', icon: 'ai' },
-  { id: 'quality', label: 'QUALITY', title: 'Quality & Security', icon: 'shield' },
-  { id: 'data', label: 'DATA', title: 'Databases', icon: 'database' },
-  { id: 'enterprise', label: 'ENTERPRISE', title: 'Enterprise & SAP', icon: 'enterprise' },
-  { id: 'engineering', label: 'ENGINEERING', title: 'Engineering', icon: 'engineering' },
-]
+/**
+ * The five seeded capabilities, as the orbit graph renders them (order = node position).
+ * The same Payload list feeds the skills band, so this is what the About orbit draws.
+ */
+const CAPABILITIES: OrbitCapability[] = capabilitySeeds.map((capability, index) => ({
+  id: `capability-${index + 1}`,
+  title: capability.title.es,
+  description: capability.description.es,
+  scene: capability.scene,
+}))
 
 /**
  * Seeded shape with an uploaded portrait: the photo (rounded, from Payload) sits on the
  * left above its mono caption, the two-line heading sits on the right, the bio runs
- * underneath, and the principles / education / languages blocks close the section.
+ * underneath, and the principles grid plus the capability orbit close the section.
  * There is no stat block any more.
  */
 export const Default: Story = {
@@ -103,14 +104,15 @@ export const Default: Story = {
       education: EDUCATION,
       languages: LANGUAGES,
     },
-    groups: GROUPS,
+    capabilities: CAPABILITIES,
     orbitLabel: 'Áreas de especialidad',
   },
 }
 
 /**
  * No photo uploaded in Payload: the left column collapses, the heading spans the grid
- * and the mono caption moves underneath it. Nothing renders as an empty box.
+ * and the mono caption moves underneath it. Nothing renders as an empty box, and the
+ * orbit still draws because the capabilities come from the expertise global.
  */
 export const WithoutPhoto: Story = {
   args: {
@@ -127,6 +129,8 @@ export const WithoutPhoto: Story = {
       education: EDUCATION,
       languages: LANGUAGES,
     },
+    capabilities: CAPABILITIES,
+    orbitLabel: 'Áreas de especialidad',
   },
 }
 

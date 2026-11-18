@@ -1,6 +1,6 @@
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
-import { SkillsOrbit, type OrbitGroup } from '@/components/site/skills-orbit'
+import { SkillsOrbit, type OrbitCapability } from '@/components/site/skills-orbit'
 
 import type { About } from '@/payload-types'
 
@@ -13,8 +13,8 @@ export type AboutSectionProps = {
    * The hero owns the page `h1`, so the section renders a single `h2`.
    */
   heading?: string
-  /** Skill areas rendered as the orbit graph below the principles. */
-  groups?: OrbitGroup[]
+  /** Capabilities rendered as the orbit graph below the principles. */
+  capabilities?: OrbitCapability[]
   /** Accessible name for the orbit graph, from the dictionary. */
   orbitLabel?: string
 }
@@ -41,7 +41,7 @@ function principleKey(
 /**
  * Presentational About section, matching the reference two-column layout: eyebrow plus the
  * display heading on the left, the big rich-text bio on the right, then the three-column
- * principles grid and the skill orbit closing the section. It is one of the elevated
+ * principles grid and the capability orbit closing the section. It is one of the elevated
  * bands of the page (Hero, Skills and Contact keep the base surface). The section is
  * viewport-tall like the hero, but its content is top-aligned so the eyebrow never floats
  * in the middle of the screen.
@@ -53,7 +53,7 @@ export function AboutSection({
   about,
   eyebrow,
   heading,
-  groups = [],
+  capabilities = [],
   orbitLabel,
 }: AboutSectionProps) {
   const principles = about.principles ?? []
@@ -134,9 +134,9 @@ export function AboutSection({
           </ul>
         ) : null}
 
-        {/* Orbit graph: the skill areas around a central node, last block of the section. */}
-        {groups.length > 0 ? (
-          <SkillsOrbit groups={groups} label={orbitLabel?.trim() || 'Skills'} />
+        {/* Orbit graph: the capabilities around a central node, last block of the section. */}
+        {capabilities.length > 0 ? (
+          <SkillsOrbit capabilities={capabilities} label={orbitLabel?.trim() || 'Skills'} />
         ) : null}
       </div>
     </section>

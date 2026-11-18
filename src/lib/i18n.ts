@@ -111,12 +111,26 @@ export type Dictionary = {
     educationHeading: string
     languagesHeading: string
   }
-  skills: {
+  expertise: {
     eyebrow: string
     heading: string
-    /** Trailing part of the heading, rendered in the lima accent. */
+    /** Trailing part of the heading, rendered in the primary accent. */
     headingAccent: string
-    subheading: string
+    description: string
+    /** Mono footnote pinned under the description. */
+    note: string
+    /** Label over the capability list. */
+    areasLabel: string
+    /** Label over the core tool chips. */
+    coreLabel: string
+    /** Small mono tag next to `coreLabel`. */
+    coreTag: string
+    /** Label over the extended tool chips. */
+    extendedLabel: string
+    /** Small mono tag next to `extendedLabel`. */
+    extendedTag: string
+    /** Closing sentence under the extended chips. */
+    toolsFoot: string
   }
   experience: {
     eyebrow: string
@@ -184,20 +198,28 @@ const dictionaries: Record<Locale, Dictionary> = {
       educationHeading: 'Formación',
       languagesHeading: 'Idiomas',
     },
-    skills: {
-      eyebrow: 'LO QUE HAGO',
-      heading: 'Habilidades técnicas',
-      headingAccent: 'por área.',
-      subheading:
-        'Un perfil transversal que abarca desde el código hasta la infraestructura, pasando por la IA, la calidad y la seguridad.',
+    expertise: {
+      eyebrow: '02 / LO QUE HAGO',
+      heading: 'Del problema al',
+      headingAccent: 'sistema.',
+      description:
+        'Diseño, construyo y opero soluciones de extremo a extremo. Mi valor está en conectar arquitectura, producto, infraestructura y personas, no en acumular frameworks.',
+      note: 'Las herramientas cambian. El criterio permanece.',
+      areasLabel: 'CAPACIDADES / CÓMO APORTO VALOR',
+      coreLabel: 'HERRAMIENTAS CON LAS QUE MÁS ME IDENTIFICO',
+      coreTag: 'CORE TOOLKIT',
+      extendedLabel: 'TAMBIÉN PRESENTES EN MI TRABAJO Y PROYECTOS',
+      extendedTag: 'EXTENDED TOOLKIT',
+      toolsFoot:
+        'El stack es una caja de herramientas. En cada proyecto, elijo lo que aporta simplicidad, rendimiento y autonomía al equipo.',
     },
     experience: {
-      eyebrow: '03 / TRAYECTORIA',
+      eyebrow: '04 / TRAYECTORIA',
       heading: 'Dónde he trabajado.',
       present: 'Actualidad',
     },
     projects: {
-      eyebrow: '02 / PROYECTOS SELECCIONADOS',
+      eyebrow: '03 / PROYECTOS SELECCIONADOS',
       heading: 'Ideas que se convierten en sistemas.',
       note: 'Una mezcla de productos propios, investigación aplicada y arquitectura profesional. Algunos están en desarrollo o son privados.',
       allLabel: 'Todos',
@@ -220,7 +242,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
     },
     contact: {
-      eyebrow: '04 / CONTACTO',
+      eyebrow: '05 / CONTACTO',
       heading: '¿Hablamos?',
     },
   },
@@ -266,20 +288,28 @@ const dictionaries: Record<Locale, Dictionary> = {
       educationHeading: 'Education',
       languagesHeading: 'Languages',
     },
-    skills: {
-      eyebrow: 'WHAT I DO',
-      heading: 'Technical skills',
-      headingAccent: 'by area.',
-      subheading:
-        'A cross-cutting profile that spans from code to infrastructure, through AI, quality, and security.',
+    expertise: {
+      eyebrow: '02 / WHAT I DO',
+      heading: 'From problem to',
+      headingAccent: 'system.',
+      description:
+        'I design, build and run end-to-end solutions. My edge is connecting architecture, product, infrastructure and people—not collecting frameworks.',
+      note: 'Tools change. Engineering judgment endures.',
+      areasLabel: 'CAPABILITIES / HOW I CREATE VALUE',
+      coreLabel: 'MY GO-TO TOOLS',
+      coreTag: 'CORE TOOLKIT',
+      extendedLabel: 'ALSO PART OF MY WORK & PROJECTS',
+      extendedTag: 'EXTENDED TOOLKIT',
+      toolsFoot:
+        'The stack is a toolbox. For each project I choose what helps the team stay fast, maintainable and independent.',
     },
     experience: {
-      eyebrow: '03 / TRACK RECORD',
+      eyebrow: '04 / TRACK RECORD',
       heading: "Where I've worked.",
       present: 'Present',
     },
     projects: {
-      eyebrow: '02 / SELECTED WORK',
+      eyebrow: '03 / SELECTED WORK',
       heading: 'Ideas turned into systems.',
       note: 'A mix of own products, applied research, and professional architecture. Some are in progress or private.',
       allLabel: 'All',
@@ -302,7 +332,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       },
     },
     contact: {
-      eyebrow: '04 / CONTACT',
+      eyebrow: '05 / CONTACT',
       heading: 'Shall we talk?',
     },
   },
