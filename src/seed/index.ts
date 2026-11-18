@@ -3,8 +3,16 @@ import { fileURLToPath } from 'node:url'
 
 import config from '@payload-config'
 
-import type { About, Project, SkillGroup } from '../payload-types'
-import { aboutSeed, contactSeed, projectSeeds, skillGroupSeeds, tagNames } from './content'
+import type { About, Expertise, Project } from '../payload-types'
+import {
+  aboutSeed,
+  capabilitySeeds,
+  contactSeed,
+  coreToolNames,
+  extendedToolNames,
+  projectSeeds,
+  tagNames,
+} from './content'
 import { richText } from './lexical'
 
 const payload = await getPayload({ config })
@@ -34,15 +42,7 @@ async function seedMedia() {
 async function seedCollections() {
   // Delete first so re-running the seed never duplicates documents.
   await payload.delete({ collection: 'projects', where: {} })
-  await payload.delete({ collection: 'skill-groups', where: {} })
   await payload.delete({ collection: 'tags', where: {} })
-
-  for (const group of skillGroupSeeds) {
-    // SAFETY: with locale: 'all' Payload reads localized fields as locale-keyed objects,
-    // while the generated SkillGroup type describes one resolved locale.
-    const data = group as unknown as SkillGroup
-    await payload.create({ collection: 'skill-groups', locale: ALL_LOCALES, data })
-  }
 
   const tagIds = new Map<string, number>()
   for (const name of tagNames) {
@@ -119,21 +119,39 @@ async function seedGlobals(photoId: number) {
   })
 }
 
+/**
+ * The "what I do" block: capabilities plus both tool belts. Because it is a global,
+ * a re-run overwrites the single document instead of deleting and recreating rows.
+ */
+async function seedExpertise() {
+  // SAFETY: with locale: 'all' Payload reads localized fields as locale-keyed objects,
+  // while the generated Expertise type describes one resolved locale.
+  const data = {
+    capabilities: capabilitySeeds,
+    coreTools: coreToolNames.map((name) => ({ name })),
+    extendedTools: extendedToolNames.map((name) => ({ name })),
+  } as unknown as Expertise
+
+  await payload.updateGlobal({ slug: 'expertise', locale: ALL_LOCALES, data })
+}
+
 try {
   const media = await seedMedia()
   await seedCollections()
   await seedGlobals(media.id)
+  await seedExpertise()
 
   const mediaCount = await payload.count({ collection: 'media' })
-  const skillGroups = await payload.count({ collection: 'skill-groups' })
   const projects = await payload.count({ collection: 'projects' })
   const tags = await payload.count({ collection: 'tags' })
 
   console.log(`Seeded media: ${mediaCount.totalDocs}`)
-  console.log(`Seeded skill-groups: ${skillGroups.totalDocs}`)
+  console.log(`Seeded capabilities: ${capabilitySeeds.length}`)
+  console.log(`Seeded core tools: ${coreToolNames.length}`)
+  console.log(`Seeded extended tools: ${extendedToolNames.length}`)
   console.log(`Seeded projects: ${projects.totalDocs}`)
   console.log(`Seeded tags: ${tags.totalDocs}`)
-  console.log('Seeded globals: about, contact')
+  console.log('Seeded globals: about, contact, expertise')
 } catch (error) {
   console.error('Seed failed:', error)
   process.exitCode = 1

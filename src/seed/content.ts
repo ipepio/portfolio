@@ -9,126 +9,88 @@ import type { RichTextRun } from './lexical'
 
 export type Localized = { es: string; en: string }
 
-export type SkillGroupIcon =
-  | 'code'
+export type CapabilityScene =
+  | 'backend'
   | 'cloud'
   | 'ai'
-  | 'shield'
-  | 'database'
+  | 'quality'
+  | 'data'
   | 'enterprise'
   | 'engineering'
 
-export type SkillGroupSeed = {
-  number: string
-  label: string
+export type CapabilitySeed = {
   title: Localized
-  icon: SkillGroupIcon
-  items: { name: string; key?: true }[]
-  order: number
+  description: Localized
+  /** Diagram the About orbit draws for this node. */
+  scene: CapabilityScene
 }
 
-export const skillGroupSeeds: SkillGroupSeed[] = [
+/** "Lo que hago": the five capabilities, verbatim from the expertise reference. */
+export const capabilitySeeds: CapabilitySeed[] = [
   {
-    number: '01',
-    label: 'BACKEND',
-    title: { es: 'Backend & Architecture', en: 'Backend & Architecture' },
-    icon: 'code',
-    items: [
-      { name: 'Node.js', key: true },
-      { name: 'NestJS' },
-      { name: 'Express' },
-      { name: 'REST APIs' },
-      { name: 'Event-Driven Architecture' },
-      { name: 'Microservices' },
-      { name: 'Modular Monolith' },
-      { name: 'Clean Architecture' },
-    ],
-    order: 1,
+    title: { es: 'Arquitectura de software', en: 'Software architecture' },
+    description: {
+      es: 'Diseño de sistemas, separación de dominios, APIs, arquitecturas event-driven y modernización incremental sin perder el control de producción.',
+      en: 'System design, domain boundaries, APIs, event-driven architecture and incremental modernization without compromising production.',
+    },
+    scene: 'backend',
   },
   {
-    number: '02',
-    label: 'CLOUD',
-    title: { es: 'Cloud & DevOps', en: 'Cloud & DevOps' },
-    icon: 'cloud',
-    items: [
-      { name: 'AWS', key: true },
-      { name: 'Amazon EKS' },
-      { name: 'Kubernetes' },
-      { name: 'Docker' },
-      { name: 'CI/CD' },
-      { name: 'Deployment Automation' },
-    ],
-    order: 2,
+    title: { es: 'Ingeniería de producto', en: 'Product engineering' },
+    description: {
+      es: 'Construcción fullstack, diseño de plataformas, integraciones y desarrollo de producto desde la idea hasta una solución mantenible.',
+      en: 'Full-stack development, platform design, integrations, and shipping ideas as maintainable products.',
+    },
+    scene: 'engineering',
   },
   {
-    number: '03',
-    label: 'AI',
-    title: { es: 'Artificial Intelligence', en: 'Artificial Intelligence' },
-    icon: 'ai',
-    items: [
-      { name: 'LLMs', key: true },
-      { name: 'RAG' },
-      { name: 'AI Agents' },
-      { name: 'AI-assisted Development' },
-      { name: 'Automated Code Review' },
-      { name: 'Intelligent Automation' },
-    ],
-    order: 3,
+    title: { es: 'Cloud, DevOps y operaciones', en: 'Cloud, DevOps & operations' },
+    description: {
+      es: 'Infraestructura como código, contenedores, CI/CD, automatización de despliegues y operación de servicios en AWS y Linux.',
+      en: 'Infrastructure as code, containers, CI/CD, deployment automation and operating services on AWS and Linux.',
+    },
+    scene: 'cloud',
   },
   {
-    number: '04',
-    label: 'QUALITY',
-    title: { es: 'Quality & Security', en: 'Quality & Security' },
-    icon: 'shield',
-    items: [
-      { name: 'E2E Testing' },
-      { name: 'QA Processes' },
-      { name: 'Code Review' },
-      { name: 'Secure SDLC' },
-      { name: 'Cybersecurity' },
-    ],
-    order: 4,
+    title: { es: 'IA aplicada a ingeniería', en: 'Applied AI engineering' },
+    description: {
+      es: 'Agentes, RAG, inferencia local, gateways LLM y herramientas que automatizan trabajo real sin perder observabilidad ni control.',
+      en: 'Agents, RAG, local inference, LLM gateways and tooling that automates real work while retaining observability and control.',
+    },
+    scene: 'ai',
   },
   {
-    number: '05',
-    label: 'DATA',
-    title: { es: 'Databases', en: 'Databases' },
-    icon: 'database',
-    items: [{ name: 'PostgreSQL', key: true }, { name: 'SQL Server' }],
-    order: 5,
-  },
-  {
-    number: '06',
-    label: 'ENTERPRISE',
-    title: { es: 'Enterprise & SAP', en: 'Enterprise & SAP' },
-    icon: 'enterprise',
-    items: [
-      { name: 'SAP WM' },
-      { name: 'EWM' },
-      { name: 'MM' },
-      { name: 'SD' },
-      { name: 'PP' },
-      { name: 'CO' },
-      { name: 'ABAP' },
-    ],
-    order: 6,
-  },
-  {
-    number: '07',
-    label: 'ENGINEERING',
-    title: { es: 'Engineering', en: 'Engineering' },
-    icon: 'engineering',
-    items: [
-      { name: 'Git' },
-      { name: 'GitHub' },
-      { name: 'Software Architecture' },
-      { name: 'Systems Integration' },
-      { name: 'Agile' },
-      { name: 'Scrum' },
-    ],
-    order: 7,
+    title: { es: 'Liderazgo técnico y calidad', en: 'Technical leadership & quality' },
+    description: {
+      es: 'Dirección de equipos, criterios de arquitectura, code review, QA, seguridad y mejora del ciclo de entrega.',
+      en: 'Leading teams, architectural standards, code review, QA, security, and improving how software gets delivered.',
+    },
+    scene: 'quality',
   },
 ]
+
+/** Core toolkit, in the reference order: the ones highlighted over the rest. */
+export const coreToolNames = [
+  'Node.js',
+  'TypeScript',
+  'React',
+  'PostgreSQL',
+  'AWS',
+  'Docker',
+  'Kubernetes',
+] as const
+
+/** Extended toolkit, in the reference order: also present across work and projects. */
+export const extendedToolNames = [
+  'Vue',
+  'Kotlin',
+  'Go',
+  'Terraform / OpenTofu',
+  'Linux',
+  'GitHub Actions',
+  'llama.cpp',
+  'LiteLLM',
+] as const
 
 export const tagNames = ['IA / Agentes', 'Plataforma', 'Producto'] as const
 

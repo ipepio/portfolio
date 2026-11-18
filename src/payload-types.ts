@@ -72,7 +72,6 @@ export interface Config {
     media: Media;
     folders: Folder;
     tags: Tag;
-    'skill-groups': SkillGroup;
     experience: Experience;
     projects: Project;
     'payload-mcp-api-keys': PayloadMcpApiKey;
@@ -87,7 +86,6 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     folders: FoldersSelect<false> | FoldersSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
-    'skill-groups': SkillGroupsSelect<false> | SkillGroupsSelect<true>;
     experience: ExperienceSelect<false> | ExperienceSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
@@ -103,10 +101,12 @@ export interface Config {
   globals: {
     about: About;
     contact: Contact;
+    expertise: Expertise;
   };
   globalsSelect: {
     about: AboutSelect<false> | AboutSelect<true>;
     contact: ContactSelect<false> | ContactSelect<true>;
+    expertise: ExpertiseSelect<false> | ExpertiseSelect<true>;
   };
   locale: 'es' | 'en';
   widgets: {
@@ -216,33 +216,6 @@ export interface Folder {
 export interface Tag {
   id: number;
   name: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "skill-groups".
- */
-export interface SkillGroup {
-  id: number;
-  /**
-   * Ej. 01
-   */
-  number?: string | null;
-  /**
-   * Ej. BACKEND
-   */
-  label?: string | null;
-  title: string;
-  icon?: ('code' | 'cloud' | 'ai' | 'shield' | 'database' | 'enterprise' | 'engineering') | null;
-  items?:
-    | {
-        name: string;
-        key?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -376,10 +349,6 @@ export interface PayloadLockedDocument {
         value: number | Tag;
       } | null)
     | ({
-        relationTo: 'skill-groups';
-        value: number | SkillGroup;
-      } | null)
-    | ({
         relationTo: 'experience';
         value: number | Experience;
       } | null)
@@ -499,26 +468,6 @@ export interface FoldersSelect<T extends boolean = true> {
  */
 export interface TagsSelect<T extends boolean = true> {
   name?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "skill-groups_select".
- */
-export interface SkillGroupsSelect<T extends boolean = true> {
-  number?: T;
-  label?: T;
-  title?: T;
-  icon?: T;
-  items?:
-    | T
-    | {
-        name?: T;
-        key?: T;
-        id?: T;
-      };
-  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -744,6 +693,45 @@ export interface Contact {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "expertise".
+ */
+export interface Expertise {
+  id: number;
+  /**
+   * Una entrada por capacidad. El orden de esta lista es el orden en pantalla y el de los nodos de la órbita de "Sobre mí".
+   */
+  capabilities: {
+    title: string;
+    description: string;
+    /**
+     * Diagrama que dibuja este nodo cuando se abre en la órbita de "Sobre mí".
+     */
+    scene: 'backend' | 'cloud' | 'ai' | 'quality' | 'data' | 'enterprise' | 'engineering';
+    id?: string | null;
+  }[];
+  /**
+   * Las herramientas con las que más te identificas; se destacan sobre el resto.
+   */
+  coreTools?:
+    | {
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Las que también están presentes en tu trabajo y proyectos.
+   */
+  extendedTools?:
+    | {
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "about_select".
  */
 export interface AboutSelect<T extends boolean = true> {
@@ -816,6 +804,35 @@ export interface ContactSelect<T extends boolean = true> {
     | {
         label?: T;
         url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "expertise_select".
+ */
+export interface ExpertiseSelect<T extends boolean = true> {
+  capabilities?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        scene?: T;
+        id?: T;
+      };
+  coreTools?:
+    | T
+    | {
+        name?: T;
+        id?: T;
+      };
+  extendedTools?:
+    | T
+    | {
+        name?: T;
         id?: T;
       };
   updatedAt?: T;
