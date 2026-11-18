@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 
 import type { ProjectItem } from '@/components/site/projects-grid'
+import { ProjectVisual } from '@/components/site/project-visuals'
 import type { Locale, ProjectDetailLabels, ProjectStatus } from '@/lib/i18n'
 
 /** Payload `Project` at `depth >= 1`, narrowed to what the detail page renders. */
@@ -23,6 +24,9 @@ type RichTextData = Parameters<typeof RichText>[0]['data']
 
 const HEADING_ID = 'project-detail-heading'
 const DETAIL_IMAGE_SIZES = '(min-width: 1280px) 1216px, 100vw'
+/** The diagram keeps its card proportions, centred in the detail column. */
+const DETAIL_VISUAL =
+  'mx-auto w-full max-w-[520px] overflow-hidden rounded-2xl border border-border bg-secondary'
 
 /** Only the label is localized; the pill palette stays design-owned. */
 const STATUS_CLASSNAMES: Record<ProjectStatus, string> = {
@@ -123,14 +127,8 @@ export function ProjectDetail({ project, locale, labels }: ProjectDetailProps) {
             className="h-auto w-full rounded-2xl border border-border object-cover"
           />
         ) : (
-          <div
-            aria-hidden
-            className="relative flex aspect-[16/9] items-center justify-center overflow-hidden rounded-2xl border border-border bg-secondary"
-          >
-            <div className="grid-lines absolute inset-0" />
-            <span className="mono relative max-w-[80%] text-center text-[clamp(28px,5vw,64px)] font-bold uppercase leading-none tracking-[-0.04em] text-primary/15">
-              {tags[0] ?? project.title}
-            </span>
+          <div aria-hidden className={DETAIL_VISUAL}>
+            <ProjectVisual visual={project.visual} number={project.order} />
           </div>
         )}
 

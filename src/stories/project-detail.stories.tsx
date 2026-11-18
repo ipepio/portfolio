@@ -27,8 +27,8 @@ const labels: ProjectDetailLabels = {
 
 /**
  * The seeded `ai-governor` document as Payload returns it at `depth: 1`:
- * `coverImage: null` (decorative fallback panel), `liveUrl` empty, and
- * `longDescription` empty — so the lead paragraph is repeated as the body.
+ * `coverImage: null` (so the `code-stack` diagram renders), `liveUrl` empty,
+ * and `longDescription` empty — so the lead paragraph is repeated as the body.
  */
 const aiGovernor: ProjectDetailItem = {
   id: 1,
@@ -38,6 +38,7 @@ const aiGovernor: ProjectDetailItem = {
     'Gateway OpenAI-compatible para gobernar acceso a modelos, cuotas, presupuestos y rate limits con trazabilidad por usuario y organización.',
   longDescription: null,
   coverImage: null,
+  visual: 'code-stack',
   tags: [
     { id: 1, name: 'IA / Agentes' },
     { id: 2, name: 'Plataforma' },

@@ -13,9 +13,9 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
- * The six seeded projects as Payload returns them at `depth: 1`: tags populated,
- * `coverImage: null` and `year: null` for all of them, so every card exercises
- * the decorative no-image fallback.
+ * The six seeded projects as Payload returns them at `depth: 1`: tags and
+ * `visual` populated, `coverImage: null` and `year: null` for all of them, so
+ * every card exercises one of the six decorative diagrams.
  */
 export const Default: Story = {
   args: {
@@ -40,6 +40,7 @@ export const Default: Story = {
       {
         id: 1,
         title: 'AI Governor',
+        visual: 'code-stack',
         slug: 'ai-governor',
         shortDescription:
           'Gateway OpenAI-compatible para gobernar acceso a modelos, cuotas, presupuestos y rate limits con trazabilidad por usuario y organización.',
@@ -55,6 +56,7 @@ export const Default: Story = {
       {
         id: 2,
         title: 'pi-hub',
+        visual: 'agent-orbit',
         slug: 'pi-hub',
         shortDescription:
           'Entorno de orquestación para agentes de IA, herramientas y sesiones persistentes. Una base ligera para construir flujos de trabajo propios.',
@@ -71,6 +73,7 @@ export const Default: Story = {
       {
         id: 3,
         title: 'Nabla',
+        visual: 'mock-shell',
         slug: 'nabla',
         shortDescription:
           'Un harness de IA de escritorio con enfoque local-first: experiencia nativa, runtime de agentes y una interfaz que prioriza claridad y velocidad.',
@@ -86,6 +89,7 @@ export const Default: Story = {
       {
         id: 4,
         title: 'ECHO',
+        visual: 'echo-ring',
         slug: 'echo',
         shortDescription:
           'Concepto de asistente personal privado, con interacción por voz, STT/TTS y herramientas conectadas a servicios propios.',
@@ -101,6 +105,7 @@ export const Default: Story = {
       {
         id: 5,
         title: 'Platform Modernization',
+        visual: 'svc-map',
         slug: 'platform-modernization',
         shortDescription:
           'Evolución de plataformas hacia servicios desacoplados, dominios claros, despliegues reproducibles y operativa cloud automatizada.',
@@ -113,6 +118,7 @@ export const Default: Story = {
       {
         id: 6,
         title: 'Discord Hub',
+        visual: 'chat-lines',
         slug: 'discord-hub',
         shortDescription:
           'Ingesta, indexación y recuperación de conocimiento de Discord para que agentes y herramientas puedan trabajar con contexto y permisos.',

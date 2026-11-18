@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import type { Locale, ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
+import { ProjectVisual, type ProjectVisualName } from '@/components/site/project-visuals'
 
 /** Tag as returned by Payload at `depth >= 1` (or as a raw id at `depth 0`). */
 export type ProjectTag = { id?: string | number; name?: string | null }
@@ -25,6 +26,8 @@ export type ProjectItem = {
   slug?: string | null
   shortDescription?: string | null
   coverImage?: ProjectCoverImage | number | string | null
+  /** Diagram shown when there is no cover image (Payload `projects.visual`). */
+  visual?: ProjectVisualName | null
   tags?: (ProjectTag | number)[] | null
   liveUrl?: string | null
   githubUrl?: string | null
@@ -47,14 +50,18 @@ export type ProjectsGridProps = {
 
 const ALL_FILTER = '__all__'
 
-/** Only the label is localized; the pill palette stays design-owned. */
-const STATUS_CLASSNAMES: Record<ProjectStatus, string> = {
-  live: 'border-primary/40 bg-primary/12 text-primary',
-  wip: 'border-accent/40 bg-accent/12 text-accent',
-  archived: 'border-border bg-secondary text-muted-foreground',
-}
-
 const CARD_SIZES = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
+
+/** Card chrome ported from the reference `.project-card` / `.project-body`. */
+const CARD_HEAD = 'relative block h-[202px] overflow-hidden border-b border-border bg-secondary'
+const BODY = 'flex flex-1 flex-col px-[24px] pt-[25px] pb-[23px]'
+const CATEGORY = 'mono text-[9px] font-[650] uppercase leading-[1.5] tracking-[0.1em] text-muted'
+const TITLE =
+  'font-heading mt-[9px] mb-[11px] text-[25px] font-semibold leading-[1.15] tracking-[-0.055em]'
+const DESCRIPTION = 'mb-[26px] flex-1 text-[13px] leading-[1.75] text-muted-foreground line-clamp-3'
+const BOTTOM = 'flex items-center justify-between gap-[15px] border-t border-border pt-[18px]'
+const CHIP =
+  'mono inline-flex rounded-[5px] border border-border px-[6px] py-[5px] text-[9px] font-semibold leading-[1.2] text-muted-foreground'
 
 type FilterOption = { key: string; label: string }
 
@@ -121,7 +128,7 @@ function ProjectCard({
   statusLabels: Record<ProjectStatus, string>
   labels: ProjectsGridLabels
 }) {
-  const indexLabel = String(position + 1).padStart(2, '0')
+  const indexLabel = position + 1
   const tags = tagNames(project)
   const cover = coverImageOf(project)
   const coverUrl = cover?.url ?? null
@@ -129,6 +136,8 @@ function ProjectCard({
   const href = projectHref(project, locale)
   const status = project.status ?? 'live'
   const statusLabel = statusLabels[status]
+  // Reference category line: the localized status label.
+  const category = statusLabel
 
   const media =
     cover && coverUrl ? (
@@ -140,43 +149,24 @@ function ProjectCard({
         className="object-cover transition duration-500 motion-safe:group-hover:scale-[1.03]"
       />
     ) : (
-      <div aria-hidden className="relative flex h-full items-center justify-center">
-        <div className="grid-lines absolute inset-0" />
-        <span className="mono relative select-none text-[76px] font-bold leading-none tracking-[-0.06em] text-primary/15">
-          {indexLabel}
-        </span>
-        {tags[0] ? (
-          <span className="mono absolute top-4 right-5 max-w-[60%] truncate text-[10px] uppercase leading-none tracking-[0.16em] text-muted-foreground">
-            {tags[0]}
-          </span>
-        ) : null}
-      </div>
+      <ProjectVisual visual={project.visual} number={indexLabel} />
     )
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition hover:border-primary/40 motion-safe:hover:-translate-y-1">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition hover:border-input motion-safe:hover:-translate-y-[5px]">
       {href ? (
         // Decorative duplicate of the title link: skipped by keyboard and AT.
-        <Link
-          href={href}
-          aria-hidden
-          tabIndex={-1}
-          className="relative block h-[200px] overflow-hidden bg-secondary"
-        >
+        <Link href={href} aria-hidden tabIndex={-1} className={CARD_HEAD}>
           {media}
         </Link>
       ) : (
-        <div className="relative h-[200px] overflow-hidden bg-secondary">{media}</div>
+        <div className={CARD_HEAD}>{media}</div>
       )}
 
-      <div className="flex flex-1 flex-col gap-3 p-5">
-        <span
-          className={`mono inline-flex w-fit rounded-full border px-2.5 py-1 text-[10px] uppercase leading-none tracking-[0.14em] ${STATUS_CLASSNAMES[status]}`}
-        >
-          {statusLabel}
-        </span>
+      <div className={BODY}>
+        <p className={CATEGORY}>{category}</p>
 
-        <h3 className="font-heading text-[22px] font-semibold leading-snug tracking-[-0.03em]">
+        <h3 className={TITLE}>
           {href ? (
             <Link href={href} className="transition-colors hover:text-primary">
               {project.title}
@@ -187,36 +177,38 @@ function ProjectCard({
         </h3>
 
         {project.shortDescription ? (
-          <p className="text-sm leading-[1.7] text-muted-foreground">{project.shortDescription}</p>
+          <p className={DESCRIPTION}>{project.shortDescription}</p>
+        ) : (
+          <div className="flex-1" />
+        )}
+
+        {tags.length > 0 || link ? (
+          <div className={BOTTOM}>
+            {tags.length > 0 ? (
+              <ul role="list" className="flex flex-wrap gap-[6px]">
+                {tags.map((name) => (
+                  <li key={name}>
+                    <span className={CHIP}>{name}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span />
+            )}
+
+            {link ? (
+              <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${labels.openPrefix} ${project.title}`}
+                className="grid size-[30px] shrink-0 place-items-center rounded-lg border border-input text-[18px] text-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
+              >
+                <ArrowUpRight aria-hidden className="size-4" />
+              </a>
+            ) : null}
+          </div>
         ) : null}
-
-        <div className="mt-auto flex items-end justify-between gap-3 pt-2">
-          {tags.length > 0 ? (
-            <ul role="list" className="flex flex-wrap gap-1.5">
-              {tags.map((name) => (
-                <li key={name}>
-                  <span className="mono inline-flex rounded-md border border-border bg-secondary/40 px-2 py-1 text-[10px] leading-none text-muted-foreground">
-                    {name}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <span />
-          )}
-
-          {link ? (
-            <a
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${labels.openPrefix} ${project.title}`}
-              className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary"
-            >
-              <ArrowUpRight aria-hidden className="size-3.5" />
-            </a>
-          ) : null}
-        </div>
       </div>
     </article>
   )
@@ -270,8 +262,7 @@ export function ProjectsGrid({
           aria-live="polite"
           className="mono text-[11px] uppercase leading-none tracking-[0.16em] text-muted"
         >
-          {String(visibleCount).padStart(2, '0')}{' '}
-          {visibleCount === 1 ? labels.countOne : labels.countOther}
+          {`${String(visibleCount).padStart(2, '0')} ${visibleCount === 1 ? labels.countOne : labels.countOther}`}
         </p>
       </div>
 
