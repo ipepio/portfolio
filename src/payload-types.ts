@@ -233,6 +233,10 @@ export interface Experience {
    * Vacío si el puesto es actual.
    */
   endDate?: string | null;
+  /**
+   * Etiqueta del periodo tal como se muestra en la web (p. ej. "SEP 2025 — ACTUALIDAD"). Las fechas de arriba solo ordenan la colección.
+   */
+  period?: string | null;
   description?: string | null;
   location?: string | null;
   stack?:
@@ -481,6 +485,7 @@ export interface ExperienceSelect<T extends boolean = true> {
   role?: T;
   startDate?: T;
   endDate?: T;
+  period?: T;
   description?: T;
   location?: T;
   stack?:

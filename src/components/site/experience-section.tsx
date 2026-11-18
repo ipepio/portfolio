@@ -1,176 +1,186 @@
-import Image from 'next/image'
-
 import type { Experience } from '@/payload-types'
-import type { Locale } from '@/lib/i18n'
 
 export type ExperienceSectionProps = {
+  /** Fallback eyebrow; the section ordinal lives in the dictionary. */
   eyebrow?: string
+  /**
+   * Display heading, without the accent tail. Real newlines are rendered as forced
+   * line breaks (`whitespace-pre-line`), like the About heading.
+   */
   heading: string
-  note?: string
-  /** Label shown in place of a missing `endDate` (e.g. "Actualidad"). */
-  presentLabel: string
-  /** Locale of the URL segment, used to format the month/year date ranges. */
-  locale: Locale
+  /** Accented tail of the heading, rendered in the primary colour. */
+  headingAccent?: string
+  /** Intro paragraph of the left column. */
+  intro?: string
+  /** Label next to the `2017 →` stat. */
+  statLabel?: string
+  /** Badge on the role that has no `endDate` yet. */
+  currentLabel: string
   /** Experience docs as Payload returns them at `depth: 1`, newest first. */
   experiences: Experience[]
 }
 
-const HEADING_ID = 'experience-section-heading'
+const HEADING_ID = 'experienceTitle'
 
-/** Month + year formatting is stable per locale, so build one formatter per locale. */
-const monthFormatters = new Map<Locale, Intl.DateTimeFormat>()
+const CARD_CLASS =
+  'rounded-[16px] border border-border bg-card px-[18px] pt-5 pb-[25px] transition-[border-color,transform] duration-200 hover:translate-x-[3px] hover:border-input min-[521px]:px-[26px] min-[521px]:pt-6'
 
-function monthFormatter(locale: Locale): Intl.DateTimeFormat {
-  const cached = monthFormatters.get(locale)
+/** The current card: `--accent-soft` (primary at 10%) fading out over the card surface. */
+const CURRENT_CARD_CLASS = `${CARD_CLASS} border-input bg-[linear-gradient(135deg,color-mix(in_srgb,var(--primary)_10%,transparent),transparent_47%)]`
 
-  if (cached) {
-    return cached
-  }
+const MARKER_CLASS =
+  'absolute top-5 -left-[23px] z-[1] size-3 rotate-45 rounded-[4px] border border-input bg-background min-[521px]:-left-[30px] min-[521px]:size-[13px]'
 
-  // UTC keeps a stored first-of-month date on the month it was authored in.
-  const formatter = new Intl.DateTimeFormat(locale, {
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
-  monthFormatters.set(locale, formatter)
+/** The current marker: lime diamond with the `--accent-soft` halo. */
+const CURRENT_MARKER_CLASS = `${MARKER_CLASS} border-primary bg-primary shadow-[0_0_0_5px_color-mix(in_srgb,var(--primary)_10%,transparent)]`
 
-  return formatter
-}
+const TAG_CLASS =
+  'mono rounded-[6px] border border-border bg-background-elevated px-[9px] py-[7px] text-[9px] leading-[1.3] font-semibold tracking-normal text-muted'
 
-function formatMonth(value: string, locale: Locale): string | null {
-  const date = new Date(value)
+/**
+ * Year of the earliest role, used by the reference's `2017 →` stat. It is derived from
+ * the seeded `startDate`s instead of hardcoded, so the stat follows the timeline.
+ */
+function firstRoleYear(experiences: Experience[]): string | null {
+  const years = experiences
+    .map((experience) => new Date(experience.startDate).getUTCFullYear())
+    .filter((year) => Number.isFinite(year))
 
-  return Number.isNaN(date.getTime()) ? null : monthFormatter(locale).format(date)
-}
-
-function logoOf(experience: Experience) {
-  return experience.logo && typeof experience.logo === 'object' ? experience.logo : null
+  return years.length > 0 ? String(Math.min(...years)) : null
 }
 
 /**
- * Presentational Experience section: a professional timeline rendered as an
- * ordered list. Each entry has a left rail with a dot marker, the date range as
- * mono meta, the role, company/location, description and stack chips.
+ * Presentational Experience section, copied verbatim from the `section.experience` of
+ * `/Users/ipepio/Desktop/portfolio_ipepio_experiencia_contacto.html`: a sticky intro
+ * column (eyebrow, display heading, description, the `2017 →` stat) next to the roles
+ * timeline — a lime-headed rail with a diamond marker per card, the first one marked as
+ * current, and mono tags closing each card.
+ *
+ * Every figure of the reference CSS is kept; only the variables are mapped onto the app
+ * tokens: `--bg`→`--background`, `--card`→`--card`, `--border`→`--border`,
+ * `--border-strong`→`--input`, `--muted`→`--muted-foreground`, `--soft`→`--muted`,
+ * `--accent`→`--primary`, `--accent-soft`→`--primary` at 10%,
+ * `--bg-elevated`→`--background-elevated`.
  */
 export function ExperienceSection({
   eyebrow,
   heading,
-  note,
-  presentLabel,
-  locale,
+  headingAccent,
+  intro,
+  statLabel,
+  currentLabel,
   experiences,
 }: ExperienceSectionProps) {
-  // The collection starts empty and may be emptied again: no content, no section.
-  // Returning null keeps the home page from rendering a heading over nothing.
+  // The collection may be empty again: no roles, no section. Returning null keeps the
+  // home page from rendering a heading over an empty timeline.
   if (experiences.length === 0) {
     return null
   }
+
+  const firstYear = firstRoleYear(experiences)
 
   return (
     <section
       id="experience"
       aria-labelledby={HEADING_ID}
-      className="px-6 py-20 sm:py-24 lg:py-28"
+      className="border-b border-border px-6 pt-[86px] pb-[95px] min-[781px]:pt-[120px] min-[781px]:pb-[130px]"
     >
-      <div className="mx-auto flex w-full max-w-(--container-page) flex-col gap-10 lg:gap-14">
-        <header className="flex flex-col gap-5">
-          {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
+      <div className="mx-auto grid w-full max-w-(--container-page) grid-cols-1 items-start gap-8 min-[781px]:grid-cols-[minmax(255px,0.72fr)_minmax(0,1.28fr)] min-[781px]:gap-[50px] min-[1021px]:grid-cols-[minmax(255px,0.77fr)_minmax(0,1.23fr)] min-[1021px]:gap-[clamp(55px,8vw,125px)]">
+        <div className="min-[781px]:sticky min-[781px]:top-[123px]">
+          {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+
           <h2
             id={HEADING_ID}
-            className="font-heading text-[clamp(38px,4.5vw,64px)] font-bold leading-[1.03] tracking-[-0.06em] text-balance"
+            className="mt-6 mb-[25px] max-w-[520px] font-heading text-[clamp(48px,12vw,65px)] leading-[0.99] font-[660] tracking-[-0.075em] whitespace-pre-line min-[521px]:text-[clamp(45px,5.6vw,80px)] min-[781px]:max-w-none"
           >
-            {heading}
+            {heading} {headingAccent ? <span className="text-primary">{headingAccent}</span> : null}
           </h2>
-          {note ? (
-            <p className="max-w-[55ch] text-base leading-[1.7] text-muted-foreground">{note}</p>
-          ) : null}
-        </header>
 
-        <ol role="list" className="flex flex-col">
+          {intro ? (
+            <p className="mt-0 mb-[31px] max-w-[620px] text-base leading-[1.8] text-muted-foreground min-[781px]:max-w-[400px]">
+              {intro}
+            </p>
+          ) : null}
+
+          <div className="mono flex max-w-[350px] items-center gap-[14px] border-t border-border pt-[22px] text-[10px] leading-[1.7] font-semibold tracking-[0.09em] text-muted uppercase min-[781px]:max-w-none">
+            {firstYear ? (
+              <strong className="font-heading text-[38px] leading-none font-[650] tracking-[-0.07em] text-primary">
+                {firstYear}
+                <span className="text-muted">→</span>
+              </strong>
+            ) : null}
+            {statLabel ? <span>{statLabel}</span> : null}
+          </div>
+        </div>
+
+        <div className="relative grid pl-[23px] min-[521px]:pl-[31px]">
+          {/* The rail: primary at the top, then a line that fades out before the last card. */}
+          <span
+            aria-hidden="true"
+            className="absolute top-[25px] bottom-[42px] left-[6px] w-px bg-[linear-gradient(var(--primary),var(--border)_31%,var(--border)_94%,transparent)] min-[521px]:left-[7px]"
+          />
+
           {experiences.map((experience, index) => {
-            const logo = logoOf(experience)
-            const logoUrl = logo?.url ?? null
-            const stack = experience.stack ?? []
-            const startLabel = formatMonth(experience.startDate, locale)
-            const endLabel = experience.endDate ? formatMonth(experience.endDate, locale) : null
-            const initial = experience.company.trim().charAt(0).toUpperCase()
+            // The reference marks the role without an end date as the current one. Like
+            // the collection's own ordering, the newest card is also the first one.
+            const isCurrent = !experience.endDate
 
             return (
-              <li
+              <article
                 key={experience.id ?? `${experience.company}-${index}`}
-                className="relative flex flex-col gap-4 border-l border-border pb-10 pl-8 last:pb-0 sm:pl-10"
+                className="relative pb-5 last:pb-0 min-[521px]:pb-[38px]"
               >
                 <span
-                  aria-hidden
-                  className="absolute left-0 top-2.5 size-2 -translate-x-1/2 rounded-full bg-primary"
+                  aria-hidden="true"
+                  className={isCurrent ? CURRENT_MARKER_CLASS : MARKER_CLASS}
                 />
 
-                <div className="mono flex flex-wrap items-center gap-2 text-[10px] uppercase leading-none tracking-[0.16em] text-muted">
-                  {startLabel ? <time dateTime={experience.startDate}>{startLabel}</time> : null}
-                  <span aria-hidden>—</span>
-                  {experience.endDate && endLabel ? (
-                    <time dateTime={experience.endDate ?? undefined}>{endLabel}</time>
-                  ) : (
-                    <span>{presentLabel}</span>
-                  )}
-                </div>
+                <div className={isCurrent ? CURRENT_CARD_CLASS : CARD_CLASS}>
+                  <div className="mb-[18px] flex flex-wrap items-center justify-between gap-1.5 min-[521px]:flex-nowrap min-[521px]:gap-[15px]">
+                    {experience.period ? (
+                      <time
+                        dateTime={experience.startDate}
+                        className="mono text-[10px] leading-[1.4] font-[650] tracking-[0.06em] text-muted uppercase"
+                      >
+                        {experience.period}
+                      </time>
+                    ) : null}
 
-                <div className="flex items-start gap-4">
-                  {logo && logoUrl ? (
-                    <Image
-                      src={logoUrl}
-                      alt={logo.alt || `${experience.company} logo`}
-                      width={logo.width ?? 40}
-                      height={logo.height ?? 40}
-                      className="size-10 shrink-0 rounded-lg border border-border object-contain"
-                    />
-                  ) : (
-                    <span
-                      aria-hidden
-                      className="mono flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-secondary/40 text-[13px] leading-none text-muted-foreground"
-                    >
-                      {initial}
-                    </span>
-                  )}
-
-                  <div className="flex min-w-0 flex-col gap-1.5">
-                    <h3 className="font-heading text-[17px] font-semibold leading-snug tracking-[-0.02em]">
-                      {experience.role}
-                    </h3>
-                    <p className="mono text-[10px] uppercase leading-none tracking-[0.16em] text-muted-foreground">
-                      {experience.company}
-                      {experience.location ? (
-                        <>
-                          <span aria-hidden> · </span>
-                          <span className="text-muted">{experience.location}</span>
-                        </>
-                      ) : null}
-                    </p>
+                    {isCurrent ? (
+                      <span className="mono inline-flex items-center gap-[7px] text-[9px] leading-[1.4] font-bold tracking-[0.08em] text-primary uppercase before:size-[6px] before:rounded-full before:bg-primary before:shadow-[0_0_0_4px_color-mix(in_srgb,var(--primary)_10%,transparent)] before:content-['']">
+                        {currentLabel}
+                      </span>
+                    ) : null}
                   </div>
-                </div>
 
-                {experience.description ? (
-                  <p className="max-w-[62ch] text-sm leading-[1.7] text-muted-foreground">
-                    {experience.description}
-                  </p>
-                ) : null}
+                  <h3 className="mt-0 mb-1.5 font-heading text-[21px] leading-[1.2] font-[680] tracking-[-0.04em] min-[521px]:text-[clamp(19px,2.2vw,26px)]">
+                    {experience.role}
+                  </h3>
 
-                {stack.length > 0 ? (
-                  <ul role="list" className="flex flex-wrap gap-2">
-                    {stack.map((item, itemIndex) => (
-                      <li key={item.id ?? `${item.name}-${itemIndex}`}>
-                        <span className="mono inline-flex rounded-md border border-border bg-secondary/40 px-2.5 py-1 text-[11px] leading-none text-muted-foreground">
-                          {item.name}
+                  <div className="mono mb-[17px] text-[12px] leading-[1.4] font-bold tracking-[0.035em] text-primary">
+                    {experience.company}
+                  </div>
+
+                  {experience.description ? (
+                    <p className="mt-0 mb-[19px] max-w-[600px] text-[13px] leading-[1.83] text-muted-foreground">
+                      {experience.description}
+                    </p>
+                  ) : null}
+
+                  {experience.stack && experience.stack.length > 0 ? (
+                    <div className="flex flex-wrap gap-[7px]">
+                      {experience.stack.map((tag, tagIndex) => (
+                        <span key={tag.id ?? `${tag.name}-${tagIndex}`} className={TAG_CLASS}>
+                          {tag.name}
                         </span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </li>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              </article>
             )
           })}
-        </ol>
+        </div>
       </div>
     </section>
   )

@@ -3,12 +3,13 @@ import { fileURLToPath } from 'node:url'
 
 import config from '@payload-config'
 
-import type { About, Expertise, Project } from '../payload-types'
+import type { About, Experience, Expertise, Project } from '../payload-types'
 import {
   aboutSeed,
   capabilitySeeds,
   contactSeed,
   coreToolNames,
+  experienceSeeds,
   extendedToolNames,
   projectSeeds,
   tagNames,
@@ -70,6 +71,29 @@ async function seedCollections() {
       tags,
     } as unknown as Project
     await payload.create({ collection: 'projects', locale: ALL_LOCALES, data })
+  }
+}
+
+/**
+ * The career timeline. Delete first so re-running the seed never duplicates rows, then
+ * write every locale at once (`locale: 'all'`), exactly like the projects below.
+ */
+async function seedExperience() {
+  await payload.delete({ collection: 'experience', where: {} })
+
+  for (const experience of experienceSeeds) {
+    // SAFETY: with locale: 'all' Payload reads localized fields as locale-keyed objects,
+    // while the generated Experience type describes one resolved locale.
+    const data = {
+      company: experience.company,
+      role: experience.role,
+      period: experience.period,
+      description: experience.description,
+      startDate: experience.startDate,
+      endDate: experience.endDate,
+      stack: experience.tags.map((name) => ({ name })),
+    } as unknown as Experience
+    await payload.create({ collection: 'experience', locale: ALL_LOCALES, data })
   }
 }
 
@@ -138,12 +162,14 @@ async function seedExpertise() {
 try {
   const media = await seedMedia()
   await seedCollections()
+  await seedExperience()
   await seedGlobals(media.id)
   await seedExpertise()
 
   const mediaCount = await payload.count({ collection: 'media' })
   const projects = await payload.count({ collection: 'projects' })
   const tags = await payload.count({ collection: 'tags' })
+  const experience = await payload.count({ collection: 'experience' })
 
   console.log(`Seeded media: ${mediaCount.totalDocs}`)
   console.log(`Seeded capabilities: ${capabilitySeeds.length}`)
@@ -151,6 +177,7 @@ try {
   console.log(`Seeded extended tools: ${extendedToolNames.length}`)
   console.log(`Seeded projects: ${projects.totalDocs}`)
   console.log(`Seeded tags: ${tags.totalDocs}`)
+  console.log(`Seeded experience: ${experience.totalDocs}`)
   console.log('Seeded globals: about, contact, expertise')
 } catch (error) {
   console.error('Seed failed:', error)

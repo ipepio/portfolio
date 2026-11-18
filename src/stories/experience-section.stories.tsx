@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { ExperienceSection } from '@/components/site/experience-section'
+import { experienceSeeds } from '@/seed/content'
 
 const meta = {
   title: 'Site/ExperienceSection',
@@ -13,84 +14,72 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
- * Sample positions (story-only mock data, never seeded) covering the three
- * shapes the timeline has to handle: a current role (`endDate: null` renders
- * "Actualidad"), a finished role with a stack and logo-less fallback, and a role
- * without description or location.
+ * The seeded career timeline as Payload returns it (Spanish): the sticky intro column
+ * with the `2017 →` stat on the left and the five roles on the right, the first one
+ * marked as current. Tags, role, period and description all come from `experienceSeeds`.
  */
 export const Default: Story = {
   args: {
-    eyebrow: '03 / TRAYECTORIA',
-    heading: 'Dónde he trabajado.',
-    presentLabel: 'Actualidad',
-    locale: 'es',
-    experiences: [
-      {
-        id: 1,
-        company: 'Acme Corp',
-        role: 'Lead Backend Engineer',
-        startDate: '2023-03-01T00:00:00.000Z',
-        endDate: null,
-        description:
-          'Diseño y evolución de la plataforma de servicios: arquitectura modular, contratos de API y despliegues reproducibles sobre Kubernetes.',
-        location: 'Valencia, España',
-        logo: null,
-        stack: [
-          { id: 'acme-1', name: 'Node.js' },
-          { id: 'acme-2', name: 'NestJS' },
-          { id: 'acme-3', name: 'PostgreSQL' },
-          { id: 'acme-4', name: 'Kubernetes' },
-        ],
-        updatedAt: '2023-03-01T00:00:00.000Z',
-        createdAt: '2023-03-01T00:00:00.000Z',
-      },
-      {
-        id: 2,
-        company: 'Globex',
-        role: 'Backend Developer',
-        startDate: '2021-01-01T00:00:00.000Z',
-        endDate: '2023-02-01T00:00:00.000Z',
-        description:
-          'Integración de servicios internos, automatización de procesos de negocio y migración progresiva hacia una arquitectura orientada a eventos.',
-        location: 'Madrid, España',
-        logo: null,
-        stack: [
-          { id: 'globex-1', name: 'TypeScript' },
-          { id: 'globex-2', name: 'Express' },
-          { id: 'globex-3', name: 'AWS' },
-        ],
-        updatedAt: '2021-01-01T00:00:00.000Z',
-        createdAt: '2021-01-01T00:00:00.000Z',
-      },
-      {
-        id: 3,
-        company: 'Initech',
-        role: 'Analista funcional',
-        startDate: '2018-09-01T00:00:00.000Z',
-        endDate: '2020-12-01T00:00:00.000Z',
-        description: null,
-        location: null,
-        logo: null,
-        stack: null,
-        updatedAt: '2018-09-01T00:00:00.000Z',
-        createdAt: '2018-09-01T00:00:00.000Z',
-      },
-    ],
+    eyebrow: '04 / TRAYECTORIA',
+    heading: 'Del código\nal',
+    headingAccent: 'liderazgo.',
+    intro:
+      'He pasado de construir aplicaciones a liderar equipos y definir la arquitectura de plataformas completas, sin alejarme de la ingeniería.',
+    statLabel: 'Ingeniería de software, arquitectura y dirección técnica',
+    currentLabel: 'ACTUAL',
+    experiences: experienceSeeds.map((seed, index) => ({
+      id: index + 1,
+      company: seed.company,
+      role: seed.role.es,
+      period: seed.period.es,
+      description: seed.description.es,
+      startDate: seed.startDate,
+      endDate: seed.endDate,
+      location: null,
+      logo: null,
+      stack: seed.tags.map((name) => ({ id: `${seed.company}-${name}`, name })),
+      updatedAt: '2025-09-01T00:00:00.000Z',
+      createdAt: '2025-09-01T00:00:00.000Z',
+    })),
+  },
+}
+
+/** The English dictionary: same layout, translated copy. */
+export const English: Story = {
+  args: {
+    ...Default.args,
+    eyebrow: '04 / TRACK RECORD',
+    heading: 'From code\nto',
+    headingAccent: 'leadership.',
+    intro:
+      'I have gone from building applications to leading teams and designing entire platforms, while staying close to engineering.',
+    statLabel: 'Software engineering, architecture and technical leadership',
+    currentLabel: 'CURRENT',
+    experiences: experienceSeeds.map((seed, index) => ({
+      id: index + 1,
+      company: seed.company,
+      role: seed.role.en,
+      period: seed.period.en,
+      description: seed.description.en,
+      startDate: seed.startDate,
+      endDate: seed.endDate,
+      location: null,
+      logo: null,
+      stack: seed.tags.map((name) => ({ id: `${seed.company}-${name}`, name })),
+      updatedAt: '2025-09-01T00:00:00.000Z',
+      createdAt: '2025-09-01T00:00:00.000Z',
+    })),
   },
 }
 
 /**
- * Empty collection, which is the current state of the database: the section
- * returns `null`, so the story canvas renders nothing at all. Proving it means
- * `canvasElement.innerHTML === ''` (or `querySelector('section') === null`);
- * no heading survives to sit over an empty timeline.
+ * Empty collection: the section returns `null`, so the story canvas renders nothing at
+ * all. Proving it means `canvasElement.querySelector('section') === null`; no heading
+ * survives to sit over an empty timeline, which keeps the page ordinals intact.
  */
 export const Empty: Story = {
   args: {
-    eyebrow: '03 / TRAYECTORIA',
-    heading: 'Dónde he trabajado.',
-    presentLabel: 'Actualidad',
-    locale: 'es',
+    ...Default.args,
     experiences: [],
   },
 }

@@ -114,9 +114,10 @@ export default async function HomePage({ params }: HomePageProps) {
       <ExperienceSection
         eyebrow={dict.experience.eyebrow}
         heading={dict.experience.heading}
-        note={dict.experience.note}
-        presentLabel={dict.experience.present}
-        locale={locale}
+        headingAccent={dict.experience.headingAccent}
+        intro={dict.experience.intro}
+        statLabel={dict.experience.stat}
+        currentLabel={dict.experience.current}
         experiences={experiences.docs}
       />
       <ContactSection

@@ -134,10 +134,16 @@ export type Dictionary = {
   }
   experience: {
     eyebrow: string
+    /** Display heading, without the accent tail. Real newlines become forced breaks. */
     heading: string
-    note?: string
-    /** Label shown in place of a missing `endDate` (current role). */
-    present: string
+    /** Accented tail of the heading, rendered in the primary colour. */
+    headingAccent: string
+    /** Intro paragraph of the left column. */
+    intro: string
+    /** Label next to the `2017 →` stat. */
+    stat: string
+    /** Badge on the role that has no end date yet. */
+    current: string
   }
   /** Philosophy band that closes the skills section. */
   manifesto: {
@@ -220,8 +226,12 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     experience: {
       eyebrow: '04 / TRAYECTORIA',
-      heading: 'Dónde he trabajado.',
-      present: 'Actualidad',
+      heading: 'Del código\nal',
+      headingAccent: 'liderazgo.',
+      intro:
+        'He pasado de construir aplicaciones a liderar equipos y definir la arquitectura de plataformas completas, sin alejarme de la ingeniería.',
+      stat: 'Ingeniería de software, arquitectura y dirección técnica',
+      current: 'ACTUAL',
     },
     manifesto: {
       label: 'Filosofía',
@@ -313,8 +323,12 @@ const dictionaries: Record<Locale, Dictionary> = {
     },
     experience: {
       eyebrow: '04 / TRACK RECORD',
-      heading: "Where I've worked.",
-      present: 'Present',
+      heading: 'From code\nto',
+      headingAccent: 'leadership.',
+      intro:
+        'I have gone from building applications to leading teams and designing entire platforms, while staying close to engineering.',
+      stat: 'Software engineering, architecture and technical leadership',
+      current: 'CURRENT',
     },
     manifesto: {
       label: 'Philosophy',

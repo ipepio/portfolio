@@ -310,6 +310,94 @@ export const aboutSeed: AboutSeed = {
   ],
 }
 
+export type ExperienceSeed = {
+  company: string
+  role: Localized
+  /**
+   * Period label exactly as the reference prints it. It is stored per locale because the
+   * reference writes it by hand (e.g. "ABR — SEP 2025", without the start year) and the
+   * dates below cannot reproduce that copy.
+   */
+  period: Localized
+  description: Localized
+  /** Mono tags under the description, in the reference order. */
+  tags: string[]
+  /** First of the month, so the UTC formatter never shifts it. */
+  startDate: string
+  /** Empty for the current role, which renders the `CURRENT` badge. */
+  endDate: string | null
+}
+
+/** Career timeline, newest first, verbatim from the experience reference. */
+export const experienceSeeds: ExperienceSeed[] = [
+  {
+    company: 'EASYGOBAND WORLD',
+    role: { es: 'CTO / Tech Lead', en: 'CTO / Tech Lead' },
+    period: { es: 'SEP 2025 — ACTUALIDAD', en: 'SEP 2025 — PRESENT' },
+    description: {
+      es: 'Dirección técnica de desarrollo, DevOps, QA, integraciones y ciberseguridad. Modernización de la plataforma, evolución arquitectónica hacia V2, automatización y adopción de IA en los procesos de ingeniería.',
+      en: 'Technical leadership across development, DevOps, QA, integrations and cybersecurity. Platform modernization, V2 architecture, automation and the adoption of AI in engineering workflows.',
+    },
+    tags: ['TECH STRATEGY', 'PLATFORM', 'AWS / EKS', 'AI ENGINEERING'],
+    startDate: '2025-09-01T00:00:00.000Z',
+    endDate: null,
+  },
+  {
+    company: 'TINEVERSE',
+    role: { es: 'Tech Lead / Lead Software Engineer', en: 'Tech Lead / Lead Software Engineer' },
+    period: { es: 'ABR — SEP 2025', en: 'APR — SEP 2025' },
+    description: {
+      es: 'Liderazgo técnico y desarrollo de software, con foco en la ejecución de producto, las decisiones de arquitectura y la coordinación de la entrega.',
+      en: 'Technical leadership and software engineering with a focus on product delivery, architecture decisions and coordinating execution.',
+    },
+    tags: ['ENGINEERING', 'PRODUCT', 'TECH LEAD'],
+    startDate: '2025-04-01T00:00:00.000Z',
+    endDate: '2025-09-01T00:00:00.000Z',
+  },
+  {
+    company: 'ORATREX TECH',
+    role: { es: 'CTO / Tech Lead', en: 'CTO / Tech Lead' },
+    period: { es: 'AGO 2023 — MAR 2025', en: 'AUG 2023 — MAR 2025' },
+    description: {
+      es: 'Responsabilidad sobre arquitectura y liderazgo de ingeniería. Desarrollo de soluciones, evolución de infraestructura y mejora del proceso de entrega.',
+      en: 'Responsibility for architecture and engineering leadership. Building solutions, evolving infrastructure and improving software delivery.',
+    },
+    tags: ['ARCHITECTURE', 'DEVOPS', 'TEAM LEADERSHIP'],
+    startDate: '2023-08-01T00:00:00.000Z',
+    endDate: '2025-03-01T00:00:00.000Z',
+  },
+  {
+    company: 'SEIDOR',
+    role: {
+      es: 'Consultor Senior SAP WM/EWM',
+      en: 'Senior SAP WM/EWM Consultant',
+    },
+    period: { es: 'ABR 2022 — AGO 2023', en: 'APR 2022 — AUG 2023' },
+    description: {
+      es: 'Consultoría técnica y funcional en sistemas empresariales de logística y almacenes, integrando necesidades operativas con soluciones de software.',
+      en: 'Technical and functional consulting in enterprise warehouse and logistics systems, bridging operational needs and software solutions.',
+    },
+    tags: ['SAP WM/EWM', 'ENTERPRISE', 'INTEGRATIONS'],
+    startDate: '2022-04-01T00:00:00.000Z',
+    endDate: '2023-08-01T00:00:00.000Z',
+  },
+  {
+    company: 'GRUPO GIL COMES',
+    role: {
+      es: 'Senior Software Developer / SAP Developer',
+      en: 'Senior Software Developer / SAP Developer',
+    },
+    period: { es: 'DIC 2017 — ABR 2022', en: 'DEC 2017 — APR 2022' },
+    description: {
+      es: 'Desarrollo de software e integraciones para procesos de negocio. Una etapa clave construyendo criterio de ingeniería desde la implementación y el mantenimiento de sistemas reales.',
+      en: 'Software development and integrations for business workflows. A foundational period building engineering judgment through the implementation and maintenance of real systems.',
+    },
+    tags: ['SOFTWARE DEVELOPMENT', 'SAP', 'INTEGRATIONS'],
+    startDate: '2017-12-01T00:00:00.000Z',
+    endDate: '2022-04-01T00:00:00.000Z',
+  },
+]
+
 export const contactSeed = {
   socials: [{ label: 'GitHub', url: 'https://github.com/ipepio' }],
 }

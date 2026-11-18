@@ -58,6 +58,16 @@ export const Experience: CollectionConfig = {
       },
     },
     {
+      name: 'period',
+      type: 'text',
+      localized: true,
+      label: 'Periodo',
+      admin: {
+        description:
+          'Etiqueta del periodo tal como se muestra en la web (p. ej. "SEP 2025 — ACTUALIDAD"). Las fechas de arriba solo ordenan la colección.',
+      },
+    },
+    {
       name: 'description',
       type: 'textarea',
       localized: true,
