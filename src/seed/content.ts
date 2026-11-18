@@ -134,10 +134,20 @@ export const tagNames = ['IA / Agentes', 'Plataforma', 'Producto'] as const
 
 export type TagName = (typeof tagNames)[number]
 
+/** Diagram shown when a project has no cover image (Payload `projects.visual`). */
+type ProjectVisualName =
+  | 'code-stack'
+  | 'agent-orbit'
+  | 'mock-shell'
+  | 'echo-ring'
+  | 'svc-map'
+  | 'chat-lines'
+
 export type ProjectSeed = {
   title: Localized
   slug: string
   shortDescription: Localized
+  visual: ProjectVisualName
   tags: TagName[]
   status: 'live' | 'wip'
   githubUrl?: string
@@ -152,6 +162,7 @@ export const projectSeeds: ProjectSeed[] = [
       es: 'Gateway OpenAI-compatible para gobernar acceso a modelos, cuotas, presupuestos y rate limits con trazabilidad por usuario y organización.',
       en: 'An OpenAI-compatible gateway to govern model access, quotas, budgets, and rate limits, with per-user and organization-level tracking.',
     },
+    visual: 'code-stack',
     tags: ['IA / Agentes', 'Plataforma'],
     status: 'wip',
     order: 1,
@@ -163,6 +174,7 @@ export const projectSeeds: ProjectSeed[] = [
       es: 'Entorno de orquestación para agentes de IA, herramientas y sesiones persistentes. Una base ligera para construir flujos de trabajo propios.',
       en: 'An orchestration environment for AI agents, tools, and persistent sessions. A lightweight foundation for custom workflows.',
     },
+    visual: 'agent-orbit',
     tags: ['IA / Agentes', 'Producto'],
     status: 'live',
     githubUrl: 'https://github.com/ipepio/pi-hub',
@@ -175,6 +187,7 @@ export const projectSeeds: ProjectSeed[] = [
       es: 'Un harness de IA de escritorio con enfoque local-first: experiencia nativa, runtime de agentes y una interfaz que prioriza claridad y velocidad.',
       en: 'A local-first desktop AI harness: native experience, agent runtime, and an interface built around clarity and speed.',
     },
+    visual: 'mock-shell',
     tags: ['IA / Agentes', 'Producto'],
     status: 'wip',
     order: 3,
@@ -186,6 +199,7 @@ export const projectSeeds: ProjectSeed[] = [
       es: 'Concepto de asistente personal privado, con interacción por voz, STT/TTS y herramientas conectadas a servicios propios.',
       en: 'A private personal-assistant concept combining voice interaction, STT/TTS, and tools connected to self-hosted services.',
     },
+    visual: 'echo-ring',
     tags: ['IA / Agentes', 'Producto'],
     status: 'wip',
     order: 4,
@@ -197,6 +211,7 @@ export const projectSeeds: ProjectSeed[] = [
       es: 'Evolución de plataformas hacia servicios desacoplados, dominios claros, despliegues reproducibles y operativa cloud automatizada.',
       en: 'Moving platforms toward decoupled services, clear domain boundaries, reproducible deployments, and automated cloud operations.',
     },
+    visual: 'svc-map',
     tags: ['Plataforma'],
     status: 'live',
     order: 5,
@@ -208,6 +223,7 @@ export const projectSeeds: ProjectSeed[] = [
       es: 'Ingesta, indexación y recuperación de conocimiento de Discord para que agentes y herramientas puedan trabajar con contexto y permisos.',
       en: 'Ingestion, indexing, and retrieval of Discord knowledge so agents and tools can work with relevant context and permissions.',
     },
+    visual: 'chat-lines',
     tags: ['IA / Agentes', 'Plataforma'],
     status: 'wip',
     order: 6,
@@ -245,17 +261,16 @@ export const aboutSeed: AboutSeed = {
     en: 'CTO · Architecture · Applied AI',
   },
   location: { es: 'Vinaròs, España', en: 'Vinaròs, Spain' },
-  sectionEyebrow: { es: '01 / ENFOQUE', en: '01 / APPROACH' },
-  sectionHeading: { es: 'Menos ruido. Más sistemas', en: 'Less noise. More systems' },
+  sectionEyebrow: { es: 'ENFOQUE', en: 'APPROACH' },
+  // The real newline in `sectionHeading` is rendered as a forced line break (`whitespace-pre-line`).
+  sectionHeading: { es: 'Menos ruido\nMás sistemas', en: 'Less noise\nMore systems' },
   sectionHeadingAccent: { es: 'que funcionan.', en: 'that work.' },
   bio: {
     es: [
-      'Ingeniero de telecomunicaciones con 8+ años de experiencia. He trabajado en consultoría, industria y empresas de producto donde el software es el centro.',
-      'Me gusta entender sistemas complejos y convertir requisitos ambiguos en soluciones prácticas y fiables. He liderado equipos, introducido metodologías ágiles y explorado cómo la IA puede transformar nuestra forma de construir software.',
+      'Me muevo entre estrategia técnica y ejecución. Puedo definir una arquitectura, construir el producto, automatizar su despliegue y analizar qué ocurre cuando llega tráfico real. Creo en soluciones claras, escalables, observables y sin complejidad gratuita.',
     ],
     en: [
-      'Telecommunications engineer with 8+ years of experience. I have worked in consulting, industry, and product companies where software is the core.',
-      'I enjoy understanding complex systems and turning ambiguous requirements into practical, reliable solutions. I have led teams, introduced agile methodologies, and explored how AI can transform the way we build software.',
+      'I work between technical strategy and execution. I can shape an architecture, build the product, automate its deployment and analyse what happens when real traffic arrives. I believe in clear, scalable, observable solutions without gratuitous complexity.',
     ],
   },
   heroLines: [
@@ -285,7 +300,7 @@ export const aboutSeed: AboutSeed = {
     { es: 'Cloud / AI / DevOps', en: 'Cloud / AI / DevOps' },
     { es: 'Desde España', en: 'Based in Spain' },
   ],
-  // Only the years-of-experience figure survived; it now renders in the About section.
+  // Kept in the data model but no longer rendered: the About section dropped the stat block.
   stats: [{ value: '8+', label: { es: 'AÑOS EN SOFTWARE', en: 'YEARS IN SOFTWARE' } }],
   principles: [
     {

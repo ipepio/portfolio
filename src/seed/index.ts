@@ -1,4 +1,5 @@
 import { getPayload } from 'payload'
+import { fileURLToPath } from 'node:url'
 
 import config from '@payload-config'
 
@@ -11,6 +12,24 @@ const payload = await getPayload({ config })
 // SAFETY: Payload handles "all" at runtime (globals already type it as `'all' | TypedLocale`),
 // but the collection Local API types only allow configured locale codes.
 const ALL_LOCALES = 'all' as unknown as 'es'
+
+/** Alt text is the seed's own key for the portrait, which keeps the upload idempotent. */
+const PHOTO_ALT = 'Isaac Pepió'
+const PHOTO_PATH = fileURLToPath(new URL('../assets/isaac.png', import.meta.url))
+
+/**
+ * Uploads the portrait into the media collection. Re-running the seed deletes the
+ * previous copy first (matched by alt), so the collection never accumulates duplicates.
+ */
+async function seedMedia() {
+  await payload.delete({ collection: 'media', where: { alt: { equals: PHOTO_ALT } } })
+
+  return payload.create({
+    collection: 'media',
+    data: { alt: PHOTO_ALT },
+    filePath: PHOTO_PATH,
+  })
+}
 
 async function seedCollections() {
   // Delete first so re-running the seed never duplicates documents.
@@ -45,6 +64,7 @@ async function seedCollections() {
       slug: project.slug,
       shortDescription: project.shortDescription,
       status: project.status,
+      visual: project.visual,
       order: project.order,
       githubUrl: project.githubUrl,
       tags,
@@ -53,7 +73,7 @@ async function seedCollections() {
   }
 }
 
-async function seedGlobals() {
+async function seedGlobals(photoId: number) {
   // SAFETY: with locale: 'all' Payload reads localized fields as locale-keyed objects,
   // while the generated About type describes one resolved locale.
   const aboutData = {
@@ -64,7 +84,8 @@ async function seedGlobals() {
     sectionEyebrow: aboutSeed.sectionEyebrow,
     sectionHeading: aboutSeed.sectionHeading,
     sectionHeadingAccent: aboutSeed.sectionHeadingAccent,
-    photo: null,
+    // `photo` is not localized, so this single write backs both locale versions.
+    photo: photoId,
     bio: {
       es: richText(aboutSeed.bio.es),
       en: richText(aboutSeed.bio.en),
@@ -99,13 +120,16 @@ async function seedGlobals() {
 }
 
 try {
+  const media = await seedMedia()
   await seedCollections()
-  await seedGlobals()
+  await seedGlobals(media.id)
 
+  const mediaCount = await payload.count({ collection: 'media' })
   const skillGroups = await payload.count({ collection: 'skill-groups' })
   const projects = await payload.count({ collection: 'projects' })
   const tags = await payload.count({ collection: 'tags' })
 
+  console.log(`Seeded media: ${mediaCount.totalDocs}`)
   console.log(`Seeded skill-groups: ${skillGroups.totalDocs}`)
   console.log(`Seeded projects: ${projects.totalDocs}`)
   console.log(`Seeded tags: ${tags.totalDocs}`)
