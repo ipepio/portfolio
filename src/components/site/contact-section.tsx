@@ -110,7 +110,7 @@ export function ContactSection({ contact, copy, ownerName }: ContactSectionProps
     <section
       id="contact"
       aria-labelledby={HEADING_ID}
-      className="px-6 pt-[100px] pb-11 min-[781px]:pt-[120px]"
+      className="bg-background-elevated px-6 pt-[100px] pb-11 min-[781px]:pt-[120px]"
     >
       <div className="mx-auto grid w-full max-w-(--container-page) grid-cols-1 items-start gap-10 pb-[70px] min-[781px]:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] min-[781px]:gap-9 min-[781px]:pb-[93px] min-[1021px]:gap-[clamp(40px,7vw,110px)]">
         <div>

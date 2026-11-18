@@ -98,7 +98,7 @@ export function ExperienceSection({
     <section
       id="experience"
       aria-labelledby={HEADING_ID}
-      className="border-b border-border px-6 pt-[86px] pb-[95px] min-[781px]:pt-[120px] min-[781px]:pb-[130px]"
+      className="px-6 pt-[86px] pb-[95px] min-[781px]:pt-[120px] min-[781px]:pb-[130px]"
     >
       <div className="mx-auto grid w-full max-w-(--container-page) grid-cols-1 items-start gap-8 min-[781px]:grid-cols-[minmax(255px,0.72fr)_minmax(0,1.28fr)] min-[781px]:gap-[50px] min-[1021px]:grid-cols-[minmax(255px,0.77fr)_minmax(0,1.23fr)] min-[1021px]:gap-[clamp(55px,8vw,125px)]">
         <div className="min-[781px]:sticky min-[781px]:top-[123px]">
