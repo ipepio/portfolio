@@ -399,5 +399,7 @@ export const experienceSeeds: ExperienceSeed[] = [
 ]
 
 export const contactSeed = {
+  /** Inbox the section 05 form delivers to; the route reads it from the contact global. */
+  email: 'isaac@ipepio.dev',
   socials: [{ label: 'GitHub', url: 'https://github.com/ipepio' }],
 }

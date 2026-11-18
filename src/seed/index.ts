@@ -133,10 +133,11 @@ async function seedGlobals(photoId: number) {
   await payload.updateGlobal({ slug: 'about', locale: 'all', data: aboutData })
 
   // email and phone are left empty because no source provides them.
+  // The form's destination. Phone is left empty because no source provides one.
   await payload.updateGlobal({
     slug: 'contact',
     data: {
-      email: null,
+      email: contactSeed.email,
       phone: null,
       socials: contactSeed.socials,
     },
