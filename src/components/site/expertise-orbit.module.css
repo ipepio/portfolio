@@ -1,22 +1,25 @@
 /* ---------------------------------------------------------------------------
-   Skills orbit — React port of the "expertise" reference HTML.
+   Expertise orbit — React port of `expertise-orbit-equidistante.html`.
 
-   Structure, spacing, proportions and every keyframe are kept from the
-   reference. Its hardcoded palette is mapped onto the portfolio tokens, one
-   reference variable at a time:
+   Structure, spacing, proportions, class names and every keyframe are kept from
+   the reference. Its own palette variables are mapped one at a time onto the
+   design tokens the About band already uses:
 
-     --bg     -> var(--background)
-     --surface -> var(--card)
-     --line   -> var(--border)
-     --muted  -> var(--muted-foreground)
-     --fg     -> var(--foreground)
-     --accent -> var(--primary)
-     --mono   -> var(--font-mono)
+     --bg          -> var(--background)
+     --surface     -> var(--card)
+     --line        -> var(--border)
+     --muted       -> var(--muted-foreground)
+     --fg          -> var(--foreground)
+     --accent      -> var(--primary)
+     --accent-soft -> color-mix(in srgb, var(--primary) 17%, transparent)
+     --mono        -> var(--font-mono)
+     --sans        -> var(--font-sans)
 
-   Deliberately dropped: `.experience` (the reference used `min-height: 100svh`,
-   the About section owns its own height), `.topline` and `.footer-hint` (page
-   chrome, not part of the widget). `--orbit-size` moves from `:root` onto
-   `.root` so the widget stays self-contained.
+   The reference `--bg` ring gaps sit on the elevated About band here, so those
+   surfaces use `--background-elevated`. Deliberately dropped: `.experience` (the
+   reference was a full page; the About section owns its height), `.topline` and
+   `.footer-hint` (page chrome, not part of the graph). `--orbit-size` moves from
+   `:root` onto `.root` so the widget stays self-contained.
    --------------------------------------------------------------------------- */
 
 .root {
@@ -42,8 +45,8 @@
   aspect-ratio: 1 / 1;
   flex: none;
   margin: 0 auto;
-  /* Every node is positioned on this same coordinate system; --x/--y come from the
-     ring math in the component, so all nodes share one radius and one angle step. */
+  /* Every node is positioned on this same coordinate system; --x/--y are the seven
+     equidistant positions (360 / 7 degrees) on the 82% outer ring. */
 }
 
 .orbitRing,
@@ -184,7 +187,7 @@
 .node {
   position: absolute;
   z-index: 3;
-  /* Ring coordinates from the component: one radius and one angle step for all nodes. */
+  /* Equidistant ring coordinates from the component (--x/--y). */
   top: var(--y);
   left: var(--x);
   transform: translate(-50%, -50%);
@@ -372,7 +375,7 @@
 
 /* --------------------------------------------------------------------------
    Shared illustration tokens. The scene SVGs are inline and reference these
-   classes, so the shared stroke/fill weights live in one place.
+   classes, so the shared typography and animation live in one place.
    -------------------------------------------------------------------------- */
 .sMono {
   font-family: var(--font-mono);
@@ -674,10 +677,10 @@
 }
 
 /* Compact widths: the ring fills the column and ENTERPRISE — the widest label, on the
-   extreme-left node — no longer fits beside its disc, so it sits above it instead.
-   Only the placement changes: the side itself still comes from the node's angle. Kept
-   last so it wins over the side rules above at equal specificity. */
-@media (max-width: 740px) {
+   extreme-left node — no longer fits beside its disc, so it sits above it instead, as
+   in the reference. Kept last so it wins over the side rules above at equal
+   specificity. */
+@media (max-width: 420px) {
   .node[data-section='enterprise'] .nodeLabel {
     right: auto;
     left: 50%;

@@ -139,6 +139,11 @@ export type Dictionary = {
     /** Label shown in place of a missing `endDate` (current role). */
     present: string
   }
+  /** Philosophy band that closes the skills section. */
+  manifesto: {
+    /** Accessible name for the band; its two visible strings are untranslated. */
+    label: string
+  }
   projects: {
     eyebrow: string
     heading: string
@@ -217,6 +222,9 @@ const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: '04 / TRAYECTORIA',
       heading: 'Dónde he trabajado.',
       present: 'Actualidad',
+    },
+    manifesto: {
+      label: 'Filosofía',
     },
     projects: {
       eyebrow: '03 / PROYECTOS SELECCIONADOS',
@@ -307,6 +315,9 @@ const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: '04 / TRACK RECORD',
       heading: "Where I've worked.",
       present: 'Present',
+    },
+    manifesto: {
+      label: 'Philosophy',
     },
     projects: {
       eyebrow: '03 / SELECTED WORK',

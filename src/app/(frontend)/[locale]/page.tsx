@@ -8,6 +8,7 @@ import { ContactSection } from '@/components/site/contact-section'
 import { ExperienceSection } from '@/components/site/experience-section'
 import { ExpertiseSection } from '@/components/site/expertise-section'
 import { HeroSection } from '@/components/site/hero-section'
+import { ManifestoBand } from '@/components/site/manifesto-band'
 import { ProjectsSection } from '@/components/site/projects-section'
 import { getDictionary, isLocale, locales } from '@/lib/i18n'
 
@@ -25,8 +26,9 @@ type HomePageProps = {
  * locale of the URL segment.
  *
  * Section order is the one the navigation promises: Inicio, Sobre mí, Skills, Proyectos,
- * Experiencia, Contacto. The expertise global feeds both the About orbit and the skills
- * band, so a single capability list drives both blocks.
+ * Experiencia, Contacto. The expertise global feeds the skills band; the About orbit is
+ * the self-contained expertise graph and no longer reads it. The manifesto band closes
+ * the skills section.
  */
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params
@@ -82,13 +84,7 @@ export default async function HomePage({ params }: HomePageProps) {
         role={about.role}
         portrait={dict.portrait}
       />
-      <AboutSection
-        about={about}
-        eyebrow={dict.about.eyebrow}
-        heading={dict.about.heading}
-        capabilities={capabilities}
-        orbitLabel={dict.about.orbitLabel}
-      />
+      <AboutSection about={about} eyebrow={dict.about.eyebrow} heading={dict.about.heading} />
       <ExpertiseSection
         eyebrow={dict.expertise.eyebrow}
         heading={dict.expertise.heading}
@@ -105,6 +101,7 @@ export default async function HomePage({ params }: HomePageProps) {
         extendedTag={dict.expertise.extendedTag}
         toolsFoot={dict.expertise.toolsFoot}
       />
+      <ManifestoBand label={dict.manifesto.label} />
       <ProjectsSection
         eyebrow={dict.projects.eyebrow}
         heading={dict.projects.heading}

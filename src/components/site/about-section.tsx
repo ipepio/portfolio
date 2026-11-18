@@ -1,6 +1,6 @@
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
-import { SkillsOrbit, type OrbitCapability } from '@/components/site/skills-orbit'
+import { ExpertiseOrbit } from '@/components/site/expertise-orbit'
 
 import type { About } from '@/payload-types'
 
@@ -13,10 +13,6 @@ export type AboutSectionProps = {
    * The hero owns the page `h1`, so the section renders a single `h2`.
    */
   heading?: string
-  /** Capabilities rendered as the orbit graph below the principles. */
-  capabilities?: OrbitCapability[]
-  /** Accessible name for the orbit graph, from the dictionary. */
-  orbitLabel?: string
 }
 
 /** Lexical editor state accepted by the official Payload `RichText` renderer. */
@@ -41,7 +37,7 @@ function principleKey(
 /**
  * Presentational About section, matching the reference two-column layout: eyebrow plus the
  * display heading on the left, the big rich-text bio on the right, then the three-column
- * principles grid and the capability orbit closing the section. It is one of the elevated
+ * principles grid and the expertise orbit closing the section. It is one of the elevated
  * bands of the page (Hero, Skills and Contact keep the base surface). The section is
  * viewport-tall like the hero, but its content is top-aligned so the eyebrow never floats
  * in the middle of the screen.
@@ -49,13 +45,7 @@ function principleKey(
  * The portrait, location caption, education and languages live in Payload but are not
  * rendered here anymore — the user asked for this section to stay minimal.
  */
-export function AboutSection({
-  about,
-  eyebrow,
-  heading,
-  capabilities = [],
-  orbitLabel,
-}: AboutSectionProps) {
+export function AboutSection({ about, eyebrow, heading }: AboutSectionProps) {
   const principles = about.principles ?? []
 
   // The heading can carry real newlines, which `whitespace-pre-line` renders as forced
@@ -134,10 +124,8 @@ export function AboutSection({
           </ul>
         ) : null}
 
-        {/* Orbit graph: the capabilities around a central node, last block of the section. */}
-        {capabilities.length > 0 ? (
-          <SkillsOrbit capabilities={capabilities} label={orbitLabel?.trim() || 'Skills'} />
-        ) : null}
+        {/* Expertise orbit: seven equidistant areas of expertise, last block of the section. */}
+        <ExpertiseOrbit />
       </div>
     </section>
   )
