@@ -3,6 +3,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import { HeroPortrait } from '@/components/site/hero-portrait'
 
 import type { HeroCopy, PortraitLabels } from '@/lib/i18n'
+import { BLOG_URL } from '@/lib/site-links'
 import type { Media } from '@/payload-types'
 
 export type HeroLineStyle = 'plain' | 'outlined' | 'accent'
@@ -154,6 +155,14 @@ export function HeroSection({
               className={`${BTN_CLASS} border border-input text-foreground hover:border-muted hover:bg-card`}
             >
               <span>{copy.secondaryCta}</span>
+              <span aria-hidden>↗</span>
+            </a>
+            {/* The blog is a separate application, so this leaves the site entirely. */}
+            <a
+              href={BLOG_URL}
+              className={`${BTN_CLASS} border border-input bg-card text-foreground hover:border-primary hover:text-primary`}
+            >
+              <span>{copy.blogCta}</span>
               <span aria-hidden>↗</span>
             </a>
           </div>

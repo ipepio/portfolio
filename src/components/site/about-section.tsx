@@ -3,6 +3,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import { ExpertiseOrbit } from '@/components/site/expertise-orbit'
 
 import type { AboutCopy } from '@/lib/i18n'
+import { BLOG_URL } from '@/lib/site-links'
 import type { About } from '@/payload-types'
 
 export type AboutSectionProps = {
@@ -88,6 +89,17 @@ export function AboutSection({ about, copy }: AboutSectionProps) {
 
           <div className="min-w-0">
             {bioData ? <RichText className={BIO_CLASS} data={bioData} /> : null}
+
+            {/* Leads to the blog application, which lives on its own address. */}
+            <a
+              href={BLOG_URL}
+              className="mono mt-6 inline-flex w-fit max-w-full items-center justify-between gap-3 border-b border-primary pb-3 text-[11px] leading-[1.6] font-semibold tracking-[0.01em] text-primary transition-colors hover:border-foreground hover:text-foreground"
+            >
+              <span>{copy.blogLink}</span>
+              <span aria-hidden className="text-[18px] leading-none">
+                ↗
+              </span>
+            </a>
           </div>
         </div>
 

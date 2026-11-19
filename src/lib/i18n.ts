@@ -152,6 +152,8 @@ export type PortraitLabels = {
 export type HeroCopy = {
   primaryCta: string
   secondaryCta: string
+  /** Entry to the blog application, which lives on its own address. */
+  blogCta: string
 }
 
 /** Copy for the About section (01), including the fallbacks for its Payload fields. */
@@ -160,6 +162,8 @@ export type AboutCopy = {
   heading: string
   /** Accessible name for the skill orbit graph. */
   orbitLabel: string
+  /** Line under the bio that leads to the blog. */
+  blogLink: string
 }
 
 /** Copy for the skills band (02): the aside and the two tool belts. */
@@ -257,6 +261,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     hero: {
       primaryCta: '¿Quién soy?',
       secondaryCta: 'Escríbeme',
+      blogCta: 'Blog / Mis movidas',
     },
     portrait: {
       figureLabel: 'Retrato de',
@@ -277,6 +282,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: '01 / SOBRE MÍ',
       heading: 'Cómo trabajo.',
       orbitLabel: 'Áreas de especialidad',
+      blogLink: 'Leo, pruebo, rompo y escribo sobre ello en el blog.',
     },
     expertise: {
       eyebrow: '02 / LO QUE HAGO',
@@ -379,6 +385,7 @@ const dictionaries: Record<Locale, Dictionary> = {
     hero: {
       primaryCta: 'Who am I?',
       secondaryCta: 'Get in touch',
+      blogCta: 'Blog / Field notes',
     },
     portrait: {
       figureLabel: 'Portrait of',
@@ -399,6 +406,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: '01 / ABOUT',
       heading: 'How I work.',
       orbitLabel: 'Areas of expertise',
+      blogLink: 'I read, experiment, break things, and write about it on the blog.',
     },
     expertise: {
       eyebrow: '02 / WHAT I DO',
