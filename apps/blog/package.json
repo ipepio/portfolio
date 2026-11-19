@@ -7,15 +7,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --test tests/"
+    "test": "node --test tests/",
+    "test:live-preview": "playwright test --config tests/live-preview.config.mjs"
   },
   "dependencies": {
+    "@payloadcms/live-preview-react": "3.93.0",
     "@payloadcms/richtext-lexical": "3.93.0",
     "next": "16.4.2",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "^4.3.5",
     "@types/node": "24.12.3",
     "@types/react": "19.3.0",

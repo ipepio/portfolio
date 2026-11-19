@@ -2,19 +2,11 @@ import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 
+import { LiveArticle } from '@/components/article-live'
 import { JournalBreadcrumb, JournalFooter } from '@/components/journal-blocks'
-import { artKindFor } from '@/components/journal-cover'
-import {
-  ReadingBody,
-  ReadingCover,
-  ReadingEnd,
-  ReadingHero,
-  ReadingSideNote,
-  ReadingToc,
-} from '@/components/reading-blocks'
+import { ReadingEnd } from '@/components/reading-blocks'
 import { format, getDictionary, pad } from '@/lib/i18n'
-import { getPostBySlug, getPosts, isLocale } from '@/lib/payload'
-import { readingSections } from '@/lib/reading'
+import { getPayloadUrl, getPostBySlug, getPosts, isLocale } from '@/lib/payload'
 import { getPortfolioUrl } from '@/lib/site'
 
 type ArticlePageProps = {
@@ -67,6 +59,11 @@ export async function generateMetadata(props: ArticlePageProps): Promise<Metadat
  * Draft mode is the only thing that widens the note lookup: an editor who arrived through
  * `/api/draft` reads a note that is still a draft. The archive order stays published, so the
  * serial and the next note of a previewed draft are its published neighbours.
+ *
+ * The note itself is rendered on the client (`LiveArticle`, T13: S13): the page hands it the
+ * document it just read and the Payload URL, and it re-renders from every live-preview message
+ * Payload's admin sends while the editor types. A plain request has no messages to receive, so
+ * what it renders is the stored note the server read, unchanged.
  */
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { locale, slug } = await params
@@ -88,7 +85,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const copy = getDictionary(locale)
   const position = timeline.findIndex((entry) => entry.slug === post.slug)
   const next = position === -1 ? null : (timeline[position + 1] ?? null)
-  const sections = readingSections(post.body)
   const serial = pad(position === -1 ? 1 : position + 1)
 
   return (
@@ -100,13 +96,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           current={post.slug}
           sectionHref={`/${locale}`}
         />
-        <ReadingHero copy={copy} post={post} />
-        <ReadingCover copy={copy} kind={artKindFor(post.slug)} serial={serial} />
-        <div className={sections.length === 0 ? 'reading-layout is-plain' : 'reading-layout'}>
-          {sections.length === 0 ? null : <ReadingToc copy={copy} sections={sections} />}
-          <ReadingBody body={post.body} sections={sections} />
-          <ReadingSideNote copy={copy} />
-        </div>
+        <LiveArticle copy={copy} post={post} serial={serial} serverURL={getPayloadUrl()} />
         {next === null ? null : <ReadingEnd locale={locale} copy={copy} post={next} />}
         <JournalFooter copy={copy} portfolioUrl={getPortfolioUrl()} />
       </div>

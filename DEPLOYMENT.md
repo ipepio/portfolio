@@ -19,6 +19,7 @@ Portfolio (repository root):
 | `PAYLOAD_SECRET`                    | yes      | Payload config secret; changing it invalidates sessions          |
 | `DATABASE_URI`                      | yes      | `file:./ipepio-portfolio.db` locally, an absolute path on a host |
 | `BLOG_URL`                          | yes      | Public blog URL; the hero, About and footer links point at it    |
+| `PREVIEW_SECRET`                    | no       | Shared with the blog; without it the `Posts` preview is omitted  |
 | `SMTP_HOST` `SMTP_USER` `SMTP_PASS` | no       | Contact form delivery; without all three the route answers 503   |
 | `SMTP_PORT` `SMTP_FROM`             | no       | Defaults: port `587`, from `SMTP_USER`                           |
 | `TRANSLATION_BASE_URL`              | no       | OpenAI-compatible endpoint root (llama.cpp in dev)               |
@@ -27,14 +28,45 @@ Portfolio (repository root):
 
 Blog (`apps/blog`):
 
-| Variable        | Required | Notes                                             |
-| --------------- | -------- | ------------------------------------------------- |
-| `PAYLOAD_URL`   | yes      | Portfolio origin serving `/api` (default `:3000`) |
-| `PORTFOLIO_URL` | yes      | Public portfolio URL used for the links back      |
+| Variable         | Required | Notes                                                         |
+| ---------------- | -------- | ------------------------------------------------------------- |
+| `PAYLOAD_URL`    | yes      | Portfolio origin serving `/api` (default `:3000`)             |
+| `PORTFOLIO_URL`  | yes      | Public portfolio URL used for the links back                  |
+| `PREVIEW_SECRET` | no       | Same value as the portfolio's; without it there is no preview |
 
 `BLOG_URL`, `PORTFOLIO_URL` and `PAYLOAD_URL` are per-deployment origins, so each app is
 pointed at the other from its own environment rather than from shared code. Never commit
 these values, and never put them in a file that ships with the image.
+
+## Draft preview of a post
+
+An editor reads an unpublished `posts` entry in the real blog, without publishing it, and
+nobody else sees it. Preview exists only when `PREVIEW_SECRET` is set to the **same value**
+in both deployments: the portfolio builds the URL with it and the blog is the only side that
+validates it. There is no default secret, so an environment without the variable has no
+preview at all.
+
+1. Payload's `Posts` collection exposes it in two places, both pointing at the blog's token
+   route: the **Preview** action (opens the note in a new tab) and the **live preview**
+   panel (the note beside the form). With no `PREVIEW_SECRET` both are omitted, because a
+   URL the blog would reject is worse than no button.
+2. The URL is `${BLOG_URL}/api/draft?secret=<PREVIEW_SECRET>&slug=<slug>&locale=<locale>`,
+   built from `BLOG_URL` so the address is the deployment's own.
+3. `apps/blog/src/app/api/draft/route.ts` compares the token in constant-sized terms — a
+   missing secret, a wrong secret and a missing slug all answer the same empty `404`, so the
+   route never says which part failed — and on a match enables Next's draft mode and
+   redirects to `/<locale>/<slug>`.
+4. Draft mode is the `__prerender_bypass` cookie Next writes (`HttpOnly`, session lifetime).
+   Only then does the article lookup drop Payload's `status` filter and read without caching;
+   the index, the archive and the `Siguiente nota` order keep the published filter, so a
+   draft never enters the public listing. Every previewed page shows a
+   `BORRADOR · VISTA PREVIA` / `DRAFT · PREVIEW` strip.
+5. `?exit=1` (the strip's link) deletes the cookie and returns to the index; closing the
+   browser ends it too.
+
+The secret is a bearer token for reading drafts: treat it like `PAYLOAD_SECRET`, rotate it by
+changing it in both deployments at once, and never expose it to the browser except inside
+the admin, where only an authenticated editor can see the Preview URL.
 
 ## Commands
 

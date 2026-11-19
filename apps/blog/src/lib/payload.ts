@@ -52,9 +52,28 @@ export type PostSummary = {
   featured?: boolean | null
 }
 
+/**
+ * A `cover` upload: the file Payload stores for the note.
+ *
+ * The API answers it at depth 1 as the upload document; the live preview's merged document
+ * carries the same shape, which is why the article reads the URL from here instead of
+ * building one.
+ */
+export type PostCover = {
+  alt?: string | null
+  url?: string | null
+}
+
+/**
+ * The `cover` field as a document carries it: the upload's id when the read is unpopulated
+ * (`depth: 0`, which is how the article reads its stored note) or the upload itself.
+ */
+export type PostCoverValue = number | string | PostCover | null
+
 /** A whole note: the summary plus the Lexical body the article page renders. */
 export type PostDetail = PostSummary & {
   body?: unknown | null
+  cover?: PostCoverValue
 }
 
 /** One page of notes, with the totals the pagination controls and the counter need. */

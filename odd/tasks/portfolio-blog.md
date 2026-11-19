@@ -28,6 +28,8 @@ S11. `si no tenemos ruta, da un 404, tenemos que solventarlo`: an unknown route 
 
 S12. `como hago para previsualizar los post?` — a draft must be readable before publishing, in the real blog, without making it public. The admin gets a Preview action and a live preview panel; the blog enters Next draft mode through a token route, renders drafts only inside that mode, shows a strip that says so, and offers the way out. The token comes from `PREVIEW_SECRET`; with no secret configured, preview does not exist at all (the route answers 404 and the admin shows no preview action) — there is no default secret.
 
+S13. `carga un iframe de lo que hay en ese momento, no se va rellenando a medida que lo vamos escribiendo` — the live preview panel must update as the editor types: text, headings, the section index and the cover image, without saving first. The article page therefore has to consume Payload's live-preview messages and re-render from the incoming document, while a plain page load keeps rendering the stored document and the separate Preview action keeps opening the saved draft.
+
 ## Tasks
 
 - T1 — `posts` collection, generated types and six sample entries transcribed from the reference — S4, S9
@@ -40,7 +42,8 @@ S12. `como hago para previsualizar los post?` — a draft must be readable befor
 - T8 — blog header: identity, journal index, portfolio link, theme toggle and language switch — S10
 - T9 — designed 404 that keeps the shell and offers a way back — S11
 - T12 — draft preview: admin action, live preview panel, draft-mode token route and preview strip — S12
-- T13 — verification per task: both locales, pagination edges, and a translated post end to end
+- T13 — live updates in the preview panel: the article consumes the editor's messages — S13
+- T14 — verification per task: both locales, pagination edges, and a translated post end to end
 
 ## Log
 
@@ -54,3 +57,4 @@ L6: deviation, for the record — the existing portfolio app stays at the reposi
 L7: note — the project has no versioned migrations (dev push only, and the last push crashed and was reconciled by hand). Migrations are a prerequisite before the first deploy of the blog schema, tracked as T7.
 L8 (verbatim): «vale, si no tenemos ruta, da un 404, tenemos que solventarlo eso. También falta el header para cambiar idioma, ir al portoflio, cambiar el tema»
 L9 (verbatim): «y cuando edito un post? también se traduce? como hago para previsualizar los post?» followed by «si, montalo»: editing translates too (already implemented, `afterChange`); draft preview is built as T12.
+L10 (verbatim): «lo que pasa es que carga un iframe de lo que hay en ese momento, no se va rellenando a medida que lo vamos escribiendo, cambiando imagen etc.» — the panel renders saved state because the article page ignores the editor's live-preview messages; T13 wires them.

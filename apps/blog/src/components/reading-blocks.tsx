@@ -10,6 +10,7 @@ import { RichText, type JSXConvertersFunction } from '@payloadcms/richtext-lexic
 
 import { Art, FeatureVisual, type ArtKind } from '@/components/journal-cover'
 import { format, pad, type JournalCopy } from '@/lib/i18n'
+import type { ArticleCover } from '@/lib/live-preview'
 import type { Locale, PostDetail, PostSummary } from '@/lib/payload'
 import { lexicalText, type ReadingSection } from '@/lib/reading'
 import { postHref } from '@/lib/routes'
@@ -67,33 +68,49 @@ export function ReadingHero({ copy, post }: { copy: JournalCopy; post: PostDetai
 }
 
 /**
- * The cover frame. Payload's `cover` upload is empty for the seeded notes and the reference
- * paints an editorial graphic instead, so the page keeps that graphic: the same art the
- * archive card of this note shows, blown up to the reading width.
+ * The cover frame: the note's own image when it has one, and the artwork when it has not.
+ *
+ * Payload's `cover` upload is empty for the seeded notes and the reference paints an editorial
+ * graphic instead, so the page keeps that graphic: the same art the archive card of this note
+ * shows, blown up to the reading width. A note that does carry an upload paints it in the same
+ * frame — which is also what makes the cover follow the editor's live document (T13: S13):
+ * choosing an image while typing swaps the artwork for it without saving.
  */
 export function ReadingCover({
   copy,
   kind,
   serial,
+  cover = null,
 }: {
   copy: JournalCopy
   kind: ArtKind
   serial: string
+  cover?: ArticleCover | null
 }) {
   return (
-    <div className="reading-cover" aria-hidden="true">
-      {kind === 'agents' ? (
-        <FeatureVisual
-          corner={copy.featureCoverCorner}
-          serial={serial}
-          idTemplate={copy.featureCoverId}
-        />
+    // The artwork is decoration and is hidden from assistive technology; an uploaded image
+    // is content, and keeps its alternative text.
+    <div className="reading-cover" aria-hidden={cover === null ? 'true' : undefined}>
+      {cover === null ? (
+        kind === 'agents' ? (
+          <FeatureVisual
+            corner={copy.featureCoverCorner}
+            serial={serial}
+            idTemplate={copy.featureCoverId}
+          />
+        ) : (
+          <div className="journal-graphic is-art">
+            <span className="graphic-corner">{copy.featureCoverCorner}</span>
+            <Art kind={kind} />
+            <span className="graphic-id">{format(copy.featureCoverId, { serial })}</span>
+          </div>
+        )
       ) : (
-        <div className="journal-graphic is-art">
-          <span className="graphic-corner">{copy.featureCoverCorner}</span>
-          <Art kind={kind} />
-          <span className="graphic-id">{format(copy.featureCoverId, { serial })}</span>
-        </div>
+        // The URL is the live document's own upload, served by the Payload app at runtime —
+        // no build-time remote pattern can describe it, so it is painted as an image and not
+        // through `next/image`.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className="reading-cover-image" src={cover.url} alt={cover.alt} />
       )}
       <span className="reading-cover-label">{format(copy.articleCoverLabel, { serial })}</span>
     </div>
