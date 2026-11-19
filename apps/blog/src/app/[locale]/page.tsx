@@ -1,21 +1,23 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-import { getPosts, isLocale, locales, type Locale } from '@/lib/payload'
-
-/** Chrome copy for the skeleton index; every string exists in both locales (S9). */
-const labels: Record<Locale, { heading: string; intro: string; empty: string }> = {
-  es: {
-    heading: 'Journal',
-    intro: 'Notas sobre agentes, infraestructura y producto.',
-    empty: 'Todavía no hay notas publicadas.',
-  },
-  en: {
-    heading: 'Journal',
-    intro: 'Field notes on agents, infrastructure and product.',
-    empty: 'No published notes yet.',
-  },
-}
+import {
+  FeaturedNote,
+  JournalArchive,
+  JournalBreadcrumb,
+  JournalFooter,
+  JournalHero,
+} from '@/components/journal-blocks'
+import { getDictionary } from '@/lib/i18n'
+import {
+  getFeaturedPost,
+  getPayloadUrl,
+  getPostsPage,
+  getPublishedNotesTotal,
+  isLocale,
+  locales,
+  POSTS_PAGE_SIZE,
+} from '@/lib/payload'
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -26,7 +28,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { locale } = await props.params
 
-  return { title: isLocale(locale) ? `${labels[locale].heading} — IPEPIO` : 'IPEPIO — Journal' }
+  return { title: isLocale(locale) ? getDictionary(locale).documentTitle : 'IPEPIO — Journal' }
 }
 
 type BlogIndexProps = {
@@ -34,9 +36,11 @@ type BlogIndexProps = {
 }
 
 /**
- * Blog index skeleton: proves the pipeline by listing the published posts of one locale in
- * the order Payload returns them (newest first). Unknown locales are missing routes, not
- * Spanish pages.
+ * The blog index: its own hero, the featured note and the first page of the `En el radar`
+ * archive. Page 1 is canonical here — `/[locale]/page/1` is a 404 — and every older note is
+ * reachable through `/[locale]/page/[n]`, so nothing gets dropped.
+ *
+ * Unknown locales are missing routes, not Spanish pages.
  */
 export default async function BlogIndexPage({ params }: BlogIndexProps) {
   const { locale } = await params
@@ -45,24 +49,45 @@ export default async function BlogIndexPage({ params }: BlogIndexProps) {
     notFound()
   }
 
-  const copy = labels[locale]
-  const posts = await getPosts(locale)
+  const copy = getDictionary(locale)
+  const [featured, archive, publishedCount] = await Promise.all([
+    getFeaturedPost(locale),
+    getPostsPage({ locale, page: 1, pageSize: POSTS_PAGE_SIZE }),
+    getPublishedNotesTotal(locale),
+  ])
+  const portfolioUrl = getPayloadUrl()
 
   return (
-    <main>
-      <h1>{copy.heading}</h1>
-      <p>{copy.intro}</p>
-      {posts.length === 0 ? (
-        <p>{copy.empty}</p>
-      ) : (
-        <ul>
-          {posts.map((post) => (
-            <li key={post.id}>
-              <a href={`/${locale}/${post.slug}`}>{post.title}</a>
-            </li>
-          ))}
-        </ul>
-      )}
-    </main>
+    <>
+      <a className="skip-link" href="#blogIndex">
+        {copy.skipToContent}
+      </a>
+      <main id="blogIndex" className="journal">
+        <div className="wrap">
+          <JournalBreadcrumb locale={locale} copy={copy} />
+          <JournalHero copy={copy} />
+          {featured === null ? null : (
+            <FeaturedNote
+              locale={locale}
+              copy={copy}
+              post={featured}
+              position={1}
+              total={publishedCount}
+            />
+          )}
+        </div>
+        <JournalArchive
+          locale={locale}
+          copy={copy}
+          docs={archive.docs}
+          page={archive.page}
+          totalPages={archive.totalPages}
+          publishedCount={publishedCount}
+        />
+        <div className="wrap">
+          <JournalFooter copy={copy} portfolioUrl={portfolioUrl} />
+        </div>
+      </main>
+    </>
   )
 }
