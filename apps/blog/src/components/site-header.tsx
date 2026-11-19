@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 
+import { BrandLogo } from '@/components/brand-logo'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { getDictionary } from '@/lib/i18n'
 import { isLocale, type Locale } from '@/lib/payload'
@@ -57,8 +58,8 @@ export function SiteHeader({
           href={archiveHref}
           aria-label={copy.navBrandLabel}
         >
-          <span className="journal-brand-mark mono" aria-hidden="true">
-            IP
+          <span className="journal-brand-mark" aria-hidden="true">
+            <BrandLogo />
           </span>
           <span className="journal-brand-word">ipepio</span>
           <span className="journal-brand-slash" aria-hidden="true">

@@ -115,8 +115,9 @@ describe('blog header — identity, links and controls', () => {
 
     assert.equal(status, 200)
     assert.match(header, /<nav[^>]*aria-label="Navegación principal"/) // nav landmark, labelled
-    assert.match(header, />IP</) // the `ipepio` monogram
-    assert.match(header, /CUADERNO/) // journal identity, Spanish
+    assert.match(header, /class="journal-brand-logo"/) // the portfolio's logo, not a monogram
+    assert.match(header, /IPEPIO \/ BLOG/) // journal identity, Spanish
+    assert.doesNotMatch(header, />IP</) // the old monogram box is gone
     assert.deepEqual(hrefsFor(header, 'data-journal-brand'), ['/es'])
     assert.deepEqual(hrefsFor(header, 'data-journal-nav-index'), ['/es'])
     assert.deepEqual(hrefsFor(header, 'data-journal-nav-portfolio'), [PORTFOLIO_URL])

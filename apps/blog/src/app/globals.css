@@ -156,19 +156,26 @@ a {
   white-space: nowrap;
 }
 
+/* The brand mark is the portfolio's logo, not the monogram box it used to be: the box
+   styling goes and the shape inherits the header's ink colour. */
 .journal-brand-mark {
   display: grid;
   place-items: center;
   flex: none;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--border-strong);
-  border-radius: 9px;
-  background: var(--card);
+  width: 26px;
+  height: 30px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+}
+
+.journal-brand-logo {
+  width: 24px;
+  height: 28px;
+}
+
+.journal-brand:hover .journal-brand-mark {
   color: var(--accent);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
 }
 
 .journal-brand-word {
