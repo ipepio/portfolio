@@ -28,7 +28,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { locale } = await props.params
 
-  return { title: isLocale(locale) ? getDictionary(locale).documentTitle : 'IPEPIO — Journal' }
+  return { title: isLocale(locale) ? getDictionary(locale).documentTitle : 'Isaac Pepió - Blog' }
 }
 
 type BlogIndexProps = {

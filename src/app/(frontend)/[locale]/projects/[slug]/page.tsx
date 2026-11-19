@@ -64,7 +64,9 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   }
 
   return {
-    title: project.title,
+    // The blog's articles read "<title> — Isaac Pepió - Blog"; the portfolio's detail pages
+    // mirror that shape so a tab always names the site it belongs to.
+    title: `${project.title} — Isaac Pepió`,
     description: project.shortDescription ?? undefined,
   }
 }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="51.5 52 228 228">
+  <!-- The portfolio's brand mark on the design system's primary lime. A favicon cannot
+       follow the theme, so it takes the one green the identity uses everywhere. -->
+  <path fill="#d1ff65" d="M170 60L128 86L128 126L170 100L228.1538 136L228.1538 192L176.4615 224L176.4615 248L157.0769 236L157.0769 192L195.8461 168L195.8461 136L182.923 128L131.2307 160L131.2307 248L170 272L260.4614 216L260.4614 116L170 60Z"/>
+  <path fill="#d1ff65" d="M108 100L72.4615 122L72.4615 218L108 240Z"/>
+</svg>

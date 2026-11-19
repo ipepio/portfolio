@@ -99,7 +99,7 @@ export type JournalCopy = {
 }
 
 const es: JournalCopy = {
-  documentTitle: 'Journal — IPEPIO / Field notes',
+  documentTitle: 'Isaac Pepió - Blog',
   skipToContent: 'Saltar al contenido',
   breadcrumbLabel: 'Ruta de navegación',
   breadcrumbHome: 'IPEPIO',
@@ -139,7 +139,7 @@ const es: JournalCopy = {
   featureCoverCorner: 'IPEPIO / ENGINEERING NOTES',
   featureCoverId: 'NOTE / {serial}',
   featureCoverPosition: '{index} / {total}',
-  articleDocumentTitle: '{title} — ipepio / Journal',
+  articleDocumentTitle: '{title} — Isaac Pepió - Blog',
   authorName: 'Isaac Pepió',
   authorHandle: 'ipepio',
   authorInitials: 'IP',
@@ -162,7 +162,7 @@ const es: JournalCopy = {
   navThemeToLight: 'Cambiar a tema claro',
   navThemeToDark: 'Cambiar a tema oscuro',
   navLanguageLabel: 'Ver esta página en inglés',
-  notFoundDocumentTitle: 'Página no encontrada — IPEPIO / Journal',
+  notFoundDocumentTitle: 'Página no encontrada — Isaac Pepió - Blog',
   notFoundKicker: 'ERROR 404 / RUTA PERDIDA',
   notFoundTitleLead: 'Esta nota',
   notFoundTitleAccent: 'no existe.',
@@ -175,7 +175,7 @@ const es: JournalCopy = {
 }
 
 const en: JournalCopy = {
-  documentTitle: 'Journal — IPEPIO / Field notes',
+  documentTitle: 'Isaac Pepió - Blog',
   skipToContent: 'Skip to content',
   breadcrumbLabel: 'Breadcrumb',
   breadcrumbHome: 'IPEPIO',
@@ -215,7 +215,7 @@ const en: JournalCopy = {
   featureCoverCorner: 'IPEPIO / ENGINEERING NOTES',
   featureCoverId: 'NOTE / {serial}',
   featureCoverPosition: '{index} / {total}',
-  articleDocumentTitle: '{title} — ipepio / Journal',
+  articleDocumentTitle: '{title} — Isaac Pepió - Blog',
   authorName: 'Isaac Pepió',
   authorHandle: 'ipepio',
   authorInitials: 'IP',
@@ -238,7 +238,7 @@ const en: JournalCopy = {
   navThemeToLight: 'Switch to light theme',
   navThemeToDark: 'Switch to dark theme',
   navLanguageLabel: 'View this page in Spanish',
-  notFoundDocumentTitle: 'Page not found — IPEPIO / Journal',
+  notFoundDocumentTitle: 'Page not found — Isaac Pepió - Blog',
   notFoundKicker: 'ERROR 404 / LOST ROUTE',
   notFoundTitleLead: 'This note',
   notFoundTitleAccent: 'does not exist.',

@@ -12,12 +12,12 @@ import { parseTheme, THEME_COOKIE_NAME } from '@/lib/theme'
 
 const metadataByLocale: Record<Locale, Metadata> = {
   es: {
-    title: 'Isaac Pepió — CTO, arquitecto de software y builder',
+    title: 'Isaac Pepió',
     description:
       'Portfolio de Isaac Pepió: producto, plataformas cloud y sistemas de IA. De la primera línea de código a producción.',
   },
   en: {
-    title: 'Isaac Pepió — CTO, software architect and builder',
+    title: 'Isaac Pepió',
     description:
       'Isaac Pepió’s portfolio: product, cloud platforms and AI systems. From the first line of code to production.',
   },

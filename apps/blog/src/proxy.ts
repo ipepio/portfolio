@@ -16,7 +16,7 @@ const DEFAULT_LOCALE = 'es'
 const LOCALES = new Set(['es', 'en'])
 
 /** Paths owned by the app itself, which never carry a locale. */
-const UNLOCALIZED = new Set(['api'])
+const UNLOCALIZED = new Set(['api', 'icon.svg'])
 
 /**
  * A two-letter first segment that is not a supported locale (`/fr`) is a locale the blog

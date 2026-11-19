@@ -29,7 +29,7 @@ export async function generateMetadata(props: {
   const pageNumber = parsePageNumber(page)
 
   if (!isLocale(locale) || pageNumber === null) {
-    return { title: 'IPEPIO — Journal' }
+    return { title: 'Isaac Pepió - Blog' }
   }
 
   return { title: format(getDictionary(locale).archivePageTitle, { page: pageNumber }) }

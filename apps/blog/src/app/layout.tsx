@@ -5,7 +5,7 @@ import './globals.css'
 import { readLocale, readTheme } from '@/lib/server'
 
 export const metadata: Metadata = {
-  title: 'IPEPIO — Journal',
+  title: 'Isaac Pepió - Blog',
   description: 'Notas sobre agentes, infraestructura y producto. Field notes on agents, infrastructure and product.',
 }
 

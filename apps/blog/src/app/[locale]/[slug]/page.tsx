@@ -27,13 +27,13 @@ export async function generateMetadata(props: ArticlePageProps): Promise<Metadat
   const { locale, slug } = await props.params
 
   if (!isLocale(locale)) {
-    return { title: 'IPEPIO — Journal' }
+    return { title: 'Isaac Pepió - Blog' }
   }
 
   const post = await getPostBySlug(locale, slug)
 
   if (post === null) {
-    return { title: 'IPEPIO — Journal' }
+    return { title: 'Isaac Pepió - Blog' }
   }
 
   return {
