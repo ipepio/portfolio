@@ -8,7 +8,7 @@ const meta = {
   title: 'Site/ProjectsSection',
   component: ProjectsSection,
   parameters: { layout: 'fullscreen' },
-  // The grid reads the locale from context, so the story has to publish one too.
+  // The grid reads the locale and its chrome from context, so the story publishes both.
   decorators: [
     (Story) => (
       <LocaleProvider locale="es" dict={getDictionary('es')}>
@@ -29,22 +29,7 @@ type Story = StoryObj<typeof meta>
  */
 export const Default: Story = {
   args: {
-    allLabel: 'Todos',
-    statusLabels: {
-      live: 'En producción',
-      wip: 'En desarrollo',
-      archived: 'Archivado',
-    },
-    gridLabels: {
-      filterGroup: 'Filtrar proyectos',
-      countOne: 'proyecto',
-      countOther: 'proyectos',
-      imageAltPrefix: 'Imagen de',
-      openPrefix: 'Abrir',
-    },
-    eyebrow: '02 / PROYECTOS SELECCIONADOS',
-    heading: 'Ideas que se convierten en sistemas.',
-    note: 'Una mezcla de productos propios, investigación aplicada y arquitectura profesional. Algunos están en desarrollo o son privados.',
+    copy: getDictionary('es').projects,
     projects: [
       {
         id: 1,

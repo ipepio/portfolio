@@ -2,7 +2,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import { HeroPortrait } from '@/components/site/hero-portrait'
 
-import type { PortraitLabels } from '@/lib/i18n'
+import type { HeroCopy, PortraitLabels } from '@/lib/i18n'
 import type { Media } from '@/payload-types'
 
 export type HeroLineStyle = 'plain' | 'outlined' | 'accent'
@@ -28,8 +28,8 @@ export type HeroSectionProps = {
   heroIntro?: RichTextData | null
   /** Short tags rendered as the reference's `+`-prefixed meta row. */
   heroMeta?: HeroMeta[] | null
-  primaryCta: string
-  secondaryCta: string
+  /** Localized chrome of the section (dictionary `hero` slice). */
+  copy: HeroCopy
   /** `about.photo` for the portrait card, or its raw id when the relation is unpopulated. */
   photo?: Media | number | null
   /** `about.role`, shown under the name in the portrait caption. */
@@ -75,8 +75,7 @@ export function HeroSection({
   heroLines,
   heroIntro,
   heroMeta,
-  primaryCta,
-  secondaryCta,
+  copy,
   photo,
   role,
   portrait,
@@ -147,14 +146,14 @@ export function HeroSection({
               href="#about"
               className={`${BTN_CLASS} border border-primary bg-primary text-primary-foreground hover:-translate-y-0.5 hover:brightness-[1.04] motion-reduce:hover:translate-y-0`}
             >
-              <span>{primaryCta}</span>
+              <span>{copy.primaryCta}</span>
               <span aria-hidden>↗</span>
             </a>
             <a
               href="#contact"
               className={`${BTN_CLASS} border border-input text-foreground hover:border-muted hover:bg-card`}
             >
-              <span>{secondaryCta}</span>
+              <span>{copy.secondaryCta}</span>
               <span aria-hidden>↗</span>
             </a>
           </div>

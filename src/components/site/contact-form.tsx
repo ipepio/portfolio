@@ -2,12 +2,7 @@
 
 import { useState, type FormEvent } from 'react'
 
-import type { ContactFormLabels } from '@/lib/i18n'
-
-export type ContactFormProps = {
-  /** Copy for the chrome and the four states of the form. */
-  copy: ContactFormLabels
-}
+import { useDictionary } from '@/lib/locale-context'
 
 /** The four states the form can be in. */
 type ContactFormState =
@@ -51,17 +46,20 @@ function reasonForCode(code: string | undefined): 'invalid' | 'notConfigured' | 
  * header with the three-diamond indicator, name/email row, message textarea, the visually
  * hidden `website` honeypot and the submit action.
  *
- * It is a client component because it owns a request state: `idle` → `sending` → `sent`
- * or `error`. The submit button is disabled while sending and every outcome is announced
- * in the `aria-live` status region. Native `required`/`type`/`minlength` give immediate
- * feedback; the route remains the authority and its rejection codes pick the message.
+ * It is a client component inside `LocaleProvider`: it owns a request state
+ * (`idle` → `sending` → `sent` or `error`) and reads its copy from
+ * `useDictionary().contact.form`, so it takes no props at all. The submit button is
+ * disabled while sending and every outcome is announced in the `aria-live` status
+ * region. Native `required`/`type`/`minlength` give immediate feedback; the route remains
+ * the authority and its rejection codes pick the message.
  *
  * Reference variables mapped onto app tokens: `--card`→`card`, `--border`→`border`,
  * `--border-strong`→`input`, `--bg-elevated`→`background-elevated`, `--ink`→`foreground`,
  * `--muted`→`muted-foreground`, `--soft`→`muted`, `--accent`→`primary`,
  * `--accent-soft`→`primary` at 10%, `--peach`→`peach`.
  */
-export function ContactForm({ copy }: ContactFormProps) {
+export function ContactForm() {
+  const copy = useDictionary().contact.form
   const [state, setState] = useState<ContactFormState>({ status: 'idle' })
 
   const isSending = state.status === 'sending'

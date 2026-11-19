@@ -2,17 +2,13 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import { ExpertiseOrbit } from '@/components/site/expertise-orbit'
 
+import type { AboutCopy } from '@/lib/i18n'
 import type { About } from '@/payload-types'
 
 export type AboutSectionProps = {
   about: About
-  /** Fallback eyebrow for when the Payload `sectionEyebrow` field is empty. */
-  eyebrow?: string
-  /**
-   * Fallback display heading for when the Payload `sectionHeading` field is empty.
-   * The hero owns the page `h1`, so the section renders a single `h2`.
-   */
-  heading?: string
+  /** Localized chrome of the section, including both fallback strings (dictionary `about`). */
+  copy: AboutCopy
 }
 
 /** Lexical editor state accepted by the official Payload `RichText` renderer. */
@@ -42,16 +38,18 @@ function principleKey(
  * viewport-tall like the hero, but its content is top-aligned so the eyebrow never floats
  * in the middle of the screen.
  *
- * The portrait, location caption, education and languages live in Payload but are not
- * rendered here anymore — the user asked for this section to stay minimal.
+ * The portrait, location caption, education and languages are still fields of the About
+ * global but no section renders them and the seed writes them empty — the user asked for
+ * this section to stay minimal.
  */
-export function AboutSection({ about, eyebrow, heading }: AboutSectionProps) {
+export function AboutSection({ about, copy }: AboutSectionProps) {
   const principles = about.principles ?? []
 
-  // The heading can carry real newlines, which `whitespace-pre-line` renders as forced
-  // line breaks so the three-line composition is guaranteed regardless of width.
-  const eyebrowText = about.sectionEyebrow?.trim() || eyebrow?.trim() || ''
-  const headingText = about.sectionHeading?.trim() || heading?.trim() || ''
+  // The Payload fields win; the dictionary strings are the fallbacks. The heading can carry
+  // real newlines, which `whitespace-pre-line` renders as forced line breaks so the
+  // three-line composition is guaranteed regardless of width.
+  const eyebrowText = about.sectionEyebrow?.trim() || copy.eyebrow.trim()
+  const headingText = about.sectionHeading?.trim() || copy.heading.trim()
   const headingAccent = about.sectionHeadingAccent?.trim() ?? ''
 
   // SAFETY: `bio` is a stored Payload lexical editor state. The generated type only

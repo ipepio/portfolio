@@ -1,19 +1,12 @@
 import { ProjectsGrid, type ProjectItem, type ProjectTag } from '@/components/site/projects-grid'
-import type { ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
+import type { ProjectsCopy } from '@/lib/i18n'
 
 export type { ProjectItem, ProjectTag }
 
 export type ProjectsSectionProps = {
-  eyebrow?: string
-  heading: string
-  note?: string
+  /** Localized chrome of the section and of the client grid (dictionary `projects`). */
+  copy: ProjectsCopy
   projects: ProjectItem[]
-  /** Catch-all filter label. */
-  allLabel: string
-  /** Localized status pill labels. */
-  statusLabels: Record<ProjectStatus, string>
-  /** Remaining grid chrome copy. */
-  gridLabels: ProjectsGridLabels
 }
 
 const HEADING_ID = 'projects-section-heading'
@@ -22,15 +15,7 @@ const HEADING_ID = 'projects-section-heading'
  * Presentational Projects section: eyebrow, display heading, note and the
  * filterable project grid (the only interactive part lives in `ProjectsGrid`).
  */
-export function ProjectsSection({
-  eyebrow,
-  heading,
-  note,
-  projects,
-  allLabel,
-  statusLabels,
-  gridLabels,
-}: ProjectsSectionProps) {
+export function ProjectsSection({ copy, projects }: ProjectsSectionProps) {
   return (
     <section
       id="projects"
@@ -39,24 +24,22 @@ export function ProjectsSection({
     >
       <div className="mx-auto flex w-full max-w-(--container-page) flex-col gap-10 lg:gap-12">
         <header className="flex flex-col gap-5">
-          {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
+          {copy.eyebrow ? <span className="eyebrow">{copy.eyebrow}</span> : null}
           <h2
             id={HEADING_ID}
             className="font-heading text-[clamp(38px,4.5vw,64px)] font-bold leading-[1.03] tracking-[-0.06em] text-balance"
           >
-            {heading}
+            {copy.heading}
           </h2>
-          {note ? (
-            <p className="max-w-[55ch] text-base leading-[1.7] text-muted-foreground">{note}</p>
+          {copy.note ? (
+            <p className="max-w-[55ch] text-base leading-[1.7] text-muted-foreground">
+              {copy.note}
+            </p>
           ) : null}
         </header>
 
-        <ProjectsGrid
-          projects={projects}
-          allLabel={allLabel}
-          statusLabels={statusLabels}
-          labels={gridLabels}
-        />
+        {/* The grid is a client component inside `LocaleProvider`: it reads its own copy. */}
+        <ProjectsGrid projects={projects} />
       </div>
     </section>
   )

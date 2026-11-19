@@ -1,24 +1,9 @@
 import type { Experience } from '@/payload-types'
-import type { CvLabels } from '@/lib/i18n'
+import type { ExperienceCopy } from '@/lib/i18n'
 
 export type ExperienceSectionProps = {
-  /** Fallback eyebrow; the section ordinal lives in the dictionary. */
-  eyebrow?: string
-  /**
-   * Display heading, without the accent tail. Real newlines are rendered as forced
-   * line breaks (`whitespace-pre-line`), like the About heading.
-   */
-  heading: string
-  /** Accented tail of the heading, rendered in the primary colour. */
-  headingAccent?: string
-  /** Intro paragraph of the left column. */
-  intro?: string
-  /** Label next to the `2017 →` stat. */
-  statLabel?: string
-  /** Badge on the role that has no `endDate` yet. */
-  currentLabel: string
-  /** Copy of the CV callout closing the intro column (`cv.*`). */
-  cv: CvLabels
+  /** Localized chrome of the section, CV callout included (dictionary `experience`). */
+  copy: ExperienceCopy
   /** Experience docs as Payload returns them at `depth: 1`, newest first. */
   experiences: Experience[]
 }
@@ -76,16 +61,7 @@ function firstRoleYear(experiences: Experience[]): string | null {
  * `--accent`→`--primary`, `--accent-soft`→`--primary` at 10%,
  * `--bg-elevated`→`--background-elevated`.
  */
-export function ExperienceSection({
-  eyebrow,
-  heading,
-  headingAccent,
-  intro,
-  statLabel,
-  currentLabel,
-  cv,
-  experiences,
-}: ExperienceSectionProps) {
+export function ExperienceSection({ copy, experiences }: ExperienceSectionProps) {
   // The collection may be empty again: no roles, no section. Returning null keeps the
   // home page from rendering a heading over an empty timeline.
   if (experiences.length === 0) {
@@ -102,18 +78,19 @@ export function ExperienceSection({
     >
       <div className="mx-auto grid w-full max-w-(--container-page) grid-cols-1 items-start gap-8 min-[781px]:grid-cols-[minmax(255px,0.72fr)_minmax(0,1.28fr)] min-[781px]:gap-[50px] min-[1021px]:grid-cols-[minmax(255px,0.77fr)_minmax(0,1.23fr)] min-[1021px]:gap-[clamp(55px,8vw,125px)]">
         <div className="min-[781px]:sticky min-[781px]:top-[123px]">
-          {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+          {copy.eyebrow ? <p className="eyebrow">{copy.eyebrow}</p> : null}
 
           <h2
             id={HEADING_ID}
             className="mt-6 mb-[25px] max-w-[520px] font-heading text-[clamp(48px,12vw,65px)] leading-[0.99] font-[660] tracking-[-0.075em] whitespace-pre-line min-[521px]:text-[clamp(45px,5.6vw,80px)] min-[781px]:max-w-none"
           >
-            {heading} {headingAccent ? <span className="text-primary">{headingAccent}</span> : null}
+            {copy.heading}{' '}
+            {copy.headingAccent ? <span className="text-primary">{copy.headingAccent}</span> : null}
           </h2>
 
-          {intro ? (
+          {copy.intro ? (
             <p className="mt-0 mb-[31px] max-w-[620px] text-base leading-[1.8] text-muted-foreground min-[781px]:max-w-[400px]">
-              {intro}
+              {copy.intro}
             </p>
           ) : null}
 
@@ -124,7 +101,7 @@ export function ExperienceSection({
                 <span className="text-muted">→</span>
               </strong>
             ) : null}
-            {statLabel ? <span>{statLabel}</span> : null}
+            {copy.stat ? <span>{copy.stat}</span> : null}
           </div>
 
           <div className={CV_CALLOUT_CLASS}>
@@ -142,10 +119,10 @@ export function ExperienceSection({
               </span>
               <span className="min-w-0">
                 <strong className="block text-[12px] leading-[1.4] text-foreground">
-                  {cv.title}
+                  {copy.cv.title}
                 </strong>
                 <small className="mono mt-0.5 block text-[10px] leading-[1.5] font-medium text-muted">
-                  {cv.subtitle}
+                  {copy.cv.subtitle}
                 </small>
               </span>
             </div>
@@ -157,7 +134,7 @@ export function ExperienceSection({
               rel="noopener noreferrer"
               className="mono inline-flex flex-none items-center gap-[7px] border-b border-current py-1.5 text-[10px] leading-[1.4] font-bold text-primary transition-colors hover:text-foreground max-[520px]:text-[9px]"
             >
-              <span>{cv.download}</span> ↓
+              <span>{copy.cv.download}</span> ↓
             </a>
           </div>
         </div>
@@ -197,7 +174,7 @@ export function ExperienceSection({
 
                     {isCurrent ? (
                       <span className="mono inline-flex items-center gap-[7px] text-[9px] leading-[1.4] font-bold tracking-[0.08em] text-primary uppercase before:size-[6px] before:rounded-full before:bg-primary before:shadow-[0_0_0_4px_color-mix(in_srgb,var(--primary)_10%,transparent)] before:content-['']">
-                        {currentLabel}
+                        {copy.current}
                       </span>
                     ) : null}
                   </div>

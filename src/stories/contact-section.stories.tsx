@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { ContactSection } from '@/components/site/contact-section'
 import { getDictionary } from '@/lib/i18n'
+import { LocaleProvider } from '@/lib/locale-context'
 
 const es = getDictionary('es')
 const en = getDictionary('en')
@@ -10,6 +11,15 @@ const meta = {
   title: 'Site/ContactSection',
   component: ContactSection,
   parameters: { layout: 'fullscreen' },
+  // The form inside the section is a client component that reads its copy from context,
+  // so every story has to publish a locale and a dictionary.
+  decorators: [
+    (Story) => (
+      <LocaleProvider locale="es" dict={es}>
+        <Story />
+      </LocaleProvider>
+    ),
+  ],
 } satisfies Meta<typeof ContactSection>
 
 export default meta
@@ -52,6 +62,13 @@ export const English: Story = {
       ],
     },
   },
+  decorators: [
+    (Story) => (
+      <LocaleProvider locale="en" dict={en}>
+        <Story />
+      </LocaleProvider>
+    ),
+  ],
 }
 
 /** A social with no brand glyph of its own: neutral link icon, label and handle intact. */

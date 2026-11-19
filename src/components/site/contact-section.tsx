@@ -2,13 +2,13 @@ import { ContactForm } from '@/components/site/contact-form'
 import { SectionSeparator } from '@/components/site/section-separator'
 
 import type { Contact } from '@/payload-types'
-import type { ContactLabels } from '@/lib/i18n'
+import type { ContactCopy } from '@/lib/i18n'
 
 export type ContactSectionProps = {
   /** Contact global; only its socials feed this section (the destination is server-side). */
   contact: Contact
-  /** Copy for section 05, including the form chrome and its states. */
-  copy: ContactLabels
+  /** Localized chrome of section 05 (dictionary `contact` slice). */
+  copy: ContactCopy
   /** Person the profiles belong to; completes each link's accessible name. */
   ownerName?: string
 }
@@ -101,8 +101,9 @@ function SocialIcon({ name }: { name: SocialIconName | null }) {
  * The socials come from the `contact` global (label and url), so the list is editable in
  * Payload: a new row renders without touching this component.
  *
- * The form is the client component `ContactForm`; the destination address is never passed
- * to the browser: the route reads it from the `contact` global on every request.
+ * The form is the client component `ContactForm`, which reads its own copy from
+ * `useDictionary()`; the destination address is never passed to the browser: the route
+ * reads it from the `contact` global on every request.
  */
 export function ContactSection({ contact, copy, ownerName }: ContactSectionProps) {
   const socials = (contact.socials ?? []).filter((social) => social.url?.trim())
@@ -181,7 +182,8 @@ export function ContactSection({ contact, copy, ownerName }: ContactSectionProps
           </div>
         </div>
 
-        <ContactForm copy={copy.form} />
+        {/* Inside `LocaleProvider`: the form reads its own copy from the dictionary. */}
+        <ContactForm />
       </div>
     </section>
   )

@@ -72,55 +72,28 @@ export default async function HomePage({ params }: HomePageProps) {
 
   return (
     <div className="flex flex-col">
+      {/* Content comes from Payload; each section's chrome is one dictionary slice. */}
       <HeroSection
         name={about.name}
         availability={about.availability}
         heroLines={about.heroLines}
         heroIntro={about.heroIntro}
         heroMeta={about.heroMeta}
-        primaryCta={dict.hero.primaryCta}
-        secondaryCta={dict.hero.secondaryCta}
+        copy={dict.hero}
         photo={about.photo}
         role={about.role}
         portrait={dict.portrait}
       />
-      <AboutSection about={about} eyebrow={dict.about.eyebrow} heading={dict.about.heading} />
+      <AboutSection about={about} copy={dict.about} />
       <ExpertiseSection
-        eyebrow={dict.expertise.eyebrow}
-        heading={dict.expertise.heading}
-        headingAccent={dict.expertise.headingAccent}
-        description={dict.expertise.description}
-        note={dict.expertise.note}
-        areasLabel={dict.expertise.areasLabel}
+        copy={dict.expertise}
         capabilities={capabilities}
         coreTools={(expertise.coreTools ?? []).map((tool) => tool.name)}
         extendedTools={(expertise.extendedTools ?? []).map((tool) => tool.name)}
-        coreLabel={dict.expertise.coreLabel}
-        coreTag={dict.expertise.coreTag}
-        extendedLabel={dict.expertise.extendedLabel}
-        extendedTag={dict.expertise.extendedTag}
-        toolsFoot={dict.expertise.toolsFoot}
       />
-      <ManifestoBand label={dict.manifesto.label} />
-      <ProjectsSection
-        eyebrow={dict.projects.eyebrow}
-        heading={dict.projects.heading}
-        note={dict.projects.note}
-        projects={projects.docs}
-        allLabel={dict.projects.allLabel}
-        statusLabels={dict.projects.statusLabels}
-        gridLabels={dict.projects.gridLabels}
-      />
-      <ExperienceSection
-        eyebrow={dict.experience.eyebrow}
-        heading={dict.experience.heading}
-        headingAccent={dict.experience.headingAccent}
-        intro={dict.experience.intro}
-        statLabel={dict.experience.stat}
-        currentLabel={dict.experience.current}
-        cv={dict.cv}
-        experiences={experiences.docs}
-      />
+      <ManifestoBand copy={dict.manifesto} />
+      <ProjectsSection copy={dict.projects} projects={projects.docs} />
+      <ExperienceSection copy={dict.experience} experiences={experiences.docs} />
       <ContactSection contact={contact} copy={dict.contact} ownerName={about.name} />
     </div>
   )

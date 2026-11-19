@@ -186,8 +186,14 @@ const ARIA_LABELS = {
   region: { es: 'Explora siete áreas de especialidad', en: 'Explore seven areas of expertise' },
   backend: { es: 'Consola de API animada', en: 'Animated API console' },
   cloud: { es: 'Infraestructura cloud conectada', en: 'Connected cloud infrastructure' },
-  ai: { es: 'Red neuronal de inteligencia artificial', en: 'Artificial intelligence neural network' },
-  quality: { es: 'Escudo de calidad y pruebas verificadas', en: 'Quality shield with verified tests' },
+  ai: {
+    es: 'Red neuronal de inteligencia artificial',
+    en: 'Artificial intelligence neural network',
+  },
+  quality: {
+    es: 'Escudo de calidad y pruebas verificadas',
+    en: 'Quality shield with verified tests',
+  },
   data: { es: 'Datos y analítica en tiempo real', en: 'Real-time data and analytics' },
   enterprise: {
     es: 'Plataforma empresarial con sistemas conectados',
@@ -791,10 +797,7 @@ const SCENES: Record<AreaId, ReactElement<SVGProps<SVGSVGElement>>> = {
 export function ExpertiseOrbit() {
   const [selected, setSelected] = useState(INITIAL_INDEX)
   const locale = useLocale()
-  const aria = useCallback(
-    (key: AreaId | 'region') => ARIA_LABELS[key][locale],
-    [locale],
-  )
+  const aria = useCallback((key: AreaId | 'region') => ARIA_LABELS[key][locale], [locale])
 
   const active = AREAS[selected] ?? AREAS[0]
 

@@ -8,15 +8,17 @@
  * `clamp(22px, 3.2vw, 41px)` on the left and the mono process line on the right, stacked
  * from 520px down.
  */
+import type { ManifestoCopy } from '@/lib/i18n'
+
 export type ManifestoBandProps = {
-  /** Accessible name of the region, from the dictionary. */
-  label: string
+  /** Localized chrome of the band (dictionary `manifesto` slice). */
+  copy: ManifestoCopy
 }
 
-export function ManifestoBand({ label }: ManifestoBandProps) {
+export function ManifestoBand({ copy }: ManifestoBandProps) {
   return (
     <section
-      aria-label={label}
+      aria-label={copy.label}
       className="overflow-hidden bg-primary py-[39px] text-primary-foreground"
     >
       <div className="mx-auto flex w-full max-w-(--container-page) flex-col items-start justify-between gap-5 px-6 min-[520px]:flex-row min-[520px]:items-center">

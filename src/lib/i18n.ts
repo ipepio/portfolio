@@ -148,72 +148,92 @@ export type PortraitLabels = {
   decorationIndex: string
 }
 
+/** Copy for the hero section's own chrome; its headline, intro and meta come from Payload. */
+export type HeroCopy = {
+  primaryCta: string
+  secondaryCta: string
+}
+
+/** Copy for the About section (01), including the fallbacks for its Payload fields. */
+export type AboutCopy = {
+  eyebrow: string
+  heading: string
+  /** Accessible name for the skill orbit graph. */
+  orbitLabel: string
+}
+
+/** Copy for the skills band (02): the aside and the two tool belts. */
+export type ExpertiseCopy = {
+  eyebrow: string
+  heading: string
+  /** Trailing part of the heading, rendered in the primary accent. */
+  headingAccent: string
+  description: string
+  /** Mono footnote pinned under the description. */
+  note: string
+  /** Label over the capability list. */
+  areasLabel: string
+  /** Label over the core tool chips. */
+  coreLabel: string
+  /** Small mono tag next to `coreLabel`. */
+  coreTag: string
+  /** Label over the extended tool chips. */
+  extendedLabel: string
+  /** Small mono tag next to `extendedLabel`. */
+  extendedTag: string
+  /** Closing sentence under the extended chips. */
+  toolsFoot: string
+}
+
+/** Copy for the experience section (04), CV callout included. */
+export type ExperienceCopy = {
+  eyebrow: string
+  /** Display heading, without the accent tail. Real newlines become forced breaks. */
+  heading: string
+  /** Accented tail of the heading, rendered in the primary colour. */
+  headingAccent: string
+  /** Intro paragraph of the left column. */
+  intro: string
+  /** Label next to the `2017 →` stat. */
+  stat: string
+  /** Badge on the role that has no end date yet. */
+  current: string
+  /** CV callout under the experience stats (`cv.*`). */
+  cv: CvLabels
+}
+
+/** Copy for the philosophy band that closes the skills section. */
+export type ManifestoCopy = {
+  /** Accessible name for the band; its two visible strings are untranslated. */
+  label: string
+}
+
+/** Copy for the projects section (03): its header and the chrome of the client grid. */
+export type ProjectsCopy = {
+  eyebrow: string
+  heading: string
+  note: string
+  allLabel: string
+  statusLabels: Record<ProjectStatus, string>
+  gridLabels: ProjectsGridLabels
+  /** Copy for the `/projects/[slug]` detail page, which sits outside this section. */
+  detail: ProjectDetailCopy
+}
+
+/** Copy for the contact section (05): the band, the socials label and the form. */
+export type ContactCopy = ContactLabels
+
 export type Dictionary = {
   nav: NavLabels
-  hero: {
-    primaryCta: string
-    secondaryCta: string
-  }
+  hero: HeroCopy
   /** Copy for the hero's right column (portrait showcase). */
   portrait: PortraitLabels
-  about: {
-    eyebrow: string
-    heading: string
-    /** Accessible name for the skill orbit graph. */
-    orbitLabel: string
-  }
-  expertise: {
-    eyebrow: string
-    heading: string
-    /** Trailing part of the heading, rendered in the primary accent. */
-    headingAccent: string
-    description: string
-    /** Mono footnote pinned under the description. */
-    note: string
-    /** Label over the capability list. */
-    areasLabel: string
-    /** Label over the core tool chips. */
-    coreLabel: string
-    /** Small mono tag next to `coreLabel`. */
-    coreTag: string
-    /** Label over the extended tool chips. */
-    extendedLabel: string
-    /** Small mono tag next to `extendedLabel`. */
-    extendedTag: string
-    /** Closing sentence under the extended chips. */
-    toolsFoot: string
-  }
-  experience: {
-    eyebrow: string
-    /** Display heading, without the accent tail. Real newlines become forced breaks. */
-    heading: string
-    /** Accented tail of the heading, rendered in the primary colour. */
-    headingAccent: string
-    /** Intro paragraph of the left column. */
-    intro: string
-    /** Label next to the `2017 →` stat. */
-    stat: string
-    /** Badge on the role that has no end date yet. */
-    current: string
-  }
-  /** CV callout under the experience stats. */
-  cv: CvLabels
-  /** Philosophy band that closes the skills section. */
-  manifesto: {
-    /** Accessible name for the band; its two visible strings are untranslated. */
-    label: string
-  }
-  projects: {
-    eyebrow: string
-    heading: string
-    note: string
-    allLabel: string
-    statusLabels: Record<ProjectStatus, string>
-    gridLabels: ProjectsGridLabels
-    /** Copy for the `/projects/[slug]` detail page. */
-    detail: ProjectDetailCopy
-  }
-  contact: ContactLabels
+  about: AboutCopy
+  expertise: ExpertiseCopy
+  experience: ExperienceCopy
+  manifesto: ManifestoCopy
+  projects: ProjectsCopy
+  contact: ContactCopy
 }
 
 const dictionaries: Record<Locale, Dictionary> = {
@@ -281,11 +301,11 @@ const dictionaries: Record<Locale, Dictionary> = {
         'He pasado de construir aplicaciones a liderar equipos y definir la arquitectura de plataformas completas, sin alejarme de la ingeniería.',
       stat: 'Ingeniería de software, arquitectura y dirección técnica',
       current: 'ACTUAL',
-    },
-    cv: {
-      title: 'Trayectoria en PDF',
-      subtitle: 'Experiencia · formación · competencias',
-      download: 'Descargar CV',
+      cv: {
+        title: 'Trayectoria en PDF',
+        subtitle: 'Experiencia · formación · competencias',
+        download: 'Descargar CV',
+      },
     },
     manifesto: {
       label: 'Filosofía',
@@ -403,11 +423,11 @@ const dictionaries: Record<Locale, Dictionary> = {
         'I have gone from building applications to leading teams and designing entire platforms, while staying close to engineering.',
       stat: 'Software engineering, architecture and technical leadership',
       current: 'CURRENT',
-    },
-    cv: {
-      title: 'Career in PDF',
-      subtitle: 'Experience · education · skills',
-      download: 'Download CV',
+      cv: {
+        title: 'Career in PDF',
+        subtitle: 'Experience · education · skills',
+        download: 'Download CV',
+      },
     },
     manifesto: {
       label: 'Philosophy',

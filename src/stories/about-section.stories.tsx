@@ -1,9 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { AboutSection } from '@/components/site/about-section'
+import { getDictionary } from '@/lib/i18n'
 import { richText } from '@/seed/lexical'
 
 import type { About } from '@/payload-types'
+
+const es = getDictionary('es')
 
 const meta = {
   title: 'Site/AboutSection',
@@ -41,29 +44,15 @@ const PRINCIPLES: NonNullable<About['principles']> = [
   },
 ]
 
-const EDUCATION: NonNullable<About['education']> = [
-  {
-    id: 'education-1',
-    title: 'Grado en Ingeniería de Telecomunicaciones',
-    institution: 'Universitat Oberta de Catalunya',
-    note: 'Matrícula de Honor en el TFG (aplicaciones multimedia de nueva generación)',
-  },
-]
-
-const LANGUAGES: NonNullable<About['languages']> = [
-  { id: 'language-1', name: 'Español', level: 'Nativo' },
-  { id: 'language-2', name: 'Catalán/Valenciano', level: 'Nativo' },
-  { id: 'language-3', name: 'Inglés', level: 'C1' },
-]
-
 /**
- * Seeded shape with an uploaded portrait: the photo (rounded, from Payload) sits on the
- * left above its mono caption, the two-line heading sits on the right, the bio runs
- * underneath, and the principles grid plus the expertise orbit close the section.
- * There is no stat block any more.
+ * Seeded shape with an uploaded portrait: the heading sits on the left, the bio on the
+ * right, and the principles grid plus the expertise orbit close the section. `location`,
+ * `education`, `languages` and `stats` are no longer part of the seed, so the fixtures do
+ * not carry them either.
  */
 export const Default: Story = {
   args: {
+    copy: es.about,
     about: {
       id: 1,
       name: 'Isaac Pepió',
@@ -81,44 +70,43 @@ export const Default: Story = {
         createdAt: '2026-01-01T00:00:00.000Z',
         updatedAt: '2026-01-01T00:00:00.000Z',
       },
-      location: 'Vinaròs, España',
       sectionEyebrow: '01 / ENFOQUE',
       sectionHeading: 'Menos ruido.\nMás sistemas',
       sectionHeadingAccent: 'que funcionan.',
       bio: richText(BIO_ES),
       principles: PRINCIPLES,
-      education: EDUCATION,
-      languages: LANGUAGES,
     },
   },
 }
 
 /**
- * No photo uploaded in Payload: the left column collapses, the heading spans the grid
- * and the mono caption moves underneath it. Nothing renders as an empty box, and the
- * orbit still draws because it owns its own seven areas.
+ * No photo uploaded in Payload: the section still draws its heading, bio, principles and
+ * orbit. Nothing renders as an empty box, and the orbit still draws because it owns its
+ * own seven areas.
  */
 export const WithoutPhoto: Story = {
   args: {
+    copy: es.about,
     about: {
       id: 2,
       name: 'Isaac Pepió',
       photo: null,
-      location: 'Vinaròs, España',
       sectionEyebrow: '01 / ENFOQUE',
       sectionHeading: 'Menos ruido.\nMás sistemas',
       sectionHeadingAccent: 'que funcionan.',
       bio: richText(BIO_ES),
       principles: PRINCIPLES,
-      education: EDUCATION,
-      languages: LANGUAGES,
     },
   },
 }
 
-/** Sparse content: only the required name, so every optional block collapses. */
+/**
+ * Sparse content: no Payload chrome at all, so the section falls back to the dictionary
+ * eyebrow and heading (`copy`) and every other block collapses.
+ */
 export const Minimal: Story = {
   args: {
+    copy: es.about,
     about: {
       id: 3,
       name: 'Isaac Pepió',

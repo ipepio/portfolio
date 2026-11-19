@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { ExperienceSection } from '@/components/site/experience-section'
+import { getDictionary, type Locale } from '@/lib/i18n'
 import { experienceSeeds } from '@/seed/content'
 
 const meta = {
@@ -13,72 +14,42 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
+/** The seeded timeline in one locale, as Payload returns it at `depth: 1`. */
+function experiencesFor(locale: Locale) {
+  return experienceSeeds.map((seed, index) => ({
+    id: index + 1,
+    company: seed.company,
+    role: seed.role[locale],
+    period: seed.period[locale],
+    description: seed.description[locale],
+    startDate: seed.startDate,
+    endDate: seed.endDate,
+    location: null,
+    logo: null,
+    stack: seed.tags.map((name) => ({ id: `${seed.company}-${name}`, name })),
+    updatedAt: '2025-09-01T00:00:00.000Z',
+    createdAt: '2025-09-01T00:00:00.000Z',
+  }))
+}
+
 /**
  * The seeded career timeline as Payload returns it (Spanish): the sticky intro column
- * with the `2017 →` stat on the left and the five roles on the right, the first one
- * marked as current. Tags, role, period and description all come from `experienceSeeds`.
+ * with the `2017 →` stat and the CV callout on the left and the five roles on the right,
+ * the first one marked as current. Chrome and CV copy come from the `copy` slice; role,
+ * period, description and tags come from `experienceSeeds`.
  */
 export const Default: Story = {
   args: {
-    eyebrow: '04 / TRAYECTORIA',
-    heading: 'Del código\nal',
-    headingAccent: 'liderazgo.',
-    intro:
-      'He pasado de construir aplicaciones a liderar equipos y definir la arquitectura de plataformas completas, sin alejarme de la ingeniería.',
-    statLabel: 'Ingeniería de software, arquitectura y dirección técnica',
-    currentLabel: 'ACTUAL',
-    cv: {
-      title: 'Trayectoria en PDF',
-      subtitle: 'Experiencia · formación · competencias',
-      download: 'Descargar CV',
-    },
-    experiences: experienceSeeds.map((seed, index) => ({
-      id: index + 1,
-      company: seed.company,
-      role: seed.role.es,
-      period: seed.period.es,
-      description: seed.description.es,
-      startDate: seed.startDate,
-      endDate: seed.endDate,
-      location: null,
-      logo: null,
-      stack: seed.tags.map((name) => ({ id: `${seed.company}-${name}`, name })),
-      updatedAt: '2025-09-01T00:00:00.000Z',
-      createdAt: '2025-09-01T00:00:00.000Z',
-    })),
+    copy: getDictionary('es').experience,
+    experiences: experiencesFor('es'),
   },
 }
 
 /** The English dictionary: same layout, translated copy. */
 export const English: Story = {
   args: {
-    ...Default.args,
-    eyebrow: '04 / TRACK RECORD',
-    heading: 'From code\nto',
-    headingAccent: 'leadership.',
-    intro:
-      'I have gone from building applications to leading teams and designing entire platforms, while staying close to engineering.',
-    statLabel: 'Software engineering, architecture and technical leadership',
-    currentLabel: 'CURRENT',
-    cv: {
-      title: 'Career in PDF',
-      subtitle: 'Experience · education · skills',
-      download: 'Download CV',
-    },
-    experiences: experienceSeeds.map((seed, index) => ({
-      id: index + 1,
-      company: seed.company,
-      role: seed.role.en,
-      period: seed.period.en,
-      description: seed.description.en,
-      startDate: seed.startDate,
-      endDate: seed.endDate,
-      location: null,
-      logo: null,
-      stack: seed.tags.map((name) => ({ id: `${seed.company}-${name}`, name })),
-      updatedAt: '2025-09-01T00:00:00.000Z',
-      createdAt: '2025-09-01T00:00:00.000Z',
-    })),
+    copy: getDictionary('en').experience,
+    experiences: experiencesFor('en'),
   },
 }
 

@@ -4,7 +4,7 @@ import { HeroSection } from '@/components/site/hero-section'
 import { getDictionary } from '@/lib/i18n'
 import { richText } from '@/seed/lexical'
 
-const portrait = getDictionary('es').portrait
+const es = getDictionary('es')
 
 const meta = {
   title: 'Site/HeroSection',
@@ -16,7 +16,10 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-/** Seeded shape: three headline lines, intro, four meta tags and the portrait. */
+/**
+ * Seeded shape: three headline lines, intro, four meta tags and the portrait. The section
+ * chrome (both CTAs) arrives as the dictionary `hero` slice; the rest is Payload content.
+ */
 export const Default: Story = {
   args: {
     name: 'Isaac Pepió',
@@ -41,10 +44,9 @@ export const Default: Story = {
       { text: 'Cloud / AI / DevOps' },
       { text: 'Desde España' },
     ],
-    primaryCta: 'De la implementación al liderazgo técnico',
-    secondaryCta: 'Escríbeme',
+    copy: es.hero,
     role: 'CTO · Software Architect',
-    portrait,
+    portrait: es.portrait,
   },
 }
 
@@ -53,8 +55,7 @@ export const Minimal: Story = {
   args: {
     name: 'Isaac Pepió',
     heroLines: [{ text: 'HAGO SISTEMAS.', style: 'plain' }],
-    primaryCta: 'De la implementación al liderazgo técnico',
-    secondaryCta: 'Escríbeme',
-    portrait,
+    copy: es.hero,
+    portrait: es.portrait,
   },
 }

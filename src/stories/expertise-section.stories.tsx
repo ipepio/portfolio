@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { ExpertiseSection } from '@/components/site/expertise-section'
+import { getDictionary } from '@/lib/i18n'
 import { capabilitySeeds, coreToolNames, extendedToolNames } from '@/seed/content'
+
+const es = getDictionary('es')
 
 const meta = {
   title: 'Site/ExpertiseSection',
@@ -15,17 +18,12 @@ type Story = StoryObj<typeof meta>
 
 /**
  * Real Spanish copy, as the dictionary and the expertise global provide it: the sticky
- * aside on the left, the five capabilities and the two tool belts on the right.
+ * aside on the left, the five capabilities and the two tool belts on the right. The
+ * capabilities and tools are Payload content; every label arrives in the `copy` slice.
  */
 export const Default: Story = {
   args: {
-    eyebrow: '02 / LO QUE HAGO',
-    heading: 'Del problema al',
-    headingAccent: 'sistema.',
-    description:
-      'Diseño, construyo y opero soluciones de extremo a extremo. Mi valor está en conectar arquitectura, producto, infraestructura y personas, no en acumular frameworks.',
-    note: 'Las herramientas cambian. El criterio permanece.',
-    areasLabel: 'CAPACIDADES / CÓMO APORTO VALOR',
+    copy: es.expertise,
     capabilities: capabilitySeeds.map((capability, index) => ({
       id: `capability-${index + 1}`,
       title: capability.title.es,
@@ -33,22 +31,13 @@ export const Default: Story = {
     })),
     coreTools: [...coreToolNames],
     extendedTools: [...extendedToolNames],
-    coreLabel: 'HERRAMIENTAS CON LAS QUE MÁS ME IDENTIFICO',
-    coreTag: 'CORE TOOLKIT',
-    extendedLabel: 'TAMBIÉN PRESENTES EN MI TRABAJO Y PROYECTOS',
-    extendedTag: 'EXTENDED TOOLKIT',
-    toolsFoot:
-      'El stack es una caja de herramientas. En cada proyecto, elijo lo que aporta simplicidad, rendimiento y autonomía al equipo.',
   },
 }
 
 /** Core toolkit only: the extended belt and its closing sentence collapse. */
 export const CoreOnly: Story = {
   args: {
-    eyebrow: '02 / LO QUE HAGO',
-    heading: 'Del problema al',
-    headingAccent: 'sistema.',
-    areasLabel: 'CAPACIDADES / CÓMO APORTO VALOR',
+    copy: { ...es.expertise, description: '', note: '', toolsFoot: '' },
     capabilities: capabilitySeeds.map((capability, index) => ({
       id: `capability-${index + 1}`,
       title: capability.title.es,
@@ -56,9 +45,5 @@ export const CoreOnly: Story = {
     })),
     coreTools: [...coreToolNames],
     extendedTools: [],
-    coreLabel: 'HERRAMIENTAS CON LAS QUE MÁS ME IDENTIFICO',
-    coreTag: 'CORE TOOLKIT',
-    extendedLabel: 'TAMBIÉN PRESENTES EN MI TRABAJO Y PROYECTOS',
-    extendedTag: 'EXTENDED TOOLKIT',
   },
 }

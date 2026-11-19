@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 import type { Locale, ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
 import { ProjectVisual, type ProjectVisualName } from '@/components/site/project-visuals'
-import { useLocale } from '@/lib/locale-context'
+import { useDictionary, useLocale } from '@/lib/locale-context'
 
 /** Tag as returned by Payload at `depth >= 1` (or as a raw id at `depth 0`). */
 export type ProjectTag = { id?: string | number; name?: string | null }
@@ -38,13 +38,8 @@ export type ProjectItem = {
 }
 
 export type ProjectsGridProps = {
+  /** The projects themselves; every label comes from the dictionary via context. */
   projects: ProjectItem[]
-  /** Catch-all filter label, e.g. "Todos" / "All". */
-  allLabel: string
-  /** Localized status pill labels, keyed by Payload's `status` value. */
-  statusLabels: Record<ProjectStatus, string>
-  /** Remaining grid chrome copy (filter group, counter, per-card a11y text). */
-  labels: ProjectsGridLabels
 }
 
 const ALL_FILTER = '__all__'
@@ -125,7 +120,8 @@ function ProjectCard({
   statusLabels: Record<ProjectStatus, string>
   labels: ProjectsGridLabels
 }) {
-  // The layout publishes the locale, so cards read it instead of receiving it twice.
+  // The layout publishes the locale and the dictionary, so the cards read both instead of
+  // receiving them as props.
   const locale = useLocale()
   const indexLabel = position + 1
   const tags = tagNames(project)
@@ -217,8 +213,13 @@ function ProjectCard({
  * Interactive Projects grid: derives its filters from the projects' tags,
  * keeps every card mounted and toggles the `hidden` attribute on the ones that
  * do not match, so layout and the live counter stay trivial.
+ *
+ * It is a client component rendered inside `LocaleProvider`, so the whole grid chrome
+ * (catch-all label, status pills, counter and per-card accessible names) is read from
+ * `useDictionary()` instead of being drilled down from the server page.
  */
-export function ProjectsGrid({ projects, allLabel, statusLabels, labels }: ProjectsGridProps) {
+export function ProjectsGrid({ projects }: ProjectsGridProps) {
+  const { allLabel, statusLabels, gridLabels: labels } = useDictionary().projects
   const filters = buildFilters(projects, allLabel)
   const [active, setActive] = useState(ALL_FILTER)
 
