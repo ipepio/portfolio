@@ -561,6 +561,10 @@ export interface About {
   role?: string | null;
   availability?: string | null;
   photo?: (number | null) | Media;
+  /**
+   * Documento que descargan el callout de la sección 04 y el footer.
+   */
+  cv?: (number | null) | Media;
   bio?: {
     root: {
       type: string;
@@ -696,6 +700,7 @@ export interface AboutSelect<T extends boolean = true> {
   role?: T;
   availability?: T;
   photo?: T;
+  cv?: T;
   bio?: T;
   sectionEyebrow?: T;
   sectionHeading?: T;

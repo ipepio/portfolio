@@ -4,9 +4,11 @@ import type { FooterCopy } from '@/lib/i18n'
 import { BLOG_URL } from '@/lib/site-links'
 import type { Contact } from '@/payload-types'
 
-/** The CV is served by this app; `download` makes the browser save it instead of opening it. */
-const CV_HREF = '/CV_Isaac_Pepio.pdf'
-const CV_FILE = 'CV_Isaac_Pepio.pdf'
+/**
+ * The CV's media URL comes from the About global; the last segment of that URL is the
+ * stored filename, which keeps `download` honest without hardcoding a document name.
+ */
+const cvFile = (href: string) => href.split('/').pop() ?? 'CV'
 
 const LINK_BASE =
   'mono whitespace-nowrap text-[10px] leading-[1.7] font-[650] transition-colors hover:text-primary'
@@ -25,6 +27,11 @@ export type SiteFooterProps = {
   /** Contact global; its socials become the profile links. */
   contact: Contact
   copy: FooterCopy
+  /**
+   * Media URL of the CV upload (the About global's `cv`). The link disappears when no
+   * document is uploaded, so the footer never points at nothing.
+   */
+  cvHref?: string | null
 }
 
 /**
@@ -33,7 +40,7 @@ export type SiteFooterProps = {
  *
  * The year is read on the server, so it never flashes a wrong value on hydration.
  */
-export function SiteFooter({ name, contact, copy }: SiteFooterProps) {
+export function SiteFooter({ name, contact, copy, cvHref }: SiteFooterProps) {
   const year = new Date().getFullYear()
   const owner = (name ?? '').trim().toUpperCase()
   const socials = (contact.socials ?? []).filter((social) => social.url?.trim())
@@ -64,9 +71,11 @@ export function SiteFooter({ name, contact, copy }: SiteFooterProps) {
             </a>
           ))}
 
-          <a href={CV_HREF} download={CV_FILE} className={LINK_CLASS}>
-            {copy.cv} <span aria-hidden>↓</span>
-          </a>
+          {cvHref ? (
+            <a href={cvHref} download={cvFile(cvHref)} className={LINK_CLASS}>
+              {copy.cv} <span aria-hidden>↓</span>
+            </a>
+          ) : null}
 
           <a href={BLOG_URL} className={LINK_CLASS}>
             {copy.blog} <span aria-hidden>↗</span>

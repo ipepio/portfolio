@@ -32,6 +32,15 @@ export const About: GlobalConfig = {
       label: 'Foto',
     },
     {
+      name: 'cv',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'CV (PDF)',
+      admin: {
+        description: 'Documento que descargan el callout de la sección 04 y el footer.',
+      },
+    },
+    {
       name: 'bio',
       type: 'richText',
       localized: true,

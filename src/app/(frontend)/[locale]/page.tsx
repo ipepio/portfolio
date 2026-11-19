@@ -94,9 +94,18 @@ export default async function HomePage({ params }: HomePageProps) {
       />
       <ManifestoBand copy={dict.manifesto} />
       <ProjectsSection copy={dict.projects} projects={projects.docs} />
-      <ExperienceSection copy={dict.experience} experiences={experiences.docs} />
+      <ExperienceSection
+        copy={dict.experience}
+        experiences={experiences.docs}
+        cvHref={typeof about.cv === 'object' && about.cv ? about.cv.url : null}
+      />
       <ContactSection contact={contact} copy={dict.contact} ownerName={about.name} />
-      <SiteFooter contact={contact} copy={dict.footer} name={about.name} />
+      <SiteFooter
+        contact={contact}
+        copy={dict.footer}
+        name={about.name}
+        cvHref={typeof about.cv === 'object' && about.cv ? about.cv.url : null}
+      />
     </div>
   )
 }

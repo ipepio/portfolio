@@ -29,17 +29,21 @@ const ALL_LOCALES = 'all' as unknown as 'es'
 const PHOTO_ALT = 'Isaac Pepió'
 const PHOTO_PATH = fileURLToPath(new URL('../assets/isaac.png', import.meta.url))
 
+/** Same key trick for the CV: one upload per run, matched by alt, never duplicated. */
+const CV_ALT = 'CV Isaac Pepió'
+const CV_PATH = fileURLToPath(new URL('../assets/CV_Isaac_Pepio.pdf', import.meta.url))
+
 /**
- * Uploads the portrait into the media collection. Re-running the seed deletes the
- * previous copy first (matched by alt), so the collection never accumulates duplicates.
+ * Uploads a document into the media collection under its own alt key. Re-running the
+ * seed deletes the previous copy first, so the collection never accumulates duplicates.
  */
-async function seedMedia() {
-  await payload.delete({ collection: 'media', where: { alt: { equals: PHOTO_ALT } } })
+async function seedUpload(alt: string, filePath: string) {
+  await payload.delete({ collection: 'media', where: { alt: { equals: alt } } })
 
   return payload.create({
     collection: 'media',
-    data: { alt: PHOTO_ALT },
-    filePath: PHOTO_PATH,
+    data: { alt },
+    filePath,
   })
 }
 
@@ -156,7 +160,7 @@ async function seedPosts() {
   }
 }
 
-async function seedGlobals(photoId: number) {
+async function seedGlobals(photoId: number, cvId: number) {
   // SAFETY: with locale: 'all' Payload reads localized fields as locale-keyed objects,
   // while the generated About type describes one resolved locale.
   const aboutData = {
@@ -168,6 +172,8 @@ async function seedGlobals(photoId: number) {
     sectionHeadingAccent: aboutSeed.sectionHeadingAccent,
     // `photo` is not localized, so this single write backs both locale versions.
     photo: photoId,
+    // Neither is the CV: one upload backs both locales and both links (04 and footer).
+    cv: cvId,
     bio: {
       es: richText(aboutSeed.bio.es),
       en: richText(aboutSeed.bio.en),
@@ -225,11 +231,12 @@ async function seedExpertise() {
 }
 
 try {
-  const media = await seedMedia()
+  const media = await seedUpload(PHOTO_ALT, PHOTO_PATH)
+  const cv = await seedUpload(CV_ALT, CV_PATH)
   await seedCollections()
   await seedExperience()
   await seedPosts()
-  await seedGlobals(media.id)
+  await seedGlobals(media.id, cv.id)
   await seedExpertise()
 
   const mediaCount = await payload.count({ collection: 'media' })

@@ -6,16 +6,14 @@ export type ExperienceSectionProps = {
   copy: ExperienceCopy
   /** Experience docs as Payload returns them at `depth: 1`, newest first. */
   experiences: Experience[]
+  /**
+   * Media URL of the CV upload (the About global's `cv`, at `depth: 1`). The callout
+   * disappears when no document is uploaded, so the section never links to nothing.
+   */
+  cvHref?: string | null
 }
 
 const HEADING_ID = 'experienceTitle'
-
-/**
- * The CV served by the app itself (`public/CV_Isaac_Pepio.pdf`). The reference points at
- * an external host; the file ships with the build so the download works locally too.
- */
-const CV_HREF = '/CV_Isaac_Pepio.pdf'
-const CV_FILE = 'CV_Isaac_Pepio.pdf'
 
 const CARD_CLASS =
   'rounded-[16px] border border-border bg-card px-[18px] pt-5 pb-[25px] transition-[border-color,transform] duration-200 hover:translate-x-[3px] hover:border-input min-[521px]:px-[26px] min-[521px]:pt-6'
@@ -61,7 +59,10 @@ function firstRoleYear(experiences: Experience[]): string | null {
  * `--accent`→`--primary`, `--accent-soft`→`--primary` at 10%,
  * `--bg-elevated`→`--background-elevated`.
  */
-export function ExperienceSection({ copy, experiences }: ExperienceSectionProps) {
+export function ExperienceSection({ copy, experiences, cvHref }: ExperienceSectionProps) {
+  // The media URL's last segment is the stored filename, which keeps `download` honest
+  // without hardcoding a document name in the component.
+  const cvFile = cvHref?.split('/').pop() ?? null
   // The collection may be empty again: no roles, no section. Returning null keeps the
   // home page from rendering a heading over an empty timeline.
   if (experiences.length === 0) {
@@ -104,7 +105,8 @@ export function ExperienceSection({ copy, experiences }: ExperienceSectionProps)
             {copy.stat ? <span>{copy.stat}</span> : null}
           </div>
 
-          <div className={CV_CALLOUT_CLASS}>
+          {cvHref && cvFile ? (
+            <div className={CV_CALLOUT_CLASS}>
             <div className="flex min-w-0 items-center gap-[11px] max-[520px]:gap-2">
               <span
                 aria-hidden="true"
@@ -128,15 +130,16 @@ export function ExperienceSection({ copy, experiences }: ExperienceSectionProps)
             </div>
 
             <a
-              href={CV_HREF}
-              download={CV_FILE}
+              href={cvHref}
+              download={cvFile}
               target="_blank"
               rel="noopener noreferrer"
               className="mono inline-flex flex-none items-center gap-[7px] border-b border-current py-1.5 text-[10px] leading-[1.4] font-bold text-primary transition-colors hover:text-foreground max-[520px]:text-[9px]"
             >
               <span>{copy.cv.download}</span> ↓
             </a>
-          </div>
+            </div>
+          ) : null}
         </div>
 
         <div className="relative grid pl-[23px] min-[521px]:pl-[31px]">
