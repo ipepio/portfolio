@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import config from '@payload-config'
 
-import type { About, Experience, Expertise, Project, Tag } from '../payload-types'
+import type { About, Experience, Expertise, Post, Project, Tag } from '../payload-types'
 import {
   aboutSeed,
   capabilitySeeds,
@@ -11,10 +11,13 @@ import {
   coreToolNames,
   experienceSeeds,
   extendedToolNames,
+  postSeeds,
   projectSeeds,
   tagSeeds,
 } from './content'
+import type { PostSection } from './content'
 import { richText } from './lexical'
+import type { RichText } from './lexical'
 
 const payload = await getPayload({ config })
 
@@ -104,6 +107,55 @@ async function seedExperience() {
   }
 }
 
+/**
+ * `richText` builds a document of paragraphs only. An article body also carries the `h2`
+ * headings the reading view indexes, so a heading reuses the paragraph node the helper
+ * would have produced and only swaps its node type and tag: both node types, and the root
+ * wrapper, still come from the shared helper instead of a second hand-written shape.
+ * `Headings are Allowed` in Payload's lexical converter reads exactly `type` and `tag`.
+ */
+function postBody(sections: PostSection[]): RichText {
+  const empty = richText([])
+
+  const children = sections.flatMap((section) => {
+    const [heading] = richText([section.heading]).root.children
+    const [paragraph] = richText([section.paragraph]).root.children
+
+    return [{ ...heading, type: 'heading', tag: 'h2' }, paragraph]
+  })
+
+  return { root: { ...empty.root, children } }
+}
+
+/**
+ * Blog entries. Delete first so re-running the seed never duplicates rows, then write both
+ * locales at once (`locale: 'all'`), like projects and experience above.
+ */
+async function seedPosts() {
+  await payload.delete({ collection: 'posts', where: {} })
+
+  for (const post of postSeeds) {
+    // SAFETY: with locale: 'all' Payload reads localized fields as locale-keyed objects,
+    // while the generated Post type describes one resolved locale.
+    const data = {
+      title: post.title,
+      slug: post.slug,
+      subtitle: post.subtitle,
+      excerpt: post.excerpt,
+      body: {
+        es: postBody(post.body.es),
+        en: postBody(post.body.en),
+      },
+      category: post.category,
+      readMinutes: post.readMinutes,
+      publishedAt: post.publishedAt,
+      status: post.status,
+      featured: post.featured,
+    } as unknown as Post
+    await payload.create({ collection: 'posts', locale: ALL_LOCALES, data })
+  }
+}
+
 async function seedGlobals(photoId: number) {
   // SAFETY: with locale: 'all' Payload reads localized fields as locale-keyed objects,
   // while the generated About type describes one resolved locale.
@@ -176,6 +228,7 @@ try {
   const media = await seedMedia()
   await seedCollections()
   await seedExperience()
+  await seedPosts()
   await seedGlobals(media.id)
   await seedExpertise()
 
@@ -183,6 +236,7 @@ try {
   const projects = await payload.count({ collection: 'projects' })
   const tags = await payload.count({ collection: 'tags' })
   const experience = await payload.count({ collection: 'experience' })
+  const posts = await payload.count({ collection: 'posts' })
 
   console.log(`Seeded media: ${mediaCount.totalDocs}`)
   console.log(`Seeded capabilities: ${capabilitySeeds.length}`)
@@ -191,6 +245,7 @@ try {
   console.log(`Seeded projects: ${projects.totalDocs}`)
   console.log(`Seeded tags: ${tags.totalDocs}`)
   console.log(`Seeded experience: ${experience.totalDocs}`)
+  console.log(`Seeded posts: ${posts.totalDocs}`)
   console.log('Seeded globals: about, contact, expertise')
 } catch (error) {
   console.error('Seed failed:', error)

@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { Tags } from './collections/Tags'
 import { Experience } from './collections/Experience'
 import { Projects } from './collections/Projects'
+import { Posts } from './collections/Posts'
 import { About } from './globals/About'
 import { Contact } from './globals/Contact'
 import { Expertise } from './globals/Expertise'
@@ -55,7 +56,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Tags, Experience, Projects],
+  collections: [Users, Media, Tags, Experience, Projects, Posts],
   globals: [About, Contact, Expertise],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

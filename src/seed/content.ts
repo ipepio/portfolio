@@ -200,6 +200,378 @@ export const projectSeeds: ProjectSeed[] = [
   },
 ]
 
+/**
+ * Blog entries, transcribed from /Users/ipepio/Desktop/portfolio_y_blog_ipepio/blog.html
+ * (`journalArticles` plus its per-slug `topicExamples`). The reference prints a serial
+ * (`N° 01`…`N° 06`) and a cover illustration per note; neither is a stored field, so the
+ * serial is the position in this array and the illustration stays in the design system.
+ */
+
+/**
+ * One section of an article body: the heading the article page indexes and the opening
+ * line printed under it. Every section comes from the reference's own section list.
+ */
+export type PostSection = { heading: string; paragraph: string }
+
+export type PostSeed = {
+  slug: string
+  title: Localized
+  subtitle: Localized
+  excerpt: Localized
+  /** Category label as the archive prints it, per locale. */
+  category: Localized
+  readMinutes: number
+  /** Fixed instant, so the archive order never drifts with the seed's run date. */
+  publishedAt: string
+  status: 'published'
+  /** The reference features the first note and nothing else. */
+  featured: boolean
+  body: { es: PostSection[]; en: PostSection[] }
+}
+
+/**
+ * The six notes, in the reference order (01 to 06). Headings are the reference's own
+ * section titles (`headings` in `renderJournalArticle`) for the three sections kept here;
+ * the opening line of each section is its first paragraph in the reference.
+ */
+export const postSeeds: PostSeed[] = [
+  {
+    slug: 'agentes-no-son-chatbots',
+    title: {
+      es: 'Los agentes no son chatbots con herramientas.',
+      en: 'Agents are not chatbots with tools.',
+    },
+    subtitle: {
+      es: 'Diseñar agentes útiles implica bastante más que conectar un LLM a una terminal.',
+      en: 'Designing useful agents takes far more than connecting an LLM to a terminal.',
+    },
+    excerpt: {
+      es: 'Un sistema agente empieza donde termina la demo: permisos, contexto, ejecución, observabilidad y errores que también hay que gestionar.',
+      en: 'An agent system starts where the demo ends: permissions, context, execution, observability, and failures you still need to own.',
+    },
+    category: { es: 'IA / Agentes', en: 'AI / Agents' },
+    readMinutes: 8,
+    publishedAt: '2026-10-28T09:00:00.000Z',
+    status: 'published',
+    featured: true,
+    body: {
+      es: [
+        {
+          heading: 'El problema real',
+          paragraph:
+            'Una demo de agente puede impresionar en cinco minutos. Pero cuando lo dejas trabajando con repositorios, herramientas y permisos reales, aparecen problemas que no caben en un prompt.',
+        },
+        {
+          heading: 'El enfoque',
+          paragraph:
+            'Me gusta separar el runtime de ejecución de la interfaz. El runtime se ocupa de sesiones, llamadas a herramientas, límites y estado; la UI muestra intención, progreso, evidencias y decisiones pendientes.',
+        },
+        {
+          heading: 'Decisiones que importan',
+          paragraph:
+            'El sistema debe distinguir entre observar y modificar. Leer un fichero no tiene el mismo riesgo que lanzar un comando o escribir en producción. La autorización y los límites tienen que estar fuera del texto generado por el modelo.',
+        },
+      ],
+      en: [
+        {
+          heading: 'The real problem',
+          paragraph:
+            'An agent demo can impress in five minutes. But when you put it to work with real repositories, tools and permissions, problems appear that no prompt can solve.',
+        },
+        {
+          heading: 'The approach',
+          paragraph:
+            'I prefer to separate the execution runtime from the interface. The runtime owns sessions, tools, limits, and state; the UI displays intent, progress, evidence, and decisions awaiting approval.',
+        },
+        {
+          heading: 'Decisions that matter',
+          paragraph:
+            'The system must distinguish observation from modification. Reading a file is not the same risk as running a command or changing production. Authorization and limits must live outside model-generated text.',
+        },
+      ],
+    },
+  },
+  {
+    slug: 'cache-contexto-subagentes',
+    title: {
+      es: 'Contexto, caché y subagentes: el coste invisible.',
+      en: 'Context, caching, and subagents: the hidden cost.',
+    },
+    subtitle: {
+      es: 'La orquestación no es gratis: se paga en tokens, latencia y coordinación.',
+      en: 'Orchestration is not free: it costs tokens, latency, and coordination.',
+    },
+    excerpt: {
+      es: 'Cuándo merece la pena delegar, qué contexto hay que compartir y por qué más agentes no siempre significa más productividad.',
+      en: 'When delegation pays off, what context to share, and why more agents do not always mean more productivity.',
+    },
+    category: { es: 'IA / Agentes', en: 'AI / Agents' },
+    readMinutes: 6,
+    publishedAt: '2026-09-16T09:00:00.000Z',
+    status: 'published',
+    featured: false,
+    body: {
+      es: [
+        {
+          heading: 'El problema real',
+          paragraph:
+            'Cuantos más agentes invocas, más fácil parece repartir el trabajo. Pero cada delegación trae contexto duplicado, latencia y decisiones que coordinar.',
+        },
+        {
+          heading: 'El enfoque',
+          paragraph:
+            'Prefiero que el coordinador entregue un contrato pequeño: objetivo, archivos relevantes, restricciones y formato del resultado. El contexto recuperable debería estar en una fuente compartida, no replicado en una docena de prompts.',
+        },
+        {
+          heading: 'Decisiones que importan',
+          paragraph:
+            'La caché de prefijos ayuda si la estructura de los prompts es estable. Cambiar sistemáticamente el orden de instrucciones o herramientas puede anular parte del beneficio.',
+        },
+      ],
+      en: [
+        {
+          heading: 'The real problem',
+          paragraph:
+            'The more agents you spawn, the easier delegation seems. But every handoff adds repeated context, latency, and coordination overhead.',
+        },
+        {
+          heading: 'The approach',
+          paragraph:
+            'I prefer a small delegation contract: objective, relevant files, constraints, and output format. Recoverable context should live in a shared source instead of copied into a dozen prompts.',
+        },
+        {
+          heading: 'Decisions that matter',
+          paragraph:
+            'Prefix caching helps when prompts stay structurally stable. Reordering instructions or tools can undermine part of that advantage.',
+        },
+      ],
+    },
+  },
+  {
+    slug: 'monolito-migracion',
+    title: {
+      es: 'De monolito a plataforma, sin hacer una reescritura suicida.',
+      en: 'From monolith to platform without a reckless rewrite.',
+    },
+    subtitle: {
+      es: 'La arquitectura de verdad se demuestra cuando convives con producción.',
+      en: 'Architecture proves itself when it has to coexist with production.',
+    },
+    excerpt: {
+      es: 'Contratos, modularidad, eventos y migración incremental. Lo importante no es cuántos microservicios tienes, sino cuánto riesgo introduces.',
+      en: 'Contracts, modularity, events, and incremental migration. What matters is not service count, but how much risk you introduce.',
+    },
+    category: { es: 'Arquitectura', en: 'Architecture' },
+    readMinutes: 10,
+    publishedAt: '2026-08-05T09:00:00.000Z',
+    status: 'published',
+    featured: false,
+    body: {
+      es: [
+        {
+          heading: 'El problema real',
+          paragraph:
+            'Una migración arquitectónica no empieza cuando dibujas la nueva plataforma. Empieza cuando tienes que cambiar un sistema que ya sirve tráfico sin romperlo.',
+        },
+        {
+          heading: 'El enfoque',
+          paragraph:
+            'Primero buscaría fronteras de dominio y contratos estables. Después decidiría qué módulos pueden independizarse sin generar una red de servicios excesivamente acoplados.',
+        },
+        {
+          heading: 'Decisiones que importan',
+          paragraph:
+            'Modularidad antes que distribución. No todo módulo necesita ser un microservicio.',
+        },
+      ],
+      en: [
+        {
+          heading: 'The real problem',
+          paragraph:
+            'An architectural migration does not start with a new platform diagram. It starts when you need to change a system serving real traffic without breaking it.',
+        },
+        {
+          heading: 'The approach',
+          paragraph:
+            'I would first look for stable domain boundaries and contracts. Then decide which modules justify independence without creating an overly coupled service network.',
+        },
+        {
+          heading: 'Decisions that matter',
+          paragraph:
+            'Modularity before distribution. Not every module deserves its own microservice.',
+        },
+      ],
+    },
+  },
+  {
+    slug: 'homelab-que-no-moleste',
+    title: {
+      es: 'Mi homelab no debería necesitar otro SRE.',
+      en: 'My homelab should not need another SRE.',
+    },
+    subtitle: {
+      es: 'Operar tus propios servicios sin crear una segunda jornada de trabajo.',
+      en: 'Run your own services without creating a second full-time job.',
+    },
+    excerpt: {
+      es: 'Proxmox, Docker, reverse proxies y servicios propios. Una infraestructura doméstica útil, sin mantener un Kubernetes por hobby.',
+      en: 'Proxmox, Docker, reverse proxies, and self-hosted services. Useful home infrastructure without maintaining Kubernetes for fun.',
+    },
+    category: { es: 'Infra / Homelab', en: 'Infra / Homelab' },
+    readMinutes: 7,
+    publishedAt: '2026-06-24T09:00:00.000Z',
+    status: 'published',
+    featured: false,
+    body: {
+      es: [
+        {
+          heading: 'El problema real',
+          paragraph:
+            'Un homelab es fantástico hasta que una actualización rompe la red de casa y pasas la noche haciendo de soporte de tu propia infraestructura.',
+        },
+        {
+          heading: 'El enfoque',
+          paragraph:
+            'Separaría cargas estables y laboratorios efímeros. Proxmox, contenedores y un proxy sencillo permiten montar servicios sin inventar una plataforma de orquestación gigante.',
+        },
+        {
+          heading: 'Decisiones que importan',
+          paragraph:
+            'Haría copias verificadas de los datos y trataría la configuración de red como infraestructura crítica.',
+        },
+      ],
+      en: [
+        {
+          heading: 'The real problem',
+          paragraph:
+            'A homelab is great until an update breaks your home network and you spend the evening supporting your own infrastructure.',
+        },
+        {
+          heading: 'The approach',
+          paragraph:
+            'I would separate stable workloads from disposable experiments. Proxmox, containers, and a simple reverse proxy go a long way without inventing a huge orchestration platform.',
+        },
+        {
+          heading: 'Decisions that matter',
+          paragraph:
+            'I would keep tested backups and treat network configuration as critical infrastructure.',
+        },
+      ],
+    },
+  },
+  {
+    slug: 'llm-local-cuando-compensa',
+    title: {
+      es: 'LLMs locales: cuándo compensa de verdad.',
+      en: 'Local LLMs: when are they actually worth it?',
+    },
+    subtitle: {
+      es: 'Elegir un modelo para un sistema real es bastante distinto a ganar un benchmark.',
+      en: 'Choosing a model for production is nothing like winning a benchmark.',
+    },
+    excerpt: {
+      es: 'VRAM, cuantización, latencia, privacidad y modelos MoE frente a densos. Decisiones de infraestructura, no una guerra de benchmarks.',
+      en: 'VRAM, quantization, latency, privacy, and MoE versus dense models. Infrastructure choices, not a benchmark war.',
+    },
+    category: { es: 'IA / Agentes', en: 'AI / Agents' },
+    readMinutes: 9,
+    publishedAt: '2026-05-12T09:00:00.000Z',
+    status: 'published',
+    featured: false,
+    body: {
+      es: [
+        {
+          heading: 'El problema real',
+          paragraph:
+            'Tener un modelo en local mola, pero el hardware no desaparece de la ecuación. La VRAM y la latencia acaban decidiendo más que cualquier ranking.',
+        },
+        {
+          heading: 'El enfoque',
+          paragraph:
+            'Empezaría midiendo tokens por segundo, tiempo al primer token, memoria de KV cache y calidad en tareas propias.',
+        },
+        {
+          heading: 'Decisiones que importan',
+          paragraph:
+            'Denso frente a MoE, cuantización y tamaño de contexto son decisiones relacionadas.',
+        },
+      ],
+      en: [
+        {
+          heading: 'The real problem',
+          paragraph:
+            'Running a local model is great, but hardware never disappears from the equation. VRAM and latency end up mattering more than benchmark rankings.',
+        },
+        {
+          heading: 'The approach',
+          paragraph:
+            'I would measure tokens per second, time to first token, KV cache usage, and quality on real tasks.',
+        },
+        {
+          heading: 'Decisions that matter',
+          paragraph: 'Dense versus MoE, quantization, and context size are interdependent choices.',
+        },
+      ],
+    },
+  },
+  {
+    slug: 'nabla-harness-escritorio',
+    title: {
+      es: 'Nabla: la interfaz que quiero para trabajar con agentes.',
+      en: 'Nabla: the interface I want for working with agents.',
+    },
+    subtitle: {
+      es: 'Menos pestañas. Mejor contexto. Un espacio pensado para construir.',
+      en: 'Fewer tabs. Better context. A workspace built for making things.',
+    },
+    excerpt: {
+      es: 'Por qué estoy explorando un harness desktop con sesiones, herramientas, navegador, documentos y revisión de cambios en el mismo lugar.',
+      en: 'Why I am exploring a desktop harness with sessions, tools, browser, documents, and diffs in one place.',
+    },
+    category: { es: 'Producto', en: 'Product' },
+    readMinutes: 5,
+    publishedAt: '2026-04-02T09:00:00.000Z',
+    status: 'published',
+    featured: false,
+    body: {
+      es: [
+        {
+          heading: 'El problema real',
+          paragraph:
+            'Quiero un entorno donde el agente pueda trabajar con código, documentos, navegador y terminal sin obligarme a vivir dentro de una conversación interminable.',
+        },
+        {
+          heading: 'El enfoque',
+          paragraph:
+            'La idea de Nabla es mantener una superficie central para la conversación y la ejecución, un lateral para proyectos y sesiones, y un dock de trabajo para documentos, browser, diffs y terminal.',
+        },
+        {
+          heading: 'Decisiones que importan',
+          paragraph:
+            'No quiero que la UI replique la lógica del agente. El bridge debe transportar eventos tipados, permisos y progreso, dejando al runtime la responsabilidad de ejecutar herramientas.',
+        },
+      ],
+      en: [
+        {
+          heading: 'The real problem',
+          paragraph:
+            'I want a workspace where agents can operate with code, documents, browser and terminal without forcing me into one endless chat thread.',
+        },
+        {
+          heading: 'The approach',
+          paragraph:
+            'The idea behind Nabla is a central surface for conversation and execution, a sidebar for projects and sessions, and a work dock for documents, browser, diffs, and terminal.',
+        },
+        {
+          heading: 'Decisions that matter',
+          paragraph:
+            'The UI should not reimplement agent logic. The bridge moves typed events, permissions, and progress while the runtime owns tool execution.',
+        },
+      ],
+    },
+  },
+]
+
 export type HeroLineStyle = 'plain' | 'outlined' | 'accent'
 
 /** Hero intro runs per locale; the bolded run renders as `<strong>` (see ./lexical). */
