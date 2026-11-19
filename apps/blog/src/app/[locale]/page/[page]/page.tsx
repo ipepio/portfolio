@@ -4,12 +4,12 @@ import { notFound } from 'next/navigation'
 import { JournalArchive, JournalBreadcrumb, JournalFooter } from '@/components/journal-blocks'
 import { format, getDictionary } from '@/lib/i18n'
 import {
-  getPayloadUrl,
   getPostsPage,
   getPublishedNotesTotal,
   isLocale,
   POSTS_PAGE_SIZE,
 } from '@/lib/payload'
+import { getPortfolioUrl } from '@/lib/site'
 
 /** A page segment is only valid as a plain, positive, decimal number. */
 function parsePageNumber(value: string): number | null {
@@ -71,30 +71,25 @@ export default async function BlogArchivePage({ params }: BlogArchiveProps) {
     notFound()
   }
 
-  const portfolioUrl = getPayloadUrl()
+  const portfolioUrl = getPortfolioUrl()
 
   return (
-    <>
-      <a className="skip-link" href="#blogIndex">
-        {copy.skipToContent}
-      </a>
-      <main id="blogIndex" className="journal">
-        <div className="wrap">
-          <JournalBreadcrumb locale={locale} copy={copy} />
-        </div>
-        <JournalArchive
-          locale={locale}
-          copy={copy}
-          docs={archive.docs}
-          page={archive.page}
-          totalPages={archive.totalPages}
-          publishedCount={publishedCount}
-          titleAs="h1"
-        />
-        <div className="wrap">
-          <JournalFooter copy={copy} portfolioUrl={portfolioUrl} />
-        </div>
-      </main>
-    </>
+    <main id="blogIndex" className="journal">
+      <div className="wrap">
+        <JournalBreadcrumb locale={locale} copy={copy} />
+      </div>
+      <JournalArchive
+        locale={locale}
+        copy={copy}
+        docs={archive.docs}
+        page={archive.page}
+        totalPages={archive.totalPages}
+        publishedCount={publishedCount}
+        titleAs="h1"
+      />
+      <div className="wrap">
+        <JournalFooter copy={copy} portfolioUrl={portfolioUrl} />
+      </div>
+    </main>
   )
 }

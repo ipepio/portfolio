@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import type React from 'react'
 
 import './globals.css'
+import { readLocale, readTheme } from '@/lib/server'
 
 export const metadata: Metadata = {
   title: 'IPEPIO — Journal',
@@ -9,16 +10,23 @@ export const metadata: Metadata = {
 }
 
 /**
- * The blog's only root layout: it hosts the locale routes and loads the design system.
+ * The blog's only root layout: it hosts the locale routes, the exposed 404 and the design
+ * system.
  *
- * Known gap: `<html lang>` is fixed to Spanish because this root layout sits above the
- * `[locale]` segment. Giving each locale its own `lang` means moving the root layout to
- * `app/[locale]/layout.tsx` (the pattern in Next's internationalization guide) and dropping
- * this file; that is a separate change, not part of the index.
+ * Both attributes are read on the server so the first paint is already right:
+ * `data-theme` comes from the `ipepio-theme` cookie (shared with the portfolio, so the
+ * preference does not flip between the apps) and `lang` from the locale segment the proxy
+ * forwards. The locale routes also wrap this shell in `app/[locale]/layout.tsx`, which adds
+ * the header; the 404 renders its own copy because a `not-found` above the locale segment
+ * replaces that layout.
  */
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const [theme, locale] = await Promise.all([readTheme(), readLocale()])
+
   return (
-    <html lang="es">
+    // `data-scroll-behavior="smooth"` declares the global smooth scrolling of `globals.css`,
+    // so Next disables it during route transitions instead of fighting it.
+    <html lang={locale} data-theme={theme} data-scroll-behavior="smooth">
       <body>{children}</body>
     </html>
   )

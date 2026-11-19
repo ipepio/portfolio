@@ -11,13 +11,13 @@ import {
 import { getDictionary } from '@/lib/i18n'
 import {
   getFeaturedPost,
-  getPayloadUrl,
   getPostsPage,
   getPublishedNotesTotal,
   isLocale,
   locales,
   POSTS_PAGE_SIZE,
 } from '@/lib/payload'
+import { getPortfolioUrl } from '@/lib/site'
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -55,39 +55,34 @@ export default async function BlogIndexPage({ params }: BlogIndexProps) {
     getPostsPage({ locale, page: 1, pageSize: POSTS_PAGE_SIZE }),
     getPublishedNotesTotal(locale),
   ])
-  const portfolioUrl = getPayloadUrl()
+  const portfolioUrl = getPortfolioUrl()
 
   return (
-    <>
-      <a className="skip-link" href="#blogIndex">
-        {copy.skipToContent}
-      </a>
-      <main id="blogIndex" className="journal">
-        <div className="wrap">
-          <JournalBreadcrumb locale={locale} copy={copy} />
-          <JournalHero copy={copy} />
-          {featured === null ? null : (
-            <FeaturedNote
-              locale={locale}
-              copy={copy}
-              post={featured}
-              position={1}
-              total={publishedCount}
-            />
-          )}
-        </div>
-        <JournalArchive
-          locale={locale}
-          copy={copy}
-          docs={archive.docs}
-          page={archive.page}
-          totalPages={archive.totalPages}
-          publishedCount={publishedCount}
-        />
-        <div className="wrap">
-          <JournalFooter copy={copy} portfolioUrl={portfolioUrl} />
-        </div>
-      </main>
-    </>
+    <main id="blogIndex" className="journal">
+      <div className="wrap">
+        <JournalBreadcrumb locale={locale} copy={copy} />
+        <JournalHero copy={copy} />
+        {featured === null ? null : (
+          <FeaturedNote
+            locale={locale}
+            copy={copy}
+            post={featured}
+            position={1}
+            total={publishedCount}
+          />
+        )}
+      </div>
+      <JournalArchive
+        locale={locale}
+        copy={copy}
+        docs={archive.docs}
+        page={archive.page}
+        totalPages={archive.totalPages}
+        publishedCount={publishedCount}
+      />
+      <div className="wrap">
+        <JournalFooter copy={copy} portfolioUrl={portfolioUrl} />
+      </div>
+    </main>
   )
 }

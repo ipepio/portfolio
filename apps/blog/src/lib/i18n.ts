@@ -70,6 +70,28 @@ export type JournalCopy = {
   sideNoteBody: string
   nextNoteKicker: string
   nextNoteAction: string
+  /** Accessible name of the header's own nav landmark. */
+  navLabel: string
+  /** Accessible name of the identity link: the monogram plus what it leads to. */
+  navBrandLabel: string
+  /** The word after the identity's slash — the journal as this locale names it. */
+  navSection: string
+  navIndex: string
+  navPortfolio: string
+  /** Accessible name of the portfolio link: another site, opened in a new tab. */
+  navPortfolioLabel: string
+  navThemeToLight: string
+  navThemeToDark: string
+  /** Accessible name of the language switch: the page it leads to, not the current one. */
+  navLanguageLabel: string
+  notFoundDocumentTitle: string
+  notFoundKicker: string
+  /** The 404 headline, split like the hero's: a plain lead and an accented end. */
+  notFoundTitleLead: string
+  notFoundTitleAccent: string
+  notFoundLead: string
+  notFoundIndex: string
+  notFoundFeatured: string
 }
 
 const es: JournalCopy = {
@@ -127,6 +149,23 @@ const es: JournalCopy = {
     'Este artículo es una muestra de diseño. El contenido final se publicaría con sus ejemplos, código y referencias reales.',
   nextNoteKicker: 'SIGUIENTE NOTA',
   nextNoteAction: 'Leer siguiente',
+  navLabel: 'Navegación principal',
+  navBrandLabel: 'IPEPIO / CUADERNO — portada del blog',
+  navSection: 'CUADERNO',
+  navIndex: 'ARCHIVO',
+  navPortfolio: 'PORTFOLIO',
+  navPortfolioLabel: 'IPEPIO / PORTFOLIO — se abre en otra pestaña',
+  navThemeToLight: 'Cambiar a tema claro',
+  navThemeToDark: 'Cambiar a tema oscuro',
+  navLanguageLabel: 'Ver esta página en inglés',
+  notFoundDocumentTitle: 'Página no encontrada — IPEPIO / Journal',
+  notFoundKicker: 'ERROR 404 / RUTA PERDIDA',
+  notFoundTitleLead: 'Esta nota',
+  notFoundTitleAccent: 'no existe.',
+  notFoundLead:
+    'La nota o la página que buscas no está aquí. Puede que la URL tenga una errata, que la nota solo esté publicada en el otro idioma o que todavía sea un borrador.',
+  notFoundIndex: '← Volver al cuaderno',
+  notFoundFeatured: 'Leer la nota destacada',
 }
 
 const en: JournalCopy = {
@@ -184,6 +223,23 @@ const en: JournalCopy = {
     'This is a layout sample. Actual posts would include real-world examples, code, and sources.',
   nextNoteKicker: 'NEXT NOTE',
   nextNoteAction: 'Read next',
+  navLabel: 'Main navigation',
+  navBrandLabel: 'IPEPIO / JOURNAL — blog index',
+  navSection: 'JOURNAL',
+  navIndex: 'ARCHIVE',
+  navPortfolio: 'PORTFOLIO',
+  navPortfolioLabel: 'IPEPIO / PORTFOLIO — opens in a new tab',
+  navThemeToLight: 'Switch to light theme',
+  navThemeToDark: 'Switch to dark theme',
+  navLanguageLabel: 'View this page in Spanish',
+  notFoundDocumentTitle: 'Page not found — IPEPIO / Journal',
+  notFoundKicker: 'ERROR 404 / LOST ROUTE',
+  notFoundTitleLead: 'This note',
+  notFoundTitleAccent: 'does not exist.',
+  notFoundLead:
+    'The note or page you are looking for is not here. The URL may have a typo, the note may only be published in the other language, or it may still be a draft.',
+  notFoundIndex: '← Back to the journal',
+  notFoundFeatured: 'Read the featured note',
 }
 
 const dictionaries: Record<Locale, JournalCopy> = { es, en }

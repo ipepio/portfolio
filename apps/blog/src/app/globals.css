@@ -29,6 +29,32 @@
   --radius: 18px;
 }
 
+/*
+ * Light is opt-in. The header's toggle writes `data-theme` on <html> and persists it in the
+ * `ipepio-theme` cookie the server reads on the next request, so the first paint is already
+ * light: no bootstrap script and no flash. The decorative cover art stays dark in both
+ * themes, like an image, so only the shell and the type colours move.
+ */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f1f1e9;
+  --bg-elevated: #fcfcf5;
+  --card: #fbfcf7;
+  --card-2: #ebefe5;
+  --ink: #111914;
+  --muted: #536259;
+  --soft: #708177;
+  --border: #cdd7cb;
+  --border-strong: #a6b5a7;
+  --accent: #b3ec36;
+  --accent-soft: rgba(179, 236, 54, 0.18);
+  --accent-ink: #151d07;
+  --peach: #bc654b;
+  --nav: rgba(241, 241, 233, 0.85);
+  --shadow: 0 22px 65px rgba(30, 55, 26, 0.09);
+  --grid: rgba(20, 55, 28, 0.07);
+}
+
 *,
 *::before,
 *::after {
@@ -101,6 +127,152 @@ a {
 
 .accent {
   color: var(--accent);
+}
+
+/* === Blog header (T8) === */
+
+.journal-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--border);
+  background: var(--nav);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.journal-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 68px;
+}
+
+.journal-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  white-space: nowrap;
+}
+
+.journal-brand-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-strong);
+  border-radius: 9px;
+  background: var(--card);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.journal-brand-word {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+}
+
+.journal-brand-slash {
+  color: var(--accent);
+  font-size: 11px;
+}
+
+.journal-brand-section {
+  font:
+    650 10px/1 'SFMono-Regular',
+    Consolas,
+    monospace;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+.journal-brand:hover .journal-brand-word,
+.journal-brand:hover .journal-brand-section {
+  color: var(--ink);
+}
+
+.journal-nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 22px);
+  margin-left: auto;
+  min-width: 0;
+}
+
+.journal-nav-link {
+  font:
+    650 10px/1 'SFMono-Regular',
+    Consolas,
+    monospace;
+  letter-spacing: 0.13em;
+  color: var(--muted);
+  padding: 8px 0;
+  border-bottom: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.journal-nav-link:hover {
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+
+/* The archive is the page (or the article's section): the only link a route can be. */
+.journal-nav-link[aria-current='page'] {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.journal-nav-link.is-external {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.journal-nav-link.is-external span {
+  color: var(--accent);
+}
+
+.journal-control {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.journal-control:hover {
+  border-color: var(--border-strong);
+  background: var(--card);
+  color: var(--ink);
+}
+
+.journal-control-icon {
+  width: 17px;
+  height: 17px;
+}
+
+.journal-control-code {
+  width: auto;
+  padding: 0 9px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
 }
 
 /* === Journal index === */
@@ -1083,6 +1255,96 @@ a {
   letter-spacing: -0.055em;
 }
 
+/* === Designed 404 (T9) === */
+
+.journal-notfound-block {
+  position: relative;
+  padding: 108px 0 96px;
+  border-bottom: 1px solid var(--border);
+  isolation: isolate;
+}
+
+/* Same ghost type as the index hero: a watermark, not a graphic. */
+.journal-notfound-block::after {
+  content: '404';
+  position: absolute;
+  right: 0;
+  top: 28px;
+  z-index: -1;
+  font:
+    800 clamp(96px, 15vw, 208px) / 1 Inter,
+    Arial,
+    sans-serif;
+  letter-spacing: -0.11em;
+  color: var(--ink);
+  opacity: 0.022;
+  pointer-events: none;
+}
+
+.journal-notfound-title {
+  margin: 20px 0 0;
+  max-width: 760px;
+  font-size: clamp(46px, 7vw, 92px);
+  font-weight: 690;
+  letter-spacing: -0.08em;
+  line-height: 0.96;
+}
+
+.journal-notfound-title .lime {
+  color: var(--accent);
+}
+
+.journal-notfound-lead {
+  max-width: 560px;
+  margin: 26px 0 0;
+  color: var(--muted);
+  font-size: clamp(15px, 1.5vw, 17px);
+  line-height: 1.75;
+  letter-spacing: -0.01em;
+}
+
+.journal-notfound-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 38px;
+}
+
+.journal-notfound-cta {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 11px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.journal-notfound-cta:hover {
+  filter: brightness(1.05);
+}
+
+.journal-notfound-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-strong);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.journal-notfound-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 @media (max-width: 1080px) {
   .journal-hero {
     grid-template-columns: 1fr 220px;
@@ -1110,6 +1372,33 @@ a {
 @media (max-width: 780px) {
   .wrap {
     width: min(calc(100% - 40px), var(--max));
+  }
+
+  /* Same breakpoint as the rest of the reference: only the gaps and the type shrink, so
+     every link and control stays reachable with the keyboard. */
+  .journal-nav {
+    height: 60px;
+    gap: 12px;
+  }
+
+  .journal-nav-links {
+    gap: 10px;
+  }
+
+  .journal-brand {
+    gap: 8px;
+  }
+
+  .journal-brand-section {
+    letter-spacing: 0.12em;
+  }
+
+  .journal-nav-link {
+    letter-spacing: 0.1em;
+  }
+
+  .journal-notfound-block {
+    padding: 70px 0 64px;
   }
 
   .journal-hero {
@@ -1192,6 +1481,47 @@ a {
 }
 
 @media (max-width: 560px) {
+  /* The identity keeps the monogram only, and the controls shrink: 320px wide screens must
+     not overflow the header. */
+  .journal-brand-word,
+  .journal-brand-slash,
+  .journal-brand-section {
+    display: none;
+  }
+
+  .journal-nav {
+    gap: 8px;
+  }
+
+  .journal-nav-links {
+    gap: 7px;
+  }
+
+  .journal-nav-link {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 6px 0;
+  }
+
+  .journal-control {
+    width: 30px;
+    height: 30px;
+  }
+
+  .journal-control-icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .journal-control-code {
+    padding: 0 7px;
+    font-size: 9px;
+  }
+
+  .journal-notfound-actions {
+    gap: 18px;
+  }
+
   .journal-breadcrumb {
     padding-top: 26px;
     font-size: 10px;

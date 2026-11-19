@@ -12,8 +12,9 @@ import {
   ReadingToc,
 } from '@/components/reading-blocks'
 import { format, getDictionary, pad } from '@/lib/i18n'
-import { getPayloadUrl, getPostBySlug, getPosts, isLocale } from '@/lib/payload'
+import { getPostBySlug, getPosts, isLocale } from '@/lib/payload'
 import { readingSections } from '@/lib/reading'
+import { getPortfolioUrl } from '@/lib/site'
 
 type ArticlePageProps = {
   params: Promise<{ locale: string; slug: string }>
@@ -77,29 +78,24 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const serial = pad(position === -1 ? 1 : position + 1)
 
   return (
-    <>
-      <a className="skip-link" href="#blogArticle">
-        {copy.skipToContent}
-      </a>
-      <main id="blogArticle" className="journal">
-        <div className="wrap">
-          <JournalBreadcrumb
-            locale={locale}
-            copy={copy}
-            current={post.slug}
-            sectionHref={`/${locale}`}
-          />
-          <ReadingHero copy={copy} post={post} />
-          <ReadingCover copy={copy} kind={artKindFor(post.slug)} serial={serial} />
-          <div className={sections.length === 0 ? 'reading-layout is-plain' : 'reading-layout'}>
-            {sections.length === 0 ? null : <ReadingToc copy={copy} sections={sections} />}
-            <ReadingBody body={post.body} sections={sections} />
-            <ReadingSideNote copy={copy} />
-          </div>
-          {next === null ? null : <ReadingEnd locale={locale} copy={copy} post={next} />}
-          <JournalFooter copy={copy} portfolioUrl={getPayloadUrl()} />
+    <main id="blogArticle" className="journal">
+      <div className="wrap">
+        <JournalBreadcrumb
+          locale={locale}
+          copy={copy}
+          current={post.slug}
+          sectionHref={`/${locale}`}
+        />
+        <ReadingHero copy={copy} post={post} />
+        <ReadingCover copy={copy} kind={artKindFor(post.slug)} serial={serial} />
+        <div className={sections.length === 0 ? 'reading-layout is-plain' : 'reading-layout'}>
+          {sections.length === 0 ? null : <ReadingToc copy={copy} sections={sections} />}
+          <ReadingBody body={post.body} sections={sections} />
+          <ReadingSideNote copy={copy} />
         </div>
-      </main>
-    </>
+        {next === null ? null : <ReadingEnd locale={locale} copy={copy} post={next} />}
+        <JournalFooter copy={copy} portfolioUrl={getPortfolioUrl()} />
+      </div>
+    </main>
   )
 }
