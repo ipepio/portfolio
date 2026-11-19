@@ -8,9 +8,16 @@ import type { Contact } from '@/payload-types'
 const CV_HREF = '/CV_Isaac_Pepio.pdf'
 const CV_FILE = 'CV_Isaac_Pepio.pdf'
 
-const LINK_CLASS =
-  'mono whitespace-nowrap text-[10px] leading-[1.7] font-[650] text-muted transition-colors hover:text-primary'
-const SOCIAL_CLASS = `${LINK_CLASS} inline-flex items-center gap-[7px] text-foreground`
+const LINK_BASE =
+  'mono whitespace-nowrap text-[10px] leading-[1.7] font-[650] transition-colors hover:text-primary'
+/** Secondary links: the soft tone, like `.footer-actions a` in the reference. */
+const LINK_CLASS = `${LINK_BASE} text-muted`
+/**
+ * Profile links: the ink tone with the brand glyph, like `.social-footer`. They must not
+ * reuse the muted class — Tailwind's order decides between two colour utilities, and the
+ * muted one wins, which painted the glyphs grey instead of the row's ink.
+ */
+const SOCIAL_CLASS = `${LINK_BASE} inline-flex items-center gap-[7px] text-foreground`
 
 export type SiteFooterProps = {
   /** Owner name from the About global; printed uppercase above the brand. */
@@ -51,7 +58,7 @@ export function SiteFooter({ name, contact, copy }: SiteFooterProps) {
               aria-label={`${social.label ?? 'Social'}: ${owner || 'ipepio'}`}
               className={SOCIAL_CLASS}
             >
-              <SocialIcon name={socialIconFor(social.url ?? '')} size={14} />
+              <SocialIcon name={socialIconFor(social.url ?? '')} size={14} tone="inherit" />
               <span className="uppercase">{social.label}</span>
               <span aria-hidden>↗</span>
             </a>

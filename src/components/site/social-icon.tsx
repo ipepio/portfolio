@@ -41,15 +41,31 @@ export function socialHandle(url: string): string {
     .replace(/\/+$/, '')
 }
 
-/** Brand glyph when known, neutral link glyph otherwise. Decorative in both cases. */
-export function SocialIcon({ name, size = 18 }: { name: SocialIconName | null; size?: number }) {
+/**
+ * Brand glyph when known, neutral link glyph otherwise. Decorative in both cases.
+ *
+ * `tone` picks the colour: the contact cards paint the glyph in the accent colour, while the
+ * footer leaves it to the link so the whole row reads in the same ink, as the reference does
+ * (`.social-footer svg { fill: currentColor }`).
+ */
+export function SocialIcon({
+  name,
+  size = 18,
+  tone = 'primary',
+}: {
+  name: SocialIconName | null
+  size?: number
+  tone?: 'primary' | 'inherit'
+}) {
+  const colour = tone === 'primary' ? 'text-primary' : ''
+
   if (!name) {
     return (
       <svg
         viewBox="0 0 24 24"
         aria-hidden="true"
         style={{ width: size, height: size }}
-        className="flex-none fill-none stroke-current text-primary [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.8]"
+        className={`flex-none fill-none stroke-current ${colour} [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.8]`}
       >
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
       </svg>
@@ -62,7 +78,7 @@ export function SocialIcon({ name, size = 18 }: { name: SocialIconName | null; s
       fill="currentColor"
       aria-hidden="true"
       style={{ width: size, height: size }}
-      className="flex-none text-primary"
+      className={`flex-none ${colour}`}
     >
       <path d={SOCIAL_ICON_PATHS[name]} />
     </svg>
