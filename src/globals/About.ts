@@ -32,12 +32,6 @@ export const About: GlobalConfig = {
       label: 'Foto',
     },
     {
-      name: 'location',
-      type: 'text',
-      localized: true,
-      label: 'Localización',
-    },
-    {
       name: 'bio',
       type: 'richText',
       localized: true,
@@ -122,33 +116,6 @@ export const About: GlobalConfig = {
       ],
     },
     {
-      name: 'stats',
-      type: 'array',
-      label: 'Estadísticas',
-      labels: {
-        singular: 'Estadística',
-        plural: 'Estadísticas',
-      },
-      fields: [
-        {
-          name: 'value',
-          type: 'text',
-          required: true,
-          label: 'Valor',
-          admin: {
-            description: 'Ej. 8+',
-          },
-        },
-        {
-          name: 'label',
-          type: 'text',
-          localized: true,
-          required: true,
-          label: 'Etiqueta',
-        },
-      ],
-    },
-    {
       name: 'principles',
       type: 'array',
       labels: {
@@ -175,53 +142,6 @@ export const About: GlobalConfig = {
           type: 'textarea',
           localized: true,
           label: 'Descripción',
-        },
-      ],
-    },
-    {
-      name: 'education',
-      type: 'array',
-      labels: {
-        singular: 'Formación',
-        plural: 'Formación',
-      },
-      fields: [
-        {
-          name: 'title',
-          type: 'text',
-          localized: true,
-          label: 'Título',
-        },
-        {
-          name: 'institution',
-          type: 'text',
-          label: 'Institución',
-        },
-        {
-          name: 'note',
-          type: 'text',
-          localized: true,
-          label: 'Nota',
-        },
-      ],
-    },
-    {
-      name: 'languages',
-      type: 'array',
-      labels: {
-        singular: 'Idioma',
-        plural: 'Idiomas',
-      },
-      fields: [
-        {
-          name: 'name',
-          type: 'text',
-          label: 'Idioma',
-        },
-        {
-          name: 'level',
-          type: 'text',
-          label: 'Nivel',
         },
       ],
     },

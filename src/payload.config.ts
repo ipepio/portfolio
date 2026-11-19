@@ -1,6 +1,5 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
-import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -8,7 +7,6 @@ import { fileURLToPath } from 'url'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Folders } from './collections/Folders'
 import { Tags } from './collections/Tags'
 import { Experience } from './collections/Experience'
 import { Projects } from './collections/Projects'
@@ -57,7 +55,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Folders, Tags, Experience, Projects],
+  collections: [Users, Media, Tags, Experience, Projects],
   globals: [About, Contact, Expertise],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -77,7 +75,6 @@ export default buildConfig({
     fallback: true,
     defaultLocale: 'es',
   },
-  plugins: [mcpPlugin({})],
   // Registered only when the SMTP variables exist; absent otherwise, which is what the
   // contact route checks before it accepts a message.
   ...(email ? { email } : {}),
