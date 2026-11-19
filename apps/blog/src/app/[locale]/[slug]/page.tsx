@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 
 import { JournalBreadcrumb, JournalFooter } from '@/components/journal-blocks'
@@ -24,6 +25,11 @@ type ArticlePageProps = {
  * The article's metadata: its title and excerpt, both read from Payload in the requested
  * locale. A slug the blog would not show falls back to the journal title, because the page
  * itself answers 404.
+ *
+ * It deliberately reads the published note even in draft mode: awaiting `draftMode()` here
+ * resolves the metadata after Next has flushed the shell, which moves `<title>` out of the
+ * head of every public article page. A previewed draft therefore keeps the journal title in
+ * the tab and shows its own title in the page, where the strip already says it is a preview.
  */
 export async function generateMetadata(props: ArticlePageProps): Promise<Metadata> {
   const { locale, slug } = await props.params
@@ -57,6 +63,10 @@ export async function generateMetadata(props: ArticlePageProps): Promise<Metadat
  * order `En el radar` uses), read from the same list this note is in. The reference cycled
  * back to the newest note at the end of the archive; that is a link to the top of the list,
  * not a next note, so the oldest note renders no block at all.
+ *
+ * Draft mode is the only thing that widens the note lookup: an editor who arrived through
+ * `/api/draft` reads a note that is still a draft. The archive order stays published, so the
+ * serial and the next note of a previewed draft are its published neighbours.
  */
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { locale, slug } = await params
@@ -65,7 +75,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound()
   }
 
-  const [post, timeline] = await Promise.all([getPostBySlug(locale, slug), getPosts(locale)])
+  const draft = (await draftMode()).isEnabled
+  const [post, timeline] = await Promise.all([
+    getPostBySlug(locale, slug, { draft }),
+    getPosts(locale),
+  ])
 
   if (post === null) {
     notFound()

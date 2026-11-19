@@ -275,6 +275,52 @@ a {
   letter-spacing: 0.12em;
 }
 
+/* === Draft preview strip (T12) === */
+
+/*
+ * Only rendered inside Next's draft mode. It sits above the header and states what the reader
+ * is looking at, so a draft can never be mistaken for the published note.
+ */
+.draft-strip {
+  border-bottom: 1px solid var(--accent);
+  background: var(--accent-soft);
+}
+
+.draft-strip-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 9px 0;
+}
+
+.draft-strip-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--ink);
+}
+
+.draft-strip-exit {
+  padding: 6px 11px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.13em;
+  white-space: nowrap;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.draft-strip-exit:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
 /* === Journal index === */
 
 .journal {

@@ -68,12 +68,24 @@ export type PostsPage<TDoc = PostSummary> = {
 /** Revalidation window shared by every read: the blog must not hammer the API. */
 const REVALIDATE_SECONDS = 60
 
+/**
+ * Whether a read serves a draft preview. Inside Next's draft mode the article lookup drops
+ * the `published` filter and the answer is never cached — a draft belongs to one editor's
+ * request, not to every reader of the site.
+ */
+export type ReadOptions = { draft?: boolean }
+
 /** How many notes `getPosts` asks for when it needs the whole archive order at once. */
 const ARCHIVE_LIMIT = 500
 
-async function requestPosts<TDoc = PostSummary>(query: URLSearchParams): Promise<PostsPage<TDoc>> {
+async function requestPosts<TDoc = PostSummary>(
+  query: URLSearchParams,
+  { draft = false }: ReadOptions = {},
+): Promise<PostsPage<TDoc>> {
   const response = await fetch(`${getPayloadUrl()}/api/posts?${query.toString()}`, {
-    next: { revalidate: REVALIDATE_SECONDS },
+    // A preview must never be served from — or written to — the public cache; every other
+    // read keeps the shared window.
+    ...(draft ? { cache: 'no-store' as const } : { next: { revalidate: REVALIDATE_SECONDS } }),
   })
 
   if (!response.ok) {
@@ -110,22 +122,31 @@ export async function getPosts(locale: Locale): Promise<PostSummary[]> {
 }
 
 /**
- * One published note by slug, or `null` for anything the blog must not show: an unknown
- * slug, a note that is still a draft, or a slug that does not exist in this locale.
+ * One note by slug, or `null` for anything the blog must not show: an unknown slug, a note
+ * that is still a draft outside draft mode, or a slug that does not exist in this locale.
  *
  * `status` is filtered inside Payload rather than after the read, so a draft never leaves
- * the API; the page turns the `null` into a 404.
+ * the API to a reader; the page turns the `null` into a 404. The one exception is
+ * `draft: true` — Next's draft mode, which only an editor reaches through the token route —
+ * where the state filter is dropped so the note can be read before it is published.
  */
-export async function getPostBySlug(locale: Locale, slug: string): Promise<PostDetail | null> {
-  const data = await requestPosts<PostDetail>(
-    new URLSearchParams({
-      'where[slug][equals]': slug,
-      'where[status][equals]': 'published',
-      depth: '0',
-      locale,
-      limit: '1',
-    }),
-  )
+export async function getPostBySlug(
+  locale: Locale,
+  slug: string,
+  { draft = false }: ReadOptions = {},
+): Promise<PostDetail | null> {
+  const query = new URLSearchParams({
+    'where[slug][equals]': slug,
+    depth: '0',
+    locale,
+    limit: '1',
+  })
+
+  if (!draft) {
+    query.set('where[status][equals]', 'published')
+  }
+
+  const data = await requestPosts<PostDetail>(query, { draft })
 
   return data.docs[0] ?? null
 }

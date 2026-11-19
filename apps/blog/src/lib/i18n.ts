@@ -92,6 +92,10 @@ export type JournalCopy = {
   notFoundLead: string
   notFoundIndex: string
   notFoundFeatured: string
+  /** Draft preview strip (T12): shown only while Next's draft mode is on. */
+  previewStrip: string
+  /** Label of the strip's link out of draft mode. */
+  previewExit: string
 }
 
 const es: JournalCopy = {
@@ -166,6 +170,8 @@ const es: JournalCopy = {
     'La nota o la página que buscas no está aquí. Puede que la URL tenga una errata, que la nota solo esté publicada en el otro idioma o que todavía sea un borrador.',
   notFoundIndex: '← Volver al cuaderno',
   notFoundFeatured: 'Leer la nota destacada',
+  previewStrip: 'BORRADOR · VISTA PREVIA',
+  previewExit: 'Salir de la vista previa',
 }
 
 const en: JournalCopy = {
@@ -240,6 +246,8 @@ const en: JournalCopy = {
     'The note or page you are looking for is not here. The URL may have a typo, the note may only be published in the other language, or it may still be a draft.',
   notFoundIndex: '← Back to the journal',
   notFoundFeatured: 'Read the featured note',
+  previewStrip: 'DRAFT · PREVIEW',
+  previewExit: 'Exit preview',
 }
 
 const dictionaries: Record<Locale, JournalCopy> = { es, en }

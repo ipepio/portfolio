@@ -3,9 +3,38 @@ import type { CollectionAfterChangeHook, CollectionConfig } from 'payload'
 import type { Post } from '../payload-types'
 import type { RichTextDocument, TranslationLocale } from '../lib/translation'
 import { hashOf, translateBatch, translateRichText, translationConfig } from '../lib/translation'
+import { BLOG_URL } from '../lib/site-links'
 
 /** Plain-text fields the translator fills, in the order their strings are batched. */
 const TRANSLATED_FIELDS = ['title', 'subtitle', 'excerpt', 'category'] as const
+
+/**
+ * The draft preview target (T12: S12).
+ *
+ * The blog has no public URL for an unpublished note: it only renders a draft when Next's
+ * draft mode is on, and the only way in is this token route, which validates the token and
+ * then redirects to the note. The URL is built here, once, so the Preview action and the
+ * live preview panel cannot drift apart.
+ *
+ * `PREVIEW_SECRET` is read from the environment and never defaulted: with no secret the blog
+ * answers 404 for every preview URL, so there is nothing to open and this returns `null` —
+ * Payload then omits the Preview action and renders no live preview panel at all. A note
+ * without a slug yet (a new, unsaved entry) has nothing to preview either.
+ */
+function previewUrl({ slug, locale }: { slug: unknown; locale: unknown }): string | null {
+  const secret = process.env.PREVIEW_SECRET?.trim()
+
+  if (secret === undefined || secret.length === 0) return null
+  if (typeof slug !== 'string' || slug.trim().length === 0) return null
+
+  const params = new URLSearchParams({
+    secret,
+    slug: slug.trim(),
+    locale: typeof locale === 'string' && locale.length > 0 ? locale : 'es',
+  })
+
+  return `${BLOG_URL.replace(/\/+$/, '')}/api/draft?${params.toString()}`
+}
 
 /** Last text this hook wrote, per field and target locale; a field absent here is human-owned. */
 type TranslationState = Partial<Record<string, Partial<Record<TranslationLocale, string>>>>
@@ -163,6 +192,12 @@ export const Posts: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    // Both point at the blog's draft-mode route: the Preview action opens it in a new tab and
+    // the live preview panel iframes it, so the editor sees the real note beside the form.
+    preview: (doc, { locale }) => previewUrl({ slug: doc.slug, locale }),
+    livePreview: {
+      url: ({ data, locale }) => previewUrl({ slug: data.slug, locale }),
+    },
   },
   defaultSort: '-publishedAt',
   access: {

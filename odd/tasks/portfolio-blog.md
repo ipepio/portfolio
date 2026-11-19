@@ -26,6 +26,8 @@ S10. `falta el header para cambiar idioma, ir al portfolio, cambiar el tema`: th
 
 S11. `si no tenemos ruta, da un 404, tenemos que solventarlo`: an unknown route must land on a designed page, not on the framework default. It keeps the header and footer, states that the note does not exist in the reader's language, and offers the way back: the journal index and the featured note. It must not expose a bare browser 404.
 
+S12. `como hago para previsualizar los post?` — a draft must be readable before publishing, in the real blog, without making it public. The admin gets a Preview action and a live preview panel; the blog enters Next draft mode through a token route, renders drafts only inside that mode, shows a strip that says so, and offers the way out. The token comes from `PREVIEW_SECRET`; with no secret configured, preview does not exist at all (the route answers 404 and the admin shows no preview action) — there is no default secret.
+
 ## Tasks
 
 - T1 — `posts` collection, generated types and six sample entries transcribed from the reference — S4, S9
@@ -37,7 +39,8 @@ S11. `si no tenemos ruta, da un 404, tenemos que solventarlo`: an unknown route 
 - T7 — versioned Payload migrations and deploy readiness, with a database backup first — prerequisite for shipping
 - T8 — blog header: identity, journal index, portfolio link, theme toggle and language switch — S10
 - T9 — designed 404 that keeps the shell and offers a way back — S11
-- T10 — verification per task: both locales, pagination edges, and a translated post end to end
+- T12 — draft preview: admin action, live preview panel, draft-mode token route and preview strip — S12
+- T13 — verification per task: both locales, pagination edges, and a translated post end to end
 
 ## Log
 
@@ -50,3 +53,4 @@ L5: decision — Payload cleanup approved and done (`36a8f5e`): About dead field
 L6: deviation, for the record — the existing portfolio app stays at the repository root instead of moving to `apps/portfolio`. Reason: the app loads its secrets from a `.env` at its own root, this session cannot create or move environment files, and relocating the app would break the running project with a failure I could not repair. The blog is added as `apps/blog` with its own build and deploy, which satisfies the two-deploy outcome without a migration that risks the working app. Moving the portfolio later is a mechanical change.
 L7: note — the project has no versioned migrations (dev push only, and the last push crashed and was reconciled by hand). Migrations are a prerequisite before the first deploy of the blog schema, tracked as T7.
 L8 (verbatim): «vale, si no tenemos ruta, da un 404, tenemos que solventarlo eso. También falta el header para cambiar idioma, ir al portoflio, cambiar el tema»
+L9 (verbatim): «y cuando edito un post? también se traduce? como hago para previsualizar los post?» followed by «si, montalo»: editing translates too (already implemented, `afterChange`); draft preview is built as T12.

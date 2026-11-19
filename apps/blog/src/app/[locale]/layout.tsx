@@ -1,7 +1,9 @@
 import type React from 'react'
 
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 
+import { DraftStrip } from '@/components/draft-strip'
 import { SiteHeader } from '@/components/site-header'
 import { getDictionary } from '@/lib/i18n'
 import { isLocale } from '@/lib/payload'
@@ -15,6 +17,10 @@ import { getPortfolioUrl } from '@/lib/site'
  * blog does not serve is rejected before anything renders — `/fr` is a missing route, not a
  * Spanish page. The 404 keeps its own copy of the header (`app/not-found.tsx`) because a
  * `not-found` boundary above this segment replaces it.
+ *
+ * The draft preview strip lives here for the same reason: every page of a preview says it is
+ * one, and no page can forget to. Outside draft mode it renders nothing at all, so the
+ * public site is byte-for-byte the page it was before the preview existed.
  */
 export default async function LocaleLayout({
   children,
@@ -31,6 +37,7 @@ export default async function LocaleLayout({
 
   const theme = await readTheme()
   const copy = getDictionary(locale)
+  const { isEnabled: previewing } = await draftMode()
 
   return (
     <>
@@ -38,6 +45,7 @@ export default async function LocaleLayout({
         {/* The skip link belongs to the shell: it must be the first stop, before the header. */}
         {copy.skipToContent}
       </a>
+      {previewing ? <DraftStrip locale={locale} copy={copy} /> : null}
       <SiteHeader locale={locale} portfolioUrl={getPortfolioUrl()} theme={theme} />
       <div id="journal-content" tabIndex={-1}>
         {children}
