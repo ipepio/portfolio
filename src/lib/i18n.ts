@@ -227,6 +227,18 @@ export type ProjectsCopy = {
 /** Copy for the contact section (05): the band, the socials label and the form. */
 export type ContactCopy = ContactLabels
 
+/** Copy for the footer strip, mirroring the reference `.footer-bottom`. */
+export type FooterCopy = {
+  /** Closing sentence of the copyright line. */
+  made: string
+  /** CV download label, before the arrow. */
+  cv: string
+  /** Link to the blog application. */
+  blog: string
+  /** Scroll-back-to-top label. */
+  backToTop: string
+}
+
 export type Dictionary = {
   nav: NavLabels
   hero: HeroCopy
@@ -238,6 +250,7 @@ export type Dictionary = {
   manifesto: ManifestoCopy
   projects: ProjectsCopy
   contact: ContactCopy
+  footer: FooterCopy
 }
 
 const dictionaries: Record<Locale, Dictionary> = {
@@ -338,6 +351,12 @@ const dictionaries: Record<Locale, Dictionary> = {
         viewLive: 'Ver en producción',
         repository: 'Repositorio',
       },
+    },
+    footer: {
+      made: 'Diseñado y construido con intención.',
+      cv: 'CV / PDF',
+      blog: 'BLOG / JOURNAL',
+      backToTop: 'VOLVER ARRIBA',
     },
     contact: {
       eyebrow: '05 / CONTACTO',
@@ -462,6 +481,12 @@ const dictionaries: Record<Locale, Dictionary> = {
         viewLive: 'View live',
         repository: 'Repository',
       },
+    },
+    footer: {
+      made: 'Designed and built with intent.',
+      cv: 'CV / PDF',
+      blog: 'BLOG / JOURNAL',
+      backToTop: 'BACK TO TOP',
     },
     contact: {
       eyebrow: '05 / CONTACT',
