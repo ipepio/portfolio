@@ -293,6 +293,18 @@ export interface Post {
    * Solo un artículo debería estar destacado; no se valida en código.
    */
   featured?: boolean | null;
+  /**
+   * Hash de la última traducción automática por campo e idioma.
+   */
+  translationState?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -495,6 +507,7 @@ export interface PostsSelect<T extends boolean = true> {
   publishedAt?: T;
   status?: T;
   featured?: T;
+  translationState?: T;
   updatedAt?: T;
   createdAt?: T;
 }
