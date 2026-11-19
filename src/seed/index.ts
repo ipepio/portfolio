@@ -111,7 +111,6 @@ async function seedGlobals(photoId: number) {
     name: aboutSeed.name,
     role: aboutSeed.role,
     availability: aboutSeed.availability,
-    location: aboutSeed.location,
     sectionEyebrow: aboutSeed.sectionEyebrow,
     sectionHeading: aboutSeed.sectionHeading,
     sectionHeadingAccent: aboutSeed.sectionHeadingAccent,
@@ -131,10 +130,16 @@ async function seedGlobals(photoId: number) {
       en: richText([aboutSeed.heroIntro.en]),
     },
     heroMeta: aboutSeed.heroMeta.map((item) => ({ text: item })),
-    stats: aboutSeed.stats.map((stat) => ({ value: stat.value, label: stat.label })),
     principles: aboutSeed.principles,
-    education: aboutSeed.education,
-    languages: aboutSeed.languages,
+    // The four fields below stay in the model but have no section rendering them, so the
+    // seed writes them empty on purpose: a re-run must clear whatever an earlier seed (or
+    // the admin) left behind instead of keeping stale values the owner never sees.
+    // `location` is localized, so with `locale: 'all'` it takes one entry per locale;
+    // a bare `null` is ignored by the 'all' write and would keep the old value.
+    location: { es: null, en: null },
+    stats: [],
+    education: [],
+    languages: [],
   } as unknown as About
 
   await payload.updateGlobal({ slug: 'about', locale: 'all', data: aboutData })

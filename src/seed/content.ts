@@ -209,7 +209,6 @@ export type AboutSeed = {
   name: string
   role: Localized
   availability: Localized
-  location: Localized
   sectionEyebrow: Localized
   sectionHeading: Localized
   sectionHeadingAccent: Localized
@@ -217,10 +216,7 @@ export type AboutSeed = {
   heroLines: { text: Localized; style: HeroLineStyle }[]
   heroIntro: LocalizedRuns
   heroMeta: Localized[]
-  stats: { value: string; label: Localized }[]
   principles: { index: string; title: Localized; body: Localized }[]
-  education: { title: Localized; institution: string; note: Localized }[]
-  languages: { name: string; level: string }[]
 }
 
 export const aboutSeed: AboutSeed = {
@@ -230,7 +226,6 @@ export const aboutSeed: AboutSeed = {
     es: 'CTO · Arquitectura · IA aplicada',
     en: 'CTO · Architecture · Applied AI',
   },
-  location: { es: 'Vinaròs, España', en: 'Vinaròs, Spain' },
   sectionEyebrow: { es: 'ENFOQUE', en: 'APPROACH' },
   // The real newline in `sectionHeading` is rendered as a forced line break (`whitespace-pre-line`).
   sectionHeading: { es: 'Menos ruido\nMás sistemas', en: 'Less noise\nMore systems' },
@@ -270,8 +265,6 @@ export const aboutSeed: AboutSeed = {
     { es: 'Cloud / AI / DevOps', en: 'Cloud / AI / DevOps' },
     { es: 'Desde España', en: 'Based in Spain' },
   ],
-  // Kept in the data model but no longer rendered: the About section dropped the stat block.
-  stats: [{ value: '8+', label: { es: 'AÑOS EN SOFTWARE', en: 'YEARS IN SOFTWARE' } }],
   principles: [
     {
       index: '01 — ARCHITECTURE',
@@ -297,24 +290,6 @@ export const aboutSeed: AboutSeed = {
         en: 'Agents, local inference, gateways, and automation. Fewer flashy demos, more systems that deliver value and control.',
       },
     },
-  ],
-  education: [
-    {
-      title: {
-        es: 'Grado en Ingeniería de Telecomunicaciones',
-        en: "Bachelor's Degree in Telecommunications Engineering",
-      },
-      institution: 'Universitat Oberta de Catalunya',
-      note: {
-        es: 'Matrícula de Honor en el TFG (aplicaciones multimedia de nueva generación)',
-        en: 'Matrícula de Honor (Honours) for the final degree project (next-generation multimedia applications)',
-      },
-    },
-  ],
-  languages: [
-    { name: 'Español', level: 'Nativo' },
-    { name: 'Catalán/Valenciano', level: 'Nativo' },
-    { name: 'Inglés', level: 'C1' },
   ],
 }
 
