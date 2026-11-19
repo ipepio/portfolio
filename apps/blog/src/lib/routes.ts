@@ -11,7 +11,10 @@ export function archiveHref(locale: Locale, page: number): string {
   return page <= 1 ? `/${locale}` : `/${locale}/page/${page}`
 }
 
-/** The article lives at `/[locale]/[slug]`; its page arrives with T4, the links already do. */
+/**
+ * The article lives at `/[locale]/[slug]`. Next resolves the static `page` segment before a
+ * slug, so `/[locale]/page/[n]` stays the archive's later pages.
+ */
 export function postHref(locale: Locale, slug: string): string {
   return `/${locale}/${slug}`
 }

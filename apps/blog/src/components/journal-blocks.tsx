@@ -46,12 +46,37 @@ function PageStep({
   )
 }
 
-export function JournalBreadcrumb({ locale, copy }: { locale: Locale; copy: JournalCopy }) {
+/**
+ * `IPEPIO / JOURNAL`, plus the crumb of a note when the article page asks for it. The
+ * section is a link only where it has somewhere to go — the note pages link back to the
+ * archive — and the current crumb is the slug, never the title, exactly like the reference.
+ */
+export function JournalBreadcrumb({
+  locale,
+  copy,
+  current,
+  sectionHref,
+}: {
+  locale: Locale
+  copy: JournalCopy
+  current?: string
+  sectionHref?: string
+}) {
   return (
     <nav className="journal-breadcrumb" aria-label={copy.breadcrumbLabel}>
       <a href={`/${locale}`}>{copy.breadcrumbHome}</a>
       <b aria-hidden="true">/</b>
-      <span>{copy.breadcrumbSection}</span>
+      {sectionHref === undefined ? (
+        <span>{copy.breadcrumbSection}</span>
+      ) : (
+        <a href={sectionHref}>{copy.breadcrumbSection}</a>
+      )}
+      {current === undefined ? null : (
+        <>
+          <b aria-hidden="true">/</b>
+          <span className="last">{current}</span>
+        </>
+      )}
     </nav>
   )
 }

@@ -829,6 +829,260 @@ a {
   flex-wrap: wrap;
 }
 
+/* === Journal article (reading view) === */
+
+.journal-breadcrumb .last {
+  max-width: 310px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reading-hero {
+  padding: 65px 0 57px;
+  border-bottom: 1px solid var(--border);
+}
+
+.reading-title {
+  max-width: 1040px;
+  font-size: clamp(48px, 6.5vw, 100px);
+  font-weight: 680;
+  line-height: 1.03;
+  letter-spacing: -0.079em;
+  margin: 25px 0;
+}
+
+.reading-subtitle {
+  max-width: 740px;
+  margin: 0 0 37px;
+  color: var(--muted);
+  font-size: clamp(17px, 2vw, 23px);
+  line-height: 1.65;
+  letter-spacing: -0.025em;
+}
+
+.reading-byline {
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font:
+    550 11px/1.6 'SFMono-Regular',
+    Consolas,
+    monospace;
+}
+
+.reading-avatar {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--accent);
+  border-radius: 11px;
+  color: var(--accent);
+  font:
+    750 12px/1 'SFMono-Regular',
+    Consolas,
+    monospace;
+}
+
+.reading-byline strong {
+  color: var(--ink);
+}
+
+.reading-cover {
+  height: clamp(240px, 39vw, 490px);
+  position: relative;
+  margin: 39px 0 79px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: #101913;
+}
+
+.reading-cover .journal-graphic {
+  height: 100%;
+  min-height: 0;
+  border: 0;
+}
+
+/* Notes whose art is not the console window centre their drawing in the frame. */
+.reading-cover .journal-graphic.is-art {
+  display: grid;
+  place-items: center;
+}
+
+.reading-cover .graphic-console {
+  left: 22%;
+  right: 22%;
+  top: 17%;
+  transform: rotate(-3deg) scale(1.09);
+}
+
+.reading-cover-label {
+  position: absolute;
+  z-index: 3;
+  left: 27px;
+  bottom: 22px;
+  color: #c5ee77;
+  font:
+    650 10px/1.5 'SFMono-Regular',
+    Consolas,
+    monospace;
+  letter-spacing: 0.12em;
+}
+
+.reading-layout {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 720px) 1fr;
+  gap: clamp(22px, 4.4vw, 65px);
+  align-items: start;
+}
+
+/* A body with no `h2` has no index: the body keeps the reading column without a gap. */
+.reading-layout.is-plain {
+  grid-template-columns: minmax(0, 720px) 1fr;
+}
+
+.reading-toc {
+  position: sticky;
+  top: 112px;
+  border-top: 1px solid var(--border-strong);
+  padding-top: 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.reading-toc .journal-kicker {
+  margin-bottom: 9px;
+}
+
+.reading-toc a {
+  text-align: left;
+  color: var(--soft);
+  font:
+    600 11px/1.55 'SFMono-Regular',
+    Consolas,
+    monospace;
+  padding: 4px 0;
+}
+
+.reading-toc a:hover {
+  color: var(--accent);
+}
+
+.reading-body {
+  padding-bottom: 115px;
+  min-width: 0;
+}
+
+.reading-body .opening {
+  font-size: clamp(20px, 2.25vw, 26px);
+  line-height: 1.65;
+  letter-spacing: -0.032em;
+  color: var(--ink);
+  margin: 0 0 38px;
+}
+
+/* Lexical emits headings and paragraphs as siblings, so the gap the reference takes from
+   its `<section>` wrapper moves onto the heading; the anchor clears the sticky top edge. */
+.reading-body h2 {
+  font-size: clamp(28px, 3.3vw, 43px);
+  letter-spacing: -0.054em;
+  line-height: 1.12;
+  font-weight: 650;
+  margin: 60px 0 22px;
+  scroll-margin-top: 120px;
+}
+
+.reading-body h2:first-child {
+  margin-top: 0;
+}
+
+.reading-body p {
+  font-size: 16px;
+  line-height: 1.96;
+  color: var(--muted);
+  margin: 0 0 22px;
+}
+
+.reading-body p strong {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.reading-body blockquote {
+  margin: 30px 0;
+  padding: 17px 0 17px 24px;
+  border-left: 3px solid var(--accent);
+  font-size: clamp(18px, 2.2vw, 24px);
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+/* The reference frames a code block in its own `.reading-code` panel. Payload's renderer
+   emits a plain `pre` (with a `code` inside), so the panel moves onto that node instead of
+   inventing a wrapper around it. */
+.reading-body pre {
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--card);
+  color: var(--ink);
+  font:
+    550 12px/1.85 'SFMono-Regular',
+    Consolas,
+    monospace;
+  padding: 19px;
+  overflow: auto;
+  margin: 30px 0;
+}
+
+.reading-body pre code {
+  font: inherit;
+}
+
+.reading-side-note {
+  position: sticky;
+  top: 112px;
+  padding: 21px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  font:
+    550 11px/1.75 'SFMono-Regular',
+    Consolas,
+    monospace;
+}
+
+.reading-side-note strong {
+  display: block;
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.reading-end {
+  border-top: 1px solid var(--border);
+  padding: 50px 0 85px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.reading-end h3 {
+  margin: 7px 0 0;
+  font-size: clamp(26px, 3.5vw, 44px);
+  font-weight: 660;
+  letter-spacing: -0.055em;
+}
+
 @media (max-width: 1080px) {
   .journal-hero {
     grid-template-columns: 1fr 220px;
@@ -837,6 +1091,19 @@ a {
 
   .journal-feature-link {
     grid-template-columns: 1.04fr 1fr;
+  }
+
+  .reading-layout {
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .reading-layout.is-plain {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .reading-side-note {
+    display: none;
   }
 }
 
@@ -890,6 +1157,38 @@ a {
     align-items: stretch;
     flex-direction: column;
   }
+
+  .reading-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .reading-toc {
+    position: static;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 12px 0 20px;
+  }
+
+  .reading-toc .journal-kicker {
+    width: 100%;
+    margin: 0;
+  }
+
+  .reading-toc a {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 10px;
+  }
+
+  .reading-cover {
+    margin-bottom: 45px;
+  }
+
+  .reading-hero {
+    padding-top: 46px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -931,6 +1230,38 @@ a {
 
   .journal-card-visual {
     height: 176px;
+  }
+
+  .reading-title {
+    font-size: clamp(45px, 11vw, 67px);
+  }
+
+  .reading-cover {
+    height: 230px;
+  }
+
+  .reading-cover .graphic-console {
+    left: 8%;
+    right: 8%;
+    transform: rotate(-3deg) scale(1);
+  }
+
+  .reading-cover .graphic-console-lines {
+    font-size: 9px;
+  }
+
+  .reading-body p {
+    font-size: 15px;
+  }
+
+  .reading-body pre {
+    font-size: 10px;
+    padding: 13px;
+  }
+
+  /* The reference's small breakpoint: the index no longer fits above the body. */
+  .reading-toc {
+    display: none;
   }
 }
 

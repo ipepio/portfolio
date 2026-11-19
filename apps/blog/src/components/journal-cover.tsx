@@ -1,11 +1,12 @@
 /**
- * Decorative cover art for the archive cards and the featured block.
+ * Decorative cover art for the archive cards, the featured block and the article cover.
  *
  * The reference paints one abstract graphic per note. Payload's `cover` is a real upload
- * (empty for the seeded notes), so the index keeps the reference's editorial graphics:
+ * (empty for the seeded notes), so the blog keeps the reference's editorial graphics:
  * each note gets a stable art variant derived from its slug, which makes the same note look
- * the same in both locales. The letters inside the art are part of the drawing, not copy:
- * like code samples they stay identical in Spanish and English.
+ * the same in both locales and in every block that shows it. The letters inside the art are
+ * part of the drawing, not copy: like code samples they stay identical in Spanish and
+ * English.
  */
 import { format } from '@/lib/i18n'
 
@@ -24,7 +25,8 @@ export function artKindFor(slug: string): ArtKind {
   return artKinds[total % artKinds.length]
 }
 
-function Art({ kind }: { kind: ArtKind }) {
+/** One art variant on its own: the article cover frames it without a card around it. */
+export function Art({ kind }: { kind: ArtKind }) {
   switch (kind) {
     case 'cloud':
       return (

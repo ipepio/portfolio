@@ -54,6 +54,22 @@ export type JournalCopy = {
   featureCoverCorner: string
   featureCoverId: string
   featureCoverPosition: string
+  /** Document title of the article page; `{title}` is the note's own title. */
+  articleDocumentTitle: string
+  /** Byline: the author and the handle the reference prints beside it. */
+  authorName: string
+  authorHandle: string
+  /** Monogram in the byline avatar. */
+  authorInitials: string
+  articleReadMinutes: string
+  articleDraft: string
+  articleCoverLabel: string
+  tocLabel: string
+  tocTitle: string
+  sideNoteTitle: string
+  sideNoteBody: string
+  nextNoteKicker: string
+  nextNoteAction: string
 }
 
 const es: JournalCopy = {
@@ -97,6 +113,20 @@ const es: JournalCopy = {
   featureCoverCorner: 'IPEPIO / ENGINEERING NOTES',
   featureCoverId: 'NOTE / {serial}',
   featureCoverPosition: '{index} / {total}',
+  articleDocumentTitle: '{title} — ipepio / Journal',
+  authorName: 'Isaac Pepió',
+  authorHandle: 'ipepio',
+  authorInitials: 'IP',
+  articleReadMinutes: '{minutes} MIN DE LECTURA',
+  articleDraft: 'BORRADOR DE DISEÑO',
+  articleCoverLabel: 'ENGINEERING / FIELD NOTES / {serial}',
+  tocLabel: 'EN ESTA NOTA',
+  tocTitle: 'Contenido',
+  sideNoteTitle: '// DISCLAIMER',
+  sideNoteBody:
+    'Este artículo es una muestra de diseño. El contenido final se publicaría con sus ejemplos, código y referencias reales.',
+  nextNoteKicker: 'SIGUIENTE NOTA',
+  nextNoteAction: 'Leer siguiente',
 }
 
 const en: JournalCopy = {
@@ -140,6 +170,20 @@ const en: JournalCopy = {
   featureCoverCorner: 'IPEPIO / ENGINEERING NOTES',
   featureCoverId: 'NOTE / {serial}',
   featureCoverPosition: '{index} / {total}',
+  articleDocumentTitle: '{title} — ipepio / Journal',
+  authorName: 'Isaac Pepió',
+  authorHandle: 'ipepio',
+  authorInitials: 'IP',
+  articleReadMinutes: '{minutes} MIN READ',
+  articleDraft: 'DESIGN DRAFT',
+  articleCoverLabel: 'ENGINEERING / FIELD NOTES / {serial}',
+  tocLabel: 'IN THIS NOTE',
+  tocTitle: 'Table of contents',
+  sideNoteTitle: '// DISCLAIMER',
+  sideNoteBody:
+    'This is a layout sample. Actual posts would include real-world examples, code, and sources.',
+  nextNoteKicker: 'NEXT NOTE',
+  nextNoteAction: 'Read next',
 }
 
 const dictionaries: Record<Locale, JournalCopy> = { es, en }

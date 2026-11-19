@@ -37,8 +37,8 @@ export function getPayloadUrl(): string {
 }
 
 /**
- * The fields of a `posts` document the index renders. The article page reads `body` and
- * the cover as well; both are left out here so the archive request stays small.
+ * The fields of a `posts` document the index renders. The article page reads `body` on top
+ * of these; it is left out here so the archive request stays small.
  */
 export type PostSummary = {
   id: number | string
@@ -52,9 +52,14 @@ export type PostSummary = {
   featured?: boolean | null
 }
 
+/** A whole note: the summary plus the Lexical body the article page renders. */
+export type PostDetail = PostSummary & {
+  body?: unknown | null
+}
+
 /** One page of notes, with the totals the pagination controls and the counter need. */
-export type PostsPage = {
-  docs: PostSummary[]
+export type PostsPage<TDoc = PostSummary> = {
+  docs: TDoc[]
   totalDocs: number
   totalPages: number
   page: number
@@ -63,7 +68,10 @@ export type PostsPage = {
 /** Revalidation window shared by every read: the blog must not hammer the API. */
 const REVALIDATE_SECONDS = 60
 
-async function requestPosts(query: URLSearchParams): Promise<PostsPage> {
+/** How many notes `getPosts` asks for when it needs the whole archive order at once. */
+const ARCHIVE_LIMIT = 500
+
+async function requestPosts<TDoc = PostSummary>(query: URLSearchParams): Promise<PostsPage<TDoc>> {
   const response = await fetch(`${getPayloadUrl()}/api/posts?${query.toString()}`, {
     next: { revalidate: REVALIDATE_SECONDS },
   })
@@ -74,12 +82,19 @@ async function requestPosts(query: URLSearchParams): Promise<PostsPage> {
     )
   }
 
-  const data = (await response.json()) as PostsPage
+  const data = (await response.json()) as PostsPage<TDoc>
 
   return data
 }
 
-/** Published posts in the requested locale, newest first, without pagination. */
+/**
+ * The archive order: every published note in the requested locale, newest first.
+ *
+ * The article page reads it to place its own note in the archive — its serial, and the note
+ * that follows it — so the list asks for `ARCHIVE_LIMIT` summaries at once instead of one
+ * page of them. `ARCHIVE_LIMIT` is far above the notes the blog has; a note beyond it would
+ * simply have no serial and no next note instead of a wrong one.
+ */
 export async function getPosts(locale: Locale): Promise<PostSummary[]> {
   const data = await requestPosts(
     new URLSearchParams({
@@ -87,10 +102,32 @@ export async function getPosts(locale: Locale): Promise<PostSummary[]> {
       sort: '-publishedAt',
       depth: '0',
       locale,
+      limit: String(ARCHIVE_LIMIT),
     }),
   )
 
   return data.docs
+}
+
+/**
+ * One published note by slug, or `null` for anything the blog must not show: an unknown
+ * slug, a note that is still a draft, or a slug that does not exist in this locale.
+ *
+ * `status` is filtered inside Payload rather than after the read, so a draft never leaves
+ * the API; the page turns the `null` into a 404.
+ */
+export async function getPostBySlug(locale: Locale, slug: string): Promise<PostDetail | null> {
+  const data = await requestPosts<PostDetail>(
+    new URLSearchParams({
+      'where[slug][equals]': slug,
+      'where[status][equals]': 'published',
+      depth: '0',
+      locale,
+      limit: '1',
+    }),
+  )
+
+  return data.docs[0] ?? null
 }
 
 /**
