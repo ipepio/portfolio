@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { cache } from 'react'
 
 import config from '@payload-config'
 import { ProjectDetail } from '@/components/site/project-detail'
@@ -11,8 +12,13 @@ type ProjectPageProps = {
   params: Promise<{ locale: string; slug: string }>
 }
 
-/** Looks up one project by slug in the requested locale (or `null`). */
-async function findProject(locale: (typeof locales)[number], slug: string) {
+/**
+ * Looks up one project by slug in the requested locale (or `null`).
+ *
+ * Wrapped in React's `cache()` so `generateMetadata` and the page render, which both need
+ * the document, pay for a single query per request instead of two.
+ */
+const findProject = cache(async (locale: (typeof locales)[number], slug: string) => {
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
 
@@ -25,7 +31,7 @@ async function findProject(locale: (typeof locales)[number], slug: string) {
   })
 
   return docs[0] ?? null
-}
+})
 
 /**
  * Prerenders every project detail page for both locales. The child segment must

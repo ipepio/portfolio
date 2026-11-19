@@ -161,8 +161,6 @@ export type Dictionary = {
     heading: string
     /** Accessible name for the skill orbit graph. */
     orbitLabel: string
-    educationHeading: string
-    languagesHeading: string
   }
   expertise: {
     eyebrow: string
@@ -259,8 +257,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: '01 / SOBRE MÍ',
       heading: 'Cómo trabajo.',
       orbitLabel: 'Áreas de especialidad',
-      educationHeading: 'Formación',
-      languagesHeading: 'Idiomas',
     },
     expertise: {
       eyebrow: '02 / LO QUE HAGO',
@@ -383,8 +379,6 @@ const dictionaries: Record<Locale, Dictionary> = {
       eyebrow: '01 / ABOUT',
       heading: 'How I work.',
       orbitLabel: 'Areas of expertise',
-      educationHeading: 'Education',
-      languagesHeading: 'Languages',
     },
     expertise: {
       eyebrow: '02 / WHAT I DO',
