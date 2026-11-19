@@ -10,6 +10,8 @@ export const Tags: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      // The chips render in the page locale, so the name is translated per locale.
+      localized: true,
     },
   ],
 }

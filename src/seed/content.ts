@@ -92,9 +92,17 @@ export const extendedToolNames = [
   'LiteLLM',
 ] as const
 
-export const tagNames = ['IA / Agentes', 'Plataforma', 'Producto'] as const
+/**
+ * Project tags, one `Localized` record per tag so the chips follow the locale. The `es`
+ * value is also the canonical key `projectSeeds[].tags` uses to resolve tag ids.
+ */
+export const tagSeeds = [
+  { es: 'IA / Agentes', en: 'AI / Agents' },
+  { es: 'Plataforma', en: 'Platform' },
+  { es: 'Producto', en: 'Product' },
+] as const satisfies readonly Localized[]
 
-export type TagName = (typeof tagNames)[number]
+export type TagName = (typeof tagSeeds)[number]['es']
 
 /** Diagram shown when a project has no cover image (Payload `projects.visual`). */
 type ProjectVisualName =

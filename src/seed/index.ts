@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import config from '@payload-config'
 
-import type { About, Experience, Expertise, Project } from '../payload-types'
+import type { About, Experience, Expertise, Project, Tag } from '../payload-types'
 import {
   aboutSeed,
   capabilitySeeds,
@@ -12,7 +12,7 @@ import {
   experienceSeeds,
   extendedToolNames,
   projectSeeds,
-  tagNames,
+  tagSeeds,
 } from './content'
 import { richText } from './lexical'
 
@@ -46,9 +46,16 @@ async function seedCollections() {
   await payload.delete({ collection: 'tags', where: {} })
 
   const tagIds = new Map<string, number>()
-  for (const name of tagNames) {
-    const tag = await payload.create({ collection: 'tags', data: { name } })
-    tagIds.set(name, tag.id)
+  for (const name of tagSeeds) {
+    // SAFETY: with locale: 'all' Payload writes every locale at once, while the generated
+    // Tag type describes one resolved locale.
+    const tag = await payload.create({
+      collection: 'tags',
+      locale: ALL_LOCALES,
+      data: { name } as unknown as Tag,
+    })
+    // The project seeds reference tags by their canonical (Spanish) value.
+    tagIds.set(name.es, tag.id)
   }
 
   for (const project of projectSeeds) {

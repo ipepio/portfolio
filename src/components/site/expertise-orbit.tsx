@@ -1,12 +1,16 @@
 'use client'
 
 import {
+  cloneElement,
   useCallback,
   useState,
   type CSSProperties,
   type KeyboardEvent,
   type ReactElement,
+  type SVGProps,
 } from 'react'
+
+import { useLocale } from '@/lib/locale-context'
 
 import styles from './expertise-orbit.module.css'
 
@@ -173,7 +177,29 @@ const NODE_ICONS: Record<AreaId, ReactElement> = {
    Scenes: the reference's inline illustrations, one per area.
    --------------------------------------------------------------------------- */
 
-const SCENES: Record<AreaId, ReactElement> = {
+/**
+ * Accessible descriptions of the scenes and the region, per locale. The visible copy of
+ * the orbit stays verbatim Spanish as ported (the user's decision), but a screen reader
+ * must not read Spanish on the English page, so these labels are the one translated part.
+ */
+const ARIA_LABELS = {
+  region: { es: 'Explora siete áreas de especialidad', en: 'Explore seven areas of expertise' },
+  backend: { es: 'Consola de API animada', en: 'Animated API console' },
+  cloud: { es: 'Infraestructura cloud conectada', en: 'Connected cloud infrastructure' },
+  ai: { es: 'Red neuronal de inteligencia artificial', en: 'Artificial intelligence neural network' },
+  quality: { es: 'Escudo de calidad y pruebas verificadas', en: 'Quality shield with verified tests' },
+  data: { es: 'Datos y analítica en tiempo real', en: 'Real-time data and analytics' },
+  enterprise: {
+    es: 'Plataforma empresarial con sistemas conectados',
+    en: 'Enterprise platform with connected systems',
+  },
+  engineering: {
+    es: 'Ciclo de ingeniería desde diseño hasta despliegue',
+    en: 'Engineering cycle from design to deployment',
+  },
+} as const
+
+const SCENES: Record<AreaId, ReactElement<SVGProps<SVGSVGElement>>> = {
   /* SOFTWARE ENGINEER: active development/API console with request/response trace */
   backend: (
     <svg viewBox="0 0 310 215" role="img" aria-label="Consola de API animada">
@@ -764,6 +790,11 @@ const SCENES: Record<AreaId, ReactElement> = {
  */
 export function ExpertiseOrbit() {
   const [selected, setSelected] = useState(INITIAL_INDEX)
+  const locale = useLocale()
+  const aria = useCallback(
+    (key: AreaId | 'region') => ARIA_LABELS[key][locale],
+    [locale],
+  )
 
   const active = AREAS[selected] ?? AREAS[0]
 
@@ -795,7 +826,7 @@ export function ExpertiseOrbit() {
 
   return (
     <div className={styles.root} data-expertise-orbit onKeyDown={handleKeyDown}>
-      <section className={styles.orbit} aria-label="Explora siete áreas de especialidad">
+      <section className={styles.orbit} aria-label={aria('region')}>
         <div className={`${styles.orbitRing} ${styles.orbitRingOuter}`} aria-hidden="true" />
         <div className={`${styles.orbitRing} ${styles.orbitRingMiddle}`} aria-hidden="true" />
         <div className={`${styles.orbitRing} ${styles.orbitRingInner}`} aria-hidden="true" />
@@ -810,7 +841,7 @@ export function ExpertiseOrbit() {
                   data-scene={area.id}
                   className={area.id === active.id ? sceneClass : styles.scene}
                 >
-                  {SCENES[area.id]}
+                  {cloneElement(SCENES[area.id], { 'aria-label': aria(area.id) })}
                 </div>
               ))}
             </div>
