@@ -145,13 +145,21 @@ a {
   display: flex;
   align-items: center;
   gap: 16px;
-  height: 68px;
+  /* Same header height as the portfolio, so moving between the two apps does not move the
+     logo up or down. */
+  height: 64px;
+}
+
+@media (min-width: 768px) {
+  .journal-nav {
+    height: 69px;
+  }
 }
 
 .journal-brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 13px;
   flex: none;
   white-space: nowrap;
 }
@@ -162,16 +170,25 @@ a {
   display: grid;
   place-items: center;
   flex: none;
-  width: 26px;
-  height: 30px;
+  /* The portfolio's `size-8 md:size-[37px]`, so both marks measure the same. */
+  width: 32px;
+  height: 32px;
   border: 0;
   background: none;
   color: var(--ink);
 }
 
 .journal-brand-logo {
-  width: 24px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
+}
+
+@media (min-width: 768px) {
+  .journal-brand-mark,
+  .journal-brand-logo {
+    width: 37px;
+    height: 37px;
+  }
 }
 
 .journal-brand:hover .journal-brand-mark {
@@ -182,6 +199,12 @@ a {
   font-size: 17px;
   font-weight: 700;
   letter-spacing: -0.06em;
+}
+
+@media (min-width: 768px) {
+  .journal-brand-word {
+    font-size: 19px;
+  }
 }
 
 .journal-brand-slash {
@@ -1438,7 +1461,9 @@ a {
   /* Same breakpoint as the rest of the reference: only the gaps and the type shrink, so
      every link and control stays reachable with the keyboard. */
   .journal-nav {
-    height: 60px;
+    /* The portfolio keeps its 64px bar all the way down, so this does too: only gaps
+       tighten, and the logo stays the same size in both apps. */
+    height: 64px;
     gap: 12px;
   }
 
@@ -1542,9 +1567,8 @@ a {
 }
 
 @media (max-width: 560px) {
-  /* The identity keeps the monogram only, and the controls shrink: 320px wide screens must
-     not overflow the header. */
-  .journal-brand-word,
+  /* The portfolio keeps the name visible on small screens, so this does too: only the slash
+     and the section label go, which is what would overflow a 320px header. */
   .journal-brand-slash,
   .journal-brand-section {
     display: none;
