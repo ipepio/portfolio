@@ -67,6 +67,13 @@ export default buildConfig({
     client: {
       url: process.env.DATABASE_URI || 'file:./ipepio-portfolio.db',
     },
+    /**
+     * Development keeps Payload's schema push, so iterating on fields needs no migration.
+     * Production never pushes: a deploy applies the versioned migrations in `src/migrations`
+     * (`payload migrate`, see DEPLOYMENT.md), so the deployed schema only ever changes
+     * through a migration that is reviewed with the code.
+     */
+    push: process.env.NODE_ENV !== 'production',
   }),
   localization: {
     locales: [
