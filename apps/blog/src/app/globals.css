@@ -99,6 +99,18 @@ a {
   margin-inline: auto;
 }
 
+/*
+ * The header bar must place its logo exactly where the portfolio's does, so it mirrors that
+ * bar's box instead of the content wrap: full width, capped at the page width, with the 24px
+ * inset applied *inside* the cap. The content wrap insets 46px a side and would move the
+ * logo 22px to the right, which is what made the two apps look misaligned.
+ */
+.journal-header .wrap {
+  width: 100%;
+  max-width: var(--max);
+  padding-inline: 24px;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1461,9 +1473,9 @@ a {
   /* Same breakpoint as the rest of the reference: only the gaps and the type shrink, so
      every link and control stays reachable with the keyboard. */
   .journal-nav {
-    /* The portfolio keeps its 64px bar all the way down, so this does too: only gaps
-       tighten, and the logo stays the same size in both apps. */
-    height: 64px;
+    /* No height here: the base bar is already 64px, and declaring it again in a block that
+       reaches 780px would override the 69px the 768px query sets, leaving the blog 5px
+       shorter than the portfolio in that window. */
     gap: 12px;
   }
 
@@ -1472,7 +1484,9 @@ a {
   }
 
   .journal-brand {
-    gap: 8px;
+    /* The gap stays at the portfolio's 13px at every width: shrinking it moved the name
+       5px left of where it sits in the portfolio on small screens. */
+    gap: 13px;
   }
 
   .journal-brand-section {
