@@ -128,10 +128,10 @@ export function ProjectDetail({ project, locale, labels }: ProjectDetailProps) {
         )}
 
         {/* Reading layout: the body keeps a comfortable measure on the left and the actions
-            sit in their own column, so a full-width media is followed by a composition that
-            uses the width instead of leaving a narrow orphan column. */}
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-14">
-          <div className="min-w-0 lg:max-w-[68ch]">
+            sit in their own column. The row itself is capped and centred, so on a wide screen
+            the text and its actions stay together instead of drifting to opposite edges. */}
+        <div className="mx-auto flex w-full max-w-[1000px] flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,1fr)_240px] lg:items-start lg:gap-12">
+          <div className="min-w-0">
             {body.length > 0 ? (
               <MarkdownBody source={body} />
             ) : project.shortDescription ? (
@@ -142,30 +142,30 @@ export function ProjectDetail({ project, locale, labels }: ProjectDetailProps) {
           </div>
 
           {hasLinks ? (
-            <aside className="flex shrink-0 flex-wrap gap-3 lg:sticky lg:top-[123px] lg:w-[240px] lg:flex-col">
-            {liveUrl ? (
-              <a
-                href={liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mono inline-flex items-center gap-2 rounded-md border border-primary/60 bg-primary/10 px-4 py-2.5 text-[11px] uppercase leading-none tracking-[0.14em] text-foreground transition-colors hover:border-primary"
-              >
-                {labels.viewLive}
-                <ArrowUpRight aria-hidden className="size-3.5" />
-              </a>
-            ) : null}
+            <aside className="flex shrink-0 flex-wrap gap-3 lg:sticky lg:top-[123px] lg:flex-col">
+              {liveUrl ? (
+                <a
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mono inline-flex items-center gap-2 rounded-md border border-primary/60 bg-primary/10 px-4 py-2.5 text-[11px] uppercase leading-none tracking-[0.14em] text-foreground transition-colors hover:border-primary"
+                >
+                  {labels.viewLive}
+                  <ArrowUpRight aria-hidden className="size-3.5" />
+                </a>
+              ) : null}
 
-            {githubUrl ? (
-              <a
-                href={githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mono inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground"
-              >
-                {labels.repository}
-                <ArrowUpRight aria-hidden className="size-3.5" />
-              </a>
-            ) : null}
+              {githubUrl ? (
+                <a
+                  href={githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mono inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground"
+                >
+                  {labels.repository}
+                  <ArrowUpRight aria-hidden className="size-3.5" />
+                </a>
+              ) : null}
             </aside>
           ) : null}
         </div>
