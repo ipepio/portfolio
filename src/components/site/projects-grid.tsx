@@ -44,6 +44,21 @@ export type ProjectsGridProps = {
 
 const ALL_FILTER = '__all__'
 
+/** How many cards fit on one page of the archive; more than this paginates. */
+const PAGE_SIZE = 6
+
+/**
+ * Case- and accent-insensitive form of a string, so `ia` finds `IA/Agentes` and `diseno`
+ * finds `Diseño`. Diacritics are stripped rather than folded per locale on purpose: the
+ * archive is short and a Spanish keyboard is not always an option mid-word.
+ */
+function normalizeText(value: string): string {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+}
+
 const CARD_SIZES = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
 
 /** Card chrome ported from the reference `.project-card` / `.project-body`. */
@@ -222,13 +237,57 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
   const { allLabel, statusLabels, gridLabels: labels } = useDictionary().projects
   const filters = buildFilters(projects, allLabel)
   const [active, setActive] = useState(ALL_FILTER)
+  const [query, setQuery] = useState('')
+  const [page, setPage] = useState(1)
 
-  const isVisible = (project: ProjectItem) =>
-    active === ALL_FILTER || tagNames(project).includes(active)
-  const visibleCount = projects.filter(isVisible).length
+  const needle = normalizeText(query.trim())
+
+  // Tag filter and free text compose: the tag narrows the archive, the text narrows what
+  // is left. Both reset the page, because page 3 of the previous result means nothing here.
+  const matches = (project: ProjectItem) => {
+    if (active !== ALL_FILTER && !tagNames(project).includes(active)) return false
+    if (needle === '') return true
+
+    const haystack = [project.title, project.shortDescription ?? '', ...tagNames(project)].join(' ')
+
+    return normalizeText(haystack).includes(needle)
+  }
+
+  const filtered = projects.filter(matches)
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const currentPage = Math.min(page, pageCount)
+  const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+
+  const selectFilter = (key: string) => {
+    setActive(key)
+    setPage(1)
+  }
+
+  const changeQuery = (value: string) => {
+    setQuery(value)
+    setPage(1)
+  }
+
+  const clearSearch = () => {
+    changeQuery('')
+    setActive(ALL_FILTER)
+  }
 
   return (
     <div className="flex flex-col gap-6">
+      <label className="flex w-full max-w-md flex-col gap-2">
+        <span className="mono text-[10px] uppercase leading-none tracking-[0.18em] text-muted">
+          {labels.searchLabel}
+        </span>
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => changeQuery(event.target.value)}
+          placeholder={labels.searchPlaceholder}
+          className="mono w-full rounded-md border border-border bg-card px-3 py-2.5 text-[12px] leading-none text-foreground transition-colors placeholder:text-muted focus-visible:border-primary/60 focus-visible:outline-none"
+        />
+      </label>
+
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div role="group" aria-label={labels.filterGroup} className="flex flex-wrap gap-2">
           {filters.map((filter) => {
@@ -239,7 +298,7 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
                 key={filter.key}
                 type="button"
                 aria-pressed={pressed}
-                onClick={() => setActive(filter.key)}
+                onClick={() => selectFilter(filter.key)}
                 className={
                   pressed
                     ? 'mono inline-flex rounded-md border border-primary/60 bg-primary/10 px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-foreground transition-colors'
@@ -256,22 +315,68 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
           aria-live="polite"
           className="mono text-[11px] uppercase leading-none tracking-[0.16em] text-muted"
         >
-          {`${String(visibleCount).padStart(2, '0')} ${visibleCount === 1 ? labels.countOne : labels.countOther}`}
+          {`${String(filtered.length).padStart(2, '0')} ${filtered.length === 1 ? labels.countOne : labels.countOther}`}
         </p>
       </div>
 
-      <ul role="list" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project, index) => (
-          <li key={projectKey(project, index)} hidden={!isVisible(project)}>
-            <ProjectCard
-              project={project}
-              position={index}
-              statusLabels={statusLabels}
-              labels={labels}
-            />
-          </li>
-        ))}
-      </ul>
+      {pageItems.length > 0 ? (
+        <ul role="list" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {pageItems.map((project, index) => (
+            <li key={projectKey(project, (currentPage - 1) * PAGE_SIZE + index)}>
+              <ProjectCard
+                project={project}
+                position={(currentPage - 1) * PAGE_SIZE + index}
+                statusLabels={statusLabels}
+                labels={labels}
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="flex flex-col items-start gap-4 rounded-lg border border-dashed border-border bg-card/40 px-5 py-8">
+          <p className="max-w-md text-sm text-muted-foreground">{labels.noResults}</p>
+          <button
+            type="button"
+            onClick={clearSearch}
+            className="mono inline-flex rounded-md border border-border bg-card px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground"
+          >
+            {labels.clearSearch}
+          </button>
+        </div>
+      )}
+
+      {pageCount > 1 ? (
+        <nav
+          aria-label={labels.paginationLabel}
+          className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-4"
+        >
+          <button
+            type="button"
+            onClick={() => setPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="mono inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border disabled:hover:text-muted-foreground"
+          >
+            <span aria-hidden>←</span>
+            {labels.previousPage}
+          </button>
+
+          <p aria-live="polite" className="mono text-[11px] uppercase leading-none tracking-[0.16em] text-muted">
+            {labels.pageOf
+              .replace('{page}', String(currentPage))
+              .replace('{total}', String(pageCount))}
+          </p>
+
+          <button
+            type="button"
+            onClick={() => setPage(currentPage + 1)}
+            disabled={currentPage === pageCount}
+            className="mono inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border disabled:hover:text-muted-foreground"
+          >
+            {labels.nextPage}
+            <span aria-hidden>→</span>
+          </button>
+        </nav>
+      ) : null}
     </div>
   )
 }

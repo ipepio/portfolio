@@ -25,6 +25,16 @@ export type ProjectsGridLabels = {
   countOther: string
   imageAltPrefix: string
   openPrefix: string
+  /** Accessible name of the search field; the visible text is its placeholder. */
+  searchLabel: string
+  searchPlaceholder: string
+  noResults: string
+  clearSearch: string
+  paginationLabel: string
+  previousPage: string
+  nextPage: string
+  /** `{page}` and `{total}` are replaced at render time. */
+  pageOf: string
 }
 
 /**
@@ -379,6 +389,14 @@ const dictionaries: Record<Locale, Dictionary> = {
         countOther: 'proyectos',
         imageAltPrefix: 'Imagen de',
         openPrefix: 'Abrir',
+        searchLabel: 'Buscar proyectos',
+        searchPlaceholder: 'Busca por nombre, tecnología o tag…',
+        noResults: 'Ningún proyecto coincide. Prueba con otra palabra o quita los filtros.',
+        clearSearch: 'Limpiar búsqueda',
+        paginationLabel: 'Páginas de proyectos',
+        previousPage: 'Anterior',
+        nextPage: 'Siguiente',
+        pageOf: 'Página {page} de {total}',
       },
       detail: {
         backToProjects: 'Volver a proyectos',
@@ -519,6 +537,14 @@ const dictionaries: Record<Locale, Dictionary> = {
         countOther: 'projects',
         imageAltPrefix: 'Image of',
         openPrefix: 'Open',
+        searchLabel: 'Search projects',
+        searchPlaceholder: 'Search by name, stack or tag…',
+        noResults: 'No project matches. Try another word or clear the filters.',
+        clearSearch: 'Clear search',
+        paginationLabel: 'Project pages',
+        previousPage: 'Previous',
+        nextPage: 'Next',
+        pageOf: 'Page {page} of {total}',
       },
       detail: {
         backToProjects: 'Back to projects',
