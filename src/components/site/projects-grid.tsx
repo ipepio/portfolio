@@ -3,7 +3,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type { Locale, ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
 import { ProjectVisual, type ProjectVisualName } from '@/components/site/project-visuals'
@@ -44,8 +44,21 @@ export type ProjectsGridProps = {
 
 const ALL_FILTER = '__all__'
 
-/** How many cards fit on one page of the archive; more than this paginates. */
-const PAGE_SIZE = 6
+/** The archive never shows more than this many cards on one page, however tall the screen. */
+const MAX_PAGE_SIZE = 6
+
+/** Room the sticky header, the section heading and the pagination take out of the viewport. */
+const VIEWPORT_CHROME = 200
+
+/** Mirrors the grid's `gap-4`, so the reserved height matches the real one. */
+const GRID_GAP = 16
+
+/**
+ * A row that overflows the viewport by a hair still counts as fitting. Card heights move a
+ * few pixels with font loading and image decoding, and without this margin a 1440p screen
+ * would flip between one and two rows for four pixels.
+ */
+const ROW_TOLERANCE = 1.05
 
 /**
  * Case- and accent-insensitive form of a string, so `ia` finds `IA/Agentes` and `diseno`
@@ -225,20 +238,135 @@ function ProjectCard({
 }
 
 /**
- * Interactive Projects grid: derives its filters from the projects' tags,
- * keeps every card mounted and toggles the `hidden` attribute on the ones that
- * do not match, so layout and the live counter stay trivial.
+ * Interactive Projects grid: derives its filters from the projects' tags, narrows the list
+ * with those filters and a free-text search, and paginates what is left.
  *
  * It is a client component rendered inside `LocaleProvider`, so the whole grid chrome
  * (catch-all label, status pills, counter and per-card accessible names) is read from
  * `useDictionary()` instead of being drilled down from the server page.
  */
+
+/** What the viewport can hold right now, measured from a rendered card. */
+type PageFit = { pageSize: number; columns: number; rows: number; cardHeight: number }
+
+/**
+ * The fit assumed before anything is measured. Three cards is the desktop default, so the
+ * first frame of the common case is already correct and hydration changes nothing visible;
+ * smaller screens collapse to one or two on the first measurement.
+ */
+const INITIAL_FIT: PageFit = { pageSize: 3, columns: 3, rows: 1, cardHeight: 0 }
+
+/**
+ * How many cards actually fit on one screen: the grid's column count times the whole card
+ * rows that fit in the viewport, never above six and never below one. A phone that fits a
+ * single card paginates by one; a desktop that fits six paginates by six.
+ *
+ * Measured rather than hardcoded per breakpoint, because the answer depends on the viewport
+ * height as much as on its width, and the owner's screen is not the visitor's.
+ */
+function usePageFit(
+  gridRef: React.RefObject<HTMLUListElement | null>,
+  cardRef: React.RefObject<HTMLLIElement | null>,
+): PageFit {
+  const [fit, setFit] = useState(INITIAL_FIT)
+  // Measurements taken while images and fonts are still landing see a shorter card than the
+  // settled one, which would report a page size that immediately shrinks. Only a measurement
+  // after the layout settles is allowed to move the page size away from the initial guess.
+  const armedRef = useRef(false)
+
+  useEffect(() => {
+    const measure = () => {
+      const grid = gridRef.current
+      if (!grid) {
+        return
+      }
+
+      const columns = Math.max(
+        1,
+        getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length,
+      )
+      const cardHeight = Math.round(cardRef.current?.getBoundingClientRect().height ?? 0)
+
+      // One screen's worth of rows: the viewport minus the chrome around the grid. Without a
+      // measured card (before content settles) a single row is the safe assumption.
+      const rows =
+        cardHeight > 0
+          ? Math.max(
+              1,
+              Math.floor(
+                ((window.innerHeight - VIEWPORT_CHROME) * ROW_TOLERANCE + GRID_GAP) /
+                  (cardHeight + GRID_GAP),
+              ),
+            )
+          : 1
+
+      setFit((prev) => {
+        const next: PageFit = {
+          pageSize: armedRef.current
+            ? Math.max(1, Math.min(MAX_PAGE_SIZE, columns * rows))
+            : prev.pageSize,
+          columns,
+          rows,
+          cardHeight,
+        }
+
+        const unchanged =
+          prev.pageSize === next.pageSize &&
+          prev.columns === next.columns &&
+          prev.rows === next.rows &&
+          prev.cardHeight === next.cardHeight
+
+        return unchanged ? prev : next
+      })
+    }
+
+    // Arm once the page has actually loaded — images decoded, fonts in — and measure then:
+    // arming earlier read a shorter card than the settled one and flipped the page size
+    // twice on a tall screen. From that point on every resize is authoritative.
+    const arm = () => {
+      armedRef.current = true
+      measure()
+    }
+    const settle = () => {
+      requestAnimationFrame(() => requestAnimationFrame(arm))
+    }
+
+    measure()
+
+    if (document.readyState === 'complete') {
+      void (document.fonts?.ready ?? Promise.resolve()).then(settle)
+    } else {
+      window.addEventListener('load', settle, { once: true })
+    }
+
+    // The card drives the measurement: its height changes with the column width, and nothing
+    // here resizes it, so observing it cannot feed back into this effect. The window's own
+    // resize covers the height half of the question.
+    const observer = new ResizeObserver(measure)
+    if (cardRef.current) {
+      observer.observe(cardRef.current)
+    }
+    window.addEventListener('resize', measure)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', measure)
+    }
+  }, [gridRef, cardRef])
+
+  return fit
+}
+
 export function ProjectsGrid({ projects }: ProjectsGridProps) {
   const { allLabel, statusLabels, gridLabels: labels } = useDictionary().projects
   const filters = buildFilters(projects, allLabel)
   const [active, setActive] = useState(ALL_FILTER)
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
+  const gridRef = useRef<HTMLUListElement | null>(null)
+  const cardRef = useRef<HTMLLIElement | null>(null)
+  const fit = usePageFit(gridRef, cardRef)
+  const pageSize = fit.pageSize
 
   const needle = normalizeText(query.trim())
 
@@ -254,9 +382,48 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
   }
 
   const filtered = projects.filter(matches)
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize))
   const currentPage = Math.min(page, pageCount)
-  const pageItems = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+  const pageItems = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+
+  // A half-filled page keeps the height a full one had, so paging never makes the archive
+  // jump and the pagination stays under the same row of cards. Measured from a full page
+  // rather than derived from a card: a lone card is a few pixels shorter than the tallest
+  // in a stretched row, and deriving it would leave a visible 8px hop on the last page.
+  const [fullHeight, setFullHeight] = useState<{ height: number; pageSize: number }>({
+    height: 0,
+    pageSize: 0,
+  })
+  const isFullPage = pageItems.length >= pageSize
+
+  useEffect(() => {
+    const grid = gridRef.current
+    if (!grid || !isFullPage) {
+      return
+    }
+
+    // The tallest full page wins rather than the latest one: two pages of six can differ by a
+    // few pixels when their descriptions wrap differently, and switching between them would
+    // still nudge the pagination. The height is tied to the page size it was measured with,
+    // so a value from the initial guess can never be reserved for the real one.
+    const height = Math.ceil(grid.getBoundingClientRect().height)
+    setFullHeight((prev) => {
+      if (prev.pageSize !== pageSize) {
+        return { height, pageSize }
+      }
+
+      return height > prev.height ? { height, pageSize } : prev
+    })
+  }, [gridRef, isFullPage, pageSize, fit.cardHeight])
+
+  useEffect(() => {
+    const reset = () => setFullHeight({ height: 0, pageSize: 0 })
+    window.addEventListener('resize', reset)
+
+    return () => window.removeEventListener('resize', reset)
+  }, [])
+
+  const reservedHeight = fullHeight.pageSize === pageSize && fullHeight.height > 0 ? fullHeight.height : undefined
 
   const selectFilter = (key: string) => {
     setActive(key)
@@ -290,25 +457,14 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div role="group" aria-label={labels.filterGroup} className="flex flex-wrap gap-2">
-          {filters.map((filter) => {
-            const pressed = filter.key === active
-
-            return (
-              <button
-                key={filter.key}
-                type="button"
-                aria-pressed={pressed}
-                onClick={() => selectFilter(filter.key)}
-                className={
-                  pressed
-                    ? 'mono inline-flex rounded-md border border-primary/60 bg-primary/10 px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-foreground transition-colors'
-                    : 'mono inline-flex rounded-md border border-border bg-card px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground'
-                }
-              >
-                {filter.label}
-              </button>
-            )
-          })}
+          {filters.map((filter) => (
+            <FilterButton
+              key={filter.key}
+              filter={filter}
+              pressed={filter.key === active}
+              onSelect={selectFilter}
+            />
+          ))}
         </div>
 
         <p
@@ -320,18 +476,32 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
       </div>
 
       {pageItems.length > 0 ? (
-        <ul role="list" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {pageItems.map((project, index) => (
-            <li key={projectKey(project, (currentPage - 1) * PAGE_SIZE + index)}>
-              <ProjectCard
-                project={project}
-                position={(currentPage - 1) * PAGE_SIZE + index}
-                statusLabels={statusLabels}
-                labels={labels}
-              />
-            </li>
-          ))}
-        </ul>
+        // The reserved height lives on a wrapper, never on the grid itself: a min-height on
+        // the grid stretches its rows, which inflates the very card height the page size is
+        // measured from, and the section then grows a couple of pixels per frame.
+        <div
+          style={reservedHeight === undefined ? undefined : { minHeight: `${reservedHeight}px` }}
+        >
+          <ul
+            ref={gridRef}
+            role="list"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {pageItems.map((project, index) => (
+              <li
+                key={projectKey(project, (currentPage - 1) * pageSize + index)}
+                ref={index === 0 ? cardRef : null}
+              >
+                <ProjectCard
+                  project={project}
+                  position={(currentPage - 1) * pageSize + index}
+                  statusLabels={statusLabels}
+                  labels={labels}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : (
         <div className="flex flex-col items-start gap-4 rounded-lg border border-dashed border-border bg-card/40 px-5 py-8">
           <p className="max-w-md text-sm text-muted-foreground">{labels.noResults}</p>
@@ -345,38 +515,87 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
         </div>
       )}
 
-      {pageCount > 1 ? (
-        <nav
-          aria-label={labels.paginationLabel}
-          className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-4"
-        >
-          <button
-            type="button"
-            onClick={() => setPage(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="mono inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border disabled:hover:text-muted-foreground"
-          >
-            <span aria-hidden>←</span>
-            {labels.previousPage}
-          </button>
-
-          <p aria-live="polite" className="mono text-[11px] uppercase leading-none tracking-[0.16em] text-muted">
-            {labels.pageOf
-              .replace('{page}', String(currentPage))
-              .replace('{total}', String(pageCount))}
-          </p>
-
-          <button
-            type="button"
-            onClick={() => setPage(currentPage + 1)}
-            disabled={currentPage === pageCount}
-            className="mono inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border disabled:hover:text-muted-foreground"
-          >
-            {labels.nextPage}
-            <span aria-hidden>→</span>
-          </button>
-        </nav>
-      ) : null}
+      <Pagination page={currentPage} pageCount={pageCount} labels={labels} onGo={setPage} />
     </div>
+  )
+}
+
+/** One tag filter; pressed state is the primary tint. */
+function FilterButton({
+  filter,
+  pressed,
+  onSelect,
+}: {
+  filter: FilterOption
+  pressed: boolean
+  onSelect: (key: string) => void
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={pressed}
+      onClick={() => onSelect(filter.key)}
+      className={
+        pressed
+          ? 'mono inline-flex rounded-md border border-primary/60 bg-primary/10 px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-foreground transition-colors'
+          : 'mono inline-flex rounded-md border border-border bg-card px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground'
+      }
+    >
+      {filter.label}
+    </button>
+  )
+}
+
+const PAGER_BUTTON =
+  'mono inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-[11px] uppercase leading-none tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border disabled:hover:text-muted-foreground'
+
+/** Previous / position / next, and nothing at all when everything fits on one page. */
+function Pagination({
+  page,
+  pageCount,
+  labels,
+  onGo,
+}: {
+  page: number
+  pageCount: number
+  labels: ProjectsGridLabels
+  onGo: (page: number) => void
+}) {
+  if (pageCount <= 1) {
+    return null
+  }
+
+  return (
+    <nav
+      aria-label={labels.paginationLabel}
+      className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-4"
+    >
+      <button
+        type="button"
+        onClick={() => onGo(page - 1)}
+        disabled={page === 1}
+        className={PAGER_BUTTON}
+      >
+        <span aria-hidden>←</span>
+        {labels.previousPage}
+      </button>
+
+      <p
+        aria-live="polite"
+        className="mono text-[11px] uppercase leading-none tracking-[0.16em] text-muted"
+      >
+        {labels.pageOf.replace('{page}', String(page)).replace('{total}', String(pageCount))}
+      </p>
+
+      <button
+        type="button"
+        onClick={() => onGo(page + 1)}
+        disabled={page === pageCount}
+        className={PAGER_BUTTON}
+      >
+        {labels.nextPage}
+        <span aria-hidden>→</span>
+      </button>
+    </nav>
   )
 }
