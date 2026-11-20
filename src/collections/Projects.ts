@@ -1,5 +1,24 @@
 import type { CollectionConfig } from 'payload'
 
+/**
+ * The public detail page of a project, in the locale the admin is editing.
+ *
+ * Unlike the blog's articles this is the real, public URL: projects have no draft state and
+ * their reads are public, so there is no token route and no draft mode. Payload lives in
+ * this same application, so the page is addressed relatively and the admin's own origin
+ * resolves it.
+ *
+ * A project without a slug yet (a new, unsaved entry) has nothing to open or iframe, so it
+ * returns `null` and Payload renders neither the Preview action nor the live panel.
+ */
+function previewUrl({ slug, locale }: { slug: unknown; locale: unknown }): string | null {
+  if (typeof slug !== 'string' || slug.trim().length === 0) return null
+
+  const language = typeof locale === 'string' && locale.length > 0 ? locale : 'es'
+
+  return `/${language}/projects/${slug.trim()}`
+}
+
 export const Projects: CollectionConfig = {
   slug: 'projects',
   labels: {
@@ -8,6 +27,13 @@ export const Projects: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    // The Preview action opens the public page in a new tab; the live preview panel iframes
+    // the same URL and re-renders it from every message the admin posts while the editor
+    // types (see `components/site/project-detail-live.tsx`).
+    preview: (doc, { locale }) => previewUrl({ slug: doc.slug, locale }),
+    livePreview: {
+      url: ({ data, locale }) => previewUrl({ slug: data?.slug, locale }),
+    },
   },
   defaultSort: '-year',
   access: {
@@ -37,9 +63,13 @@ export const Projects: CollectionConfig = {
     },
     {
       name: 'longDescription',
-      type: 'richText',
+      type: 'textarea',
       localized: true,
       label: 'Descripción larga',
+      admin: {
+        description:
+          'Markdown en crudo: lo que escribes es lo que se guarda. Admite encabezados (##, ###), listas, énfasis, enlaces, citas y bloques de código con ```. Un bloque de código abierto con ```mermaid se renderiza como diagrama en la página del proyecto.',
+      },
     },
     {
       name: 'coverImage',

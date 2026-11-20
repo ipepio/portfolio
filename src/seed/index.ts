@@ -78,6 +78,7 @@ async function seedCollections() {
       title: project.title,
       slug: project.slug,
       shortDescription: project.shortDescription,
+      longDescription: project.longDescription,
       status: project.status,
       visual: project.visual,
       order: project.order,

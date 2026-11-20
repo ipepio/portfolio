@@ -226,21 +226,10 @@ export interface Project {
   title: string;
   slug: string;
   shortDescription?: string | null;
-  longDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
+  /**
+   * Markdown en crudo: lo que escribes es lo que se guarda. Admite encabezados (##, ###), listas, énfasis, enlaces, citas y bloques de código con ```. Un bloque de código abierto con ```mermaid se renderiza como diagrama en la página del proyecto.
+   */
+  longDescription?: string | null;
   coverImage?: (number | null) | Media;
   visual: 'code-stack' | 'agent-orbit' | 'mock-shell' | 'echo-ring' | 'svc-map' | 'chat-lines';
   tags?: (number | Tag)[] | null;

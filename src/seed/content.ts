@@ -117,12 +117,89 @@ export type ProjectSeed = {
   title: Localized
   slug: string
   shortDescription: Localized
+  /** Raw markdown (see `projects.longDescription`), rendered by the detail page. */
+  longDescription?: Localized
   visual: ProjectVisualName
   tags: TagName[]
   status: 'live' | 'wip'
   githubUrl?: string
   order: number
 }
+
+/**
+ * The long description of ai-governor, written as raw markdown.
+ *
+ * It is a list of lines joined at the end: the document carries fenced code blocks, and a
+ * template literal cannot hold the backtick fences without escaping every one of them.
+ */
+const aiGovernorLongDescriptionEs = [
+  '**AI Governor** es un gateway compatible con la API de OpenAI que se coloca delante de los proveedores de modelos para **gobernar** quién consume qué, cuánto y a qué coste. La aplicación nunca habla con cada proveedor: habla con el gateway, y el gateway decide. El enfoque sigue las [buenas prácticas de producción de OpenAI](https://platform.openai.com/docs/guides/production-best-practices) y el código vive en el [repositorio de pi-hub](https://github.com/ipepio/pi-hub).',
+  '',
+  '## Qué gobierna',
+  '',
+  '- Acceso por usuario y por organización, con claves propias y revocables.',
+  '- Cuotas y presupuestos por periodo, medidos en tokens y en dinero.',
+  '- Rate limits por clave, por modelo y por organización.',
+  '- Trazabilidad de cada petición: quién la pidió, qué modelo, cuántos tokens y cuánto costó.',
+  '',
+  '## Cómo se integra',
+  '',
+  'Un cliente que ya habla la API de OpenAI solo cambia la base URL del SDK:',
+  '',
+  '```bash',
+  'export OPENAI_BASE_URL="https://gateway.example/v1"',
+  'export OPENAI_API_KEY="sk-org-..."',
+  'curl "$OPENAI_BASE_URL/chat/completions" \\',
+  '  -H "Authorization: Bearer $OPENAI_API_KEY" \\',
+  '  -d \'{"model": "gpt-4o-mini", "messages": [{"role": "user", "content": "hola"}]}\'',
+  '```',
+  '',
+  'Cada petición recorre el mismo camino: autenticación, comprobación de cuota, presupuesto disponible, selección de proveedor y registro del consumo.',
+  '',
+  '```mermaid',
+  'flowchart LR',
+  '  Client[Cliente OpenAI] --> Auth[Autenticación]',
+  '  Auth --> Policy{Cuota y presupuesto}',
+  '  Policy -- dentro --> Provider[Proveedor de modelos]',
+  '  Policy -- fuera --> Deny[429]',
+  '  Provider --> Ledger[Registro de consumo]',
+  '```',
+].join('\n')
+
+/** The same document in English: the seed writes both locales at once. */
+const aiGovernorLongDescriptionEn = [
+  '**AI Governor** is an OpenAI-compatible gateway that sits in front of model providers to **govern** who consumes what, how much and at what cost. Applications never talk to each provider: they talk to the gateway, and the gateway decides. The approach follows [OpenAI production best practices](https://platform.openai.com/docs/guides/production-best-practices) and the code lives in the [pi-hub repository](https://github.com/ipepio/pi-hub).',
+  '',
+  '## What it governs',
+  '',
+  '- Access per user and per organization, with revocable keys of their own.',
+  '- Quotas and budgets per period, measured in tokens and in money.',
+  '- Rate limits per key, per model and per organization.',
+  '- A record of every request: who asked, which model, how many tokens and what it cost.',
+  '',
+  '## How it plugs in',
+  '',
+  'A client that already speaks the OpenAI API only changes the SDK base URL:',
+  '',
+  '```bash',
+  'export OPENAI_BASE_URL="https://gateway.example/v1"',
+  'export OPENAI_API_KEY="sk-org-..."',
+  'curl "$OPENAI_BASE_URL/chat/completions" \\',
+  '  -H "Authorization: Bearer $OPENAI_API_KEY" \\',
+  '  -d \'{"model": "gpt-4o-mini", "messages": [{"role": "user", "content": "hello"}]}\'',
+  '```',
+  '',
+  'Every request walks the same path: authentication, quota check, budget left, provider selection and usage accounting.',
+  '',
+  '```mermaid',
+  'flowchart LR',
+  '  Client[OpenAI client] --> Auth[Authentication]',
+  '  Auth --> Policy{Quota and budget}',
+  '  Policy -- within --> Provider[Model provider]',
+  '  Policy -- over --> Deny[429]',
+  '  Provider --> Ledger[Usage ledger]',
+  '```',
+].join('\n')
 
 export const projectSeeds: ProjectSeed[] = [
   {
@@ -132,6 +209,7 @@ export const projectSeeds: ProjectSeed[] = [
       es: 'Gateway OpenAI-compatible para gobernar acceso a modelos, cuotas, presupuestos y rate limits con trazabilidad por usuario y organización.',
       en: 'An OpenAI-compatible gateway to govern model access, quotas, budgets, and rate limits, with per-user and organization-level tracking.',
     },
+    longDescription: { es: aiGovernorLongDescriptionEs, en: aiGovernorLongDescriptionEn },
     visual: 'code-stack',
     tags: ['IA / Agentes', 'Plataforma'],
     status: 'wip',

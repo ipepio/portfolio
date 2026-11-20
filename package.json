@@ -22,6 +22,7 @@
   "dependencies": {
     "@payloadcms/db-sqlite": "3.93.0",
     "@payloadcms/email-nodemailer": "3.93.0",
+    "@payloadcms/live-preview-react": "^3.93.0",
     "@payloadcms/next": "3.93.0",
     "@payloadcms/plugin-mcp": "3.93.0",
     "@payloadcms/richtext-lexical": "3.93.0",
@@ -32,6 +33,8 @@
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
     "lucide-react": "^1.73.0",
+    "marked": "^18.2.1",
+    "mermaid": "^12.3.0",
     "next": "16.4.2",
     "payload": "3.93.0",
     "radix-ui": "^1.8.1",

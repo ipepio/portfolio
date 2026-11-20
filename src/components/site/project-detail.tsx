@@ -1,15 +1,16 @@
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 
+import { MarkdownBody } from '@/components/site/markdown-body'
 import type { ProjectItem } from '@/components/site/projects-grid'
 import { ProjectVisual } from '@/components/site/project-visuals'
 import type { Locale, ProjectDetailLabels, ProjectStatus } from '@/lib/i18n'
 
 /** Payload `Project` at `depth >= 1`, narrowed to what the detail page renders. */
 export type ProjectDetailItem = ProjectItem & {
-  longDescription?: unknown
+  /** Raw markdown (`textarea`): headings, lists, links, fences, ```mermaid diagrams. */
+  longDescription?: string | null
 }
 
 export type ProjectDetailProps = {
@@ -18,9 +19,6 @@ export type ProjectDetailProps = {
   locale: Locale
   labels: ProjectDetailLabels
 }
-
-/** Lexical editor state accepted by the official Payload `RichText` renderer. */
-type RichTextData = Parameters<typeof RichText>[0]['data']
 
 const HEADING_ID = 'project-detail-heading'
 const DETAIL_IMAGE_SIZES = '(min-width: 1280px) 1216px, 100vw'
@@ -64,10 +62,7 @@ export function ProjectDetail({ project, locale, labels }: ProjectDetailProps) {
   const liveUrl = project.liveUrl?.trim()
   const githubUrl = project.githubUrl?.trim()
   const hasLinks = Boolean(liveUrl || githubUrl)
-  // SAFETY: `longDescription` is a stored Payload lexical editor state; the
-  // generated type only describes its nodes loosely, while `RichText` requires the
-  // full `SerializedEditorState` union. The runtime shape is identical.
-  const bodyData = (project.longDescription ?? null) as RichTextData | null
+  const body = project.longDescription?.trim() ?? ''
 
   return (
     <article className="px-6 py-16 sm:py-20 lg:py-24">
@@ -132,11 +127,8 @@ export function ProjectDetail({ project, locale, labels }: ProjectDetailProps) {
           </div>
         )}
 
-        {bodyData ? (
-          <RichText
-            className="flex max-w-[68ch] flex-col gap-4 text-base leading-[1.75] text-muted-foreground [&_a]:text-primary [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_h2]:font-heading [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h3]:font-heading [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-foreground [&_li]:my-1 [&_p]:m-0 [&_strong]:text-foreground [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-5"
-            data={bodyData}
-          />
+        {body.length > 0 ? (
+          <MarkdownBody source={body} />
         ) : project.shortDescription ? (
           <p className="max-w-[68ch] text-base leading-[1.75] text-muted-foreground">
             {project.shortDescription}

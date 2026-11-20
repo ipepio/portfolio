@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { cache } from 'react'
 
 import config from '@payload-config'
-import { ProjectDetail } from '@/components/site/project-detail'
+import { LiveProjectDetail } from '@/components/site/project-detail-live'
 import { defaultLocale, getDictionary, isLocale, locales } from '@/lib/i18n'
 
 type ProjectPageProps = {
@@ -71,7 +71,14 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   }
 }
 
-/** Project detail page: one Payload `projects` document, in the URL's locale. */
+/**
+ * Project detail page: one Payload `projects` document, in the URL's locale.
+ *
+ * The server render stays the source of truth for a plain load — the document is read here,
+ * once, and its metadata is generated from the same read. The page hands that document to
+ * the live half (`LiveProjectDetail`, T3: S3), which keeps rendering it verbatim until the
+ * admin's live-preview messages replace it while the owner edits in the panel.
+ */
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { locale, slug } = await params
 
@@ -88,7 +95,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const dict = getDictionary(locale)
 
   return (
-    <ProjectDetail
+    <LiveProjectDetail
       project={project}
       locale={locale}
       labels={{

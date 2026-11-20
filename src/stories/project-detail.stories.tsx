@@ -59,63 +59,18 @@ export const Default: Story = {
 }
 
 /**
- * Same project with a stored lexical editor state (two plain paragraphs, the
- * shape produced by the configured `richText` editor), so the official Payload
- * `RichText` renderer replaces the fallback body.
+ * Same project with a stored markdown body (two paragraphs, the shape the `textarea`
+ * field now holds), so the markdown renderer replaces the fallback body.
  */
-export const WithRichText: Story = {
+export const WithMarkdown: Story = {
   args: {
     project: {
       ...aiGovernor,
-      longDescription: {
-        root: {
-          type: 'root',
-          format: '',
-          indent: 0,
-          version: 1,
-          direction: 'ltr',
-          children: [
-            {
-              type: 'paragraph',
-              version: 1,
-              format: '',
-              indent: 0,
-              direction: 'ltr',
-              textFormat: 0,
-              children: [
-                {
-                  type: 'text',
-                  text: 'AI Governor acts as a single control plane in front of every model provider: one OpenAI-compatible endpoint, per-user and per-organization quotas, budgets and rate limits, and a full audit trail of who consumed what.',
-                  version: 1,
-                  format: 0,
-                  detail: 0,
-                  mode: 'normal',
-                  style: '',
-                },
-              ],
-            },
-            {
-              type: 'paragraph',
-              version: 1,
-              format: '',
-              indent: 0,
-              direction: 'ltr',
-              textFormat: 0,
-              children: [
-                {
-                  type: 'text',
-                  text: 'It runs next to the existing stack, so teams keep their current SDKs and tooling while governance moves from convention to enforced policy.',
-                  version: 1,
-                  format: 0,
-                  detail: 0,
-                  mode: 'normal',
-                  style: '',
-                },
-              ],
-            },
-          ],
-        },
-      },
+      longDescription: [
+        'AI Governor acts as a single control plane in front of every model provider: one **OpenAI-compatible endpoint**, per-user and per-organization quotas, budgets and rate limits, and a full audit trail of who consumed what.',
+        '',
+        'It runs next to the existing stack, so teams keep their current SDKs and tooling while governance moves from convention to enforced policy.',
+      ].join('\n'),
     },
     locale: 'es',
     labels,
