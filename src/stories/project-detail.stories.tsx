@@ -93,7 +93,6 @@ export const SplitHeroWithContent: Story = {
         heroEyebrow: 'AI INFRASTRUCTURE / MCP',
         heroLead:
           'Un **plano de control** único delante de cada proveedor de modelos, con cuotas y presupuesto por usuario.\n\nEl detalle técnico vive en [el repositorio](https://github.com/ipepio/ai-governor).',
-        badges: [{ label: 'Open source' }, { label: 'MIT' }, { label: 'Autoalojado' }],
         cardLabel: 'ipepio / projects / ai-governor',
         showCardLabel: true,
       },
@@ -113,7 +112,6 @@ export const StackedHero: Story = {
         heroLayout: 'stacked',
         heroEyebrow: 'AI INFRASTRUCTURE / MCP',
         heroLead: 'Una entradilla que la cabecera apilada no pinta.',
-        badges: [{ label: 'Open source' }],
         cardLabel: 'ipepio / projects / ai-governor',
         showCardLabel: true,
       },

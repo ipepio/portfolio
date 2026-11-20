@@ -105,27 +105,6 @@ export const Projects: CollectionConfig = {
           },
         },
         {
-          name: 'badges',
-          type: 'array',
-          localized: true,
-          label: 'Píldoras',
-          labels: { singular: 'Píldora', plural: 'Píldoras' },
-          admin: {
-            description:
-              'Rasgos de este proyecto, en una sola línea mono separada por «·» y con el punto verde del sistema: por ejemplo «Open source», «MIT», «Autoalojado». No son los filtros del archivo: esos son «Tags», que sirven para seleccionar proyectos. Sin píldoras no se pinta ninguna.',
-          },
-          fields: [
-            {
-              name: 'label',
-              type: 'text',
-              localized: true,
-              required: true,
-              label: 'Etiqueta',
-              admin: { description: 'Por ejemplo «Open source».' },
-            },
-          ],
-        },
-        {
           name: 'cardLabel',
           type: 'text',
           label: 'Etiqueta de la tarjeta',

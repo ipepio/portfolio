@@ -243,18 +243,6 @@ export interface Project {
      */
     heroLead?: string | null;
     /**
-     * Rasgos de este proyecto, en una sola línea mono separada por «·» y con el punto verde del sistema: por ejemplo «Open source», «MIT», «Autoalojado». No son los filtros del archivo: esos son «Tags», que sirven para seleccionar proyectos. Sin píldoras no se pinta ninguna.
-     */
-    badges?:
-      | {
-          /**
-           * Por ejemplo «Open source».
-           */
-          label: string;
-          id?: string | null;
-        }[]
-      | null;
-    /**
      * Ruta que se pinta en la esquina de la imagen o del diagrama, por ejemplo «ipepio / projects / discord». Solo se ve con «Mostrar etiqueta de la tarjeta» marcado.
      */
     cardLabel?: string | null;
@@ -510,12 +498,6 @@ export interface ProjectsSelect<T extends boolean = true> {
         heroLayout?: T;
         heroEyebrow?: T;
         heroLead?: T;
-        badges?:
-          | T
-          | {
-              label?: T;
-              id?: T;
-            };
         cardLabel?: T;
         showCardLabel?: T;
       };

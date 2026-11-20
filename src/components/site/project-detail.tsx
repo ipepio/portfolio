@@ -29,7 +29,6 @@ export type ProjectHero = {
   /** Markdown lead of the hero; falls back to `shortDescription` when empty. */
   heroLead?: string | null
   /** Trait pills (`Open source`, `MIT`, …); unrelated to the archive filter `tags`. */
-  badges?: { label?: string | null }[] | null
   /** Path-like label, e.g. `ipepio / projects / discord`, painted on the visual's corner. */
   cardLabel?: string | null
   /** Off by default, so a project never grows a label it did not ask for. */
@@ -130,13 +129,6 @@ function ordinal(position: number): string {
   return String(position).padStart(2, '0')
 }
 
-/** `hero.badges[].label`, dropping the empty ones so a blank row never prints a stray `·`. */
-function badgeLabels(hero: ProjectHero): string[] {
-  return (hero.badges ?? [])
-    .map((badge) => badge?.label?.trim())
-    .filter((label): label is string => Boolean(label))
-}
-
 /**
  * The reference's `.case-code` label (`ipepio / projects / discord`), painted on the corner
  * of the visual: the first segment keeps the accent, the rest stays muted like the strip.
@@ -167,12 +159,16 @@ function TagChips({ tags }: { tags: string[] }) {
   )
 }
 
-/** The badge pill (`Open source · MIT · Autoalojado`), absent when there are no badges. */
-function BadgePill({ badges }: { badges: string[] }) {
+/**
+ * The trait pill: the project's own tags on one mono line with the system's green dot.
+ * They are the same tags the archive filters by, so the pill and the filters can never
+ * disagree about what this project is.
+ */
+function TraitPill({ tags }: { tags: string[] }) {
   return (
-    <p data-hero-badges className={HERO_BADGES}>
+    <p data-hero-pill className={HERO_BADGES}>
       <span aria-hidden className="size-[7px] shrink-0 rounded-full bg-primary" />
-      <span className="min-w-0">{badges.join(' · ')}</span>
+      <span className="min-w-0">{tags.join(' · ')}</span>
     </p>
   )
 }
@@ -258,7 +254,6 @@ type SplitHeroData = {
   eyebrow: string
   /** The lead, parsed; empty when the owner left `heroLead` blank. */
   leadBlocks: MarkdownBlock[]
-  badges: string[]
   cardLabel: string | null
 }
 
@@ -321,10 +316,9 @@ function SplitHero({
           </p>
         ) : null}
 
-        {hero.badges.length > 0 || tags.length > 0 ? (
-          <div className="mt-6 flex flex-col gap-4">
-            {hero.badges.length > 0 ? <BadgePill badges={hero.badges} /> : null}
-            {tags.length > 0 ? <TagChips tags={tags} /> : null}
+        {tags.length > 0 ? (
+          <div className="mt-6">
+            <TraitPill tags={tags} />
           </div>
         ) : null}
       </div>
@@ -442,7 +436,6 @@ export function ProjectDetail({
         : null,
     eyebrow: heroSource.heroEyebrow?.trim() ?? '',
     leadBlocks,
-    badges: badgeLabels(heroSource),
     cardLabel:
       heroSource.showCardLabel && heroSource.cardLabel?.trim() ? heroSource.cardLabel.trim() : null,
   }
