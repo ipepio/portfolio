@@ -20,6 +20,12 @@ export type ProjectCoverImage = {
   height?: number | null
 }
 
+/** The archive card's visual head line (Payload `projects.card`). */
+type ProjectCardCopy = {
+  category?: string | null
+  tag?: string | null
+}
+
 /** Narrow structural view of a Payload `Project`, enough to render a card. */
 export type ProjectItem = {
   id?: string | number
@@ -29,6 +35,8 @@ export type ProjectItem = {
   coverImage?: ProjectCoverImage | number | string | null
   /** Diagram shown when there is no cover image (Payload `projects.visual`). */
   visual?: ProjectVisualName | null
+  /** Editable head line of the visual: the word after the number and the accent tag. */
+  card?: ProjectCardCopy | null
   tags?: (ProjectTag | number)[] | null
   liveUrl?: string | null
   githubUrl?: string | null
@@ -172,7 +180,12 @@ function ProjectCard({
         className="object-cover transition duration-500 motion-safe:group-hover:scale-[1.03]"
       />
     ) : (
-      <ProjectVisual visual={project.visual} number={indexLabel} />
+      <ProjectVisual
+        visual={project.visual}
+        number={indexLabel}
+        label={project.card?.category}
+        tag={project.card?.tag ?? undefined}
+      />
     )
 
   return (
@@ -423,7 +436,8 @@ export function ProjectsGrid({ projects }: ProjectsGridProps) {
     return () => window.removeEventListener('resize', reset)
   }, [])
 
-  const reservedHeight = fullHeight.pageSize === pageSize && fullHeight.height > 0 ? fullHeight.height : undefined
+  const reservedHeight =
+    fullHeight.pageSize === pageSize && fullHeight.height > 0 ? fullHeight.height : undefined
 
   const selectFilter = (key: string) => {
     setActive(key)

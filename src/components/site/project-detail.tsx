@@ -192,6 +192,8 @@ function HeroVisual({
         <ProjectVisual
           visual={project.visual}
           number={project.order}
+          label={project.card?.category}
+          tag={project.card?.tag ?? undefined}
           className="h-[335px] sm:h-[420px]"
         />
       </div>
@@ -389,7 +391,12 @@ function StackedHero({
         />
       ) : (
         <div aria-hidden className={DETAIL_VISUAL}>
-          <ProjectVisual visual={project.visual} number={project.order} />
+          <ProjectVisual
+            visual={project.visual}
+            number={project.order}
+            label={project.card?.category}
+            tag={project.card?.tag ?? undefined}
+          />
         </div>
       )}
     </section>

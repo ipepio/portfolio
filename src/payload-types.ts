@@ -227,6 +227,19 @@ export interface Project {
   slug: string;
   shortDescription?: string | null;
   /**
+   * El rótulo del visual en la tarjeta del archivo. El número «001» no se escribe aquí: sale del orden del archivo. Lo que dejes vacío cae en el texto del tipo de visual, así que una tarjeta nunca se queda sin cabecera.
+   */
+  card?: {
+    /**
+     * La palabra que sigue al número, por ejemplo «INFRASTRUCTURE». Vacío: se usa la del tipo de visual, que es la misma para todos los proyectos con ese diagrama.
+     */
+    category?: string | null;
+    /**
+     * El texto acentuado de la derecha, por ejemplo «POLICY ENGINE». Vacío: se usa el del tipo de visual.
+     */
+    tag?: string | null;
+  };
+  /**
    * La cabecera es la parte de arriba de la página del proyecto. Todo lo de este grupo es opcional: lo que dejes vacío cae en su respaldo y la página no se rompe.
    */
   hero?: {
@@ -492,6 +505,12 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   shortDescription?: T;
+  card?:
+    | T
+    | {
+        category?: T;
+        tag?: T;
+      };
   hero?:
     | T
     | {

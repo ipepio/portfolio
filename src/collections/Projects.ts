@@ -62,6 +62,37 @@ export const Projects: CollectionConfig = {
       label: 'Descripción corta',
     },
     {
+      name: 'card',
+      type: 'group',
+      label: 'Tarjeta',
+      admin: {
+        description:
+          'El rótulo del visual en la tarjeta del archivo. El número «001» no se escribe aquí: sale del orden del archivo. Lo que dejes vacío cae en el texto del tipo de visual, así que una tarjeta nunca se queda sin cabecera.',
+      },
+      fields: [
+        {
+          name: 'category',
+          type: 'text',
+          localized: true,
+          label: 'Categoría',
+          admin: {
+            description:
+              'La palabra que sigue al número, por ejemplo «INFRASTRUCTURE». Vacío: se usa la del tipo de visual, que es la misma para todos los proyectos con ese diagrama.',
+          },
+        },
+        {
+          name: 'tag',
+          type: 'text',
+          localized: true,
+          label: 'Rótulo',
+          admin: {
+            description:
+              'El texto acentuado de la derecha, por ejemplo «POLICY ENGINE». Vacío: se usa el del tipo de visual.',
+          },
+        },
+      ],
+    },
+    {
       name: 'hero',
       type: 'group',
       label: 'Cabecera',

@@ -322,6 +322,8 @@ export type ProjectVisualProps = {
   visual?: string | null
   /** Card number in the head line; numbers are zero-padded to three digits. */
   number?: number | string | null
+  /** Override of the left segment (Payload `projects.card.category`). */
+  label?: string | null
   /** Optional override of the diagram's accent tag (right side of the head). */
   tag?: string
   /** Extra classes for the panel, e.g. a max width on the detail page. */
@@ -332,7 +334,7 @@ export type ProjectVisualProps = {
  * Decorative 202px project diagram panel with the mono head line
  * (`NNN / LABEL` + accent tag) and the faint grid mask, as in the reference.
  */
-export function ProjectVisual({ visual, number, tag, className }: ProjectVisualProps) {
+export function ProjectVisual({ visual, number, label, tag, className }: ProjectVisualProps) {
   const name = isProjectVisualName(visual) ? visual : FALLBACK_VISUAL
   const meta = VISUALS[name]
 
@@ -342,7 +344,7 @@ export function ProjectVisual({ visual, number, tag, className }: ProjectVisualP
       className={cn('relative h-[202px] overflow-hidden bg-secondary p-[21px]', className)}
     >
       <div className="grid-lines pointer-events-none absolute inset-0 opacity-80 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
-      <VisualHead number={formatNumber(number)} label={meta.label} tag={tag?.trim() || meta.tag} />
+      <VisualHead number={formatNumber(number)} label={label?.trim() || meta.label} tag={tag?.trim() || meta.tag} />
       <ProjectDiagram visual={name} />
     </div>
   )
