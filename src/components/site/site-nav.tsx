@@ -58,14 +58,24 @@ export function SiteNav() {
   const [open, setOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
 
-  /** Section anchors mirror the page composition: Hero → About → Skills → Projects → Experience → Contact. */
+  /**
+   * Section anchors mirror the page composition: Hero → About → Skills → Projects → Experience → Contact.
+   *
+   * On any other route the bare hash has nothing to scroll to — a project page has no
+   * `#about` — so the click does nothing and the reader stays where they were. Away from the
+   * home page the links therefore point at the home page plus the hash.
+   */
+  const home = `/${locale}`
+  const onHome = pathname === home || pathname === `${home}/`
+  const anchor = (hash: string) => (onHome ? hash : `${home}${hash}`)
+
   const navLinks = [
-    { href: '#hero', label: labels.links.home },
-    { href: '#about', label: labels.links.about },
-    { href: '#skills', label: labels.links.skills },
-    { href: '#projects', label: labels.links.projects },
-    { href: '#experience', label: labels.links.experience },
-    { href: '#contact', label: labels.links.contact },
+    { href: anchor('#hero'), label: labels.links.home },
+    { href: anchor('#about'), label: labels.links.about },
+    { href: anchor('#skills'), label: labels.links.skills },
+    { href: anchor('#projects'), label: labels.links.projects },
+    { href: anchor('#experience'), label: labels.links.experience },
+    { href: anchor('#contact'), label: labels.links.contact },
   ]
   const other = otherLocale(locale)
 
@@ -98,7 +108,7 @@ export function SiteNav() {
         className="mx-auto flex h-16 w-full max-w-(--container-page) items-center px-6 md:h-[69px]"
       >
         <a
-          href="#hero"
+          href={anchor('#hero')}
           aria-label={labels.homeLabel}
           className="flex items-center gap-[13px] whitespace-nowrap"
         >
@@ -141,7 +151,7 @@ export function SiteNav() {
             {labels.languageSwitcher.code}
           </Link>
           <a
-            href="#contact"
+            href={anchor('#contact')}
             className="mono hidden h-[39px] items-center gap-[15px] rounded-[10px] bg-primary px-[15px] text-[11px] leading-none font-bold text-primary-foreground hover:brightness-105 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5 md:inline-flex"
           >
             {labels.cta}
@@ -184,7 +194,7 @@ export function SiteNav() {
             ))}
           </ul>
           <a
-            href="#contact"
+            href={anchor('#contact')}
             onClick={closeMenu}
             className="mono mx-6 mb-4 inline-flex h-10 items-center gap-2 rounded-[10px] bg-primary px-4 text-[11px] leading-none font-bold text-primary-foreground"
           >

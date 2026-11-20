@@ -127,16 +127,22 @@ export function ProjectDetail({ project, locale, labels }: ProjectDetailProps) {
           </div>
         )}
 
-        {body.length > 0 ? (
-          <MarkdownBody source={body} />
-        ) : project.shortDescription ? (
-          <p className="max-w-[68ch] text-base leading-[1.75] text-muted-foreground">
-            {project.shortDescription}
-          </p>
-        ) : null}
+        {/* Reading layout: the body keeps a comfortable measure on the left and the actions
+            sit in their own column, so a full-width media is followed by a composition that
+            uses the width instead of leaving a narrow orphan column. */}
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-14">
+          <div className="min-w-0 lg:max-w-[68ch]">
+            {body.length > 0 ? (
+              <MarkdownBody source={body} />
+            ) : project.shortDescription ? (
+              <p className="max-w-[68ch] text-base leading-[1.75] text-muted-foreground">
+                {project.shortDescription}
+              </p>
+            ) : null}
+          </div>
 
-        {hasLinks ? (
-          <div className="flex flex-wrap gap-3">
+          {hasLinks ? (
+            <aside className="flex shrink-0 flex-wrap gap-3 lg:sticky lg:top-[123px] lg:w-[240px] lg:flex-col">
             {liveUrl ? (
               <a
                 href={liveUrl}
@@ -160,8 +166,9 @@ export function ProjectDetail({ project, locale, labels }: ProjectDetailProps) {
                 <ArrowUpRight aria-hidden className="size-3.5" />
               </a>
             ) : null}
-          </div>
-        ) : null}
+            </aside>
+          ) : null}
+        </div>
       </div>
     </article>
   )
