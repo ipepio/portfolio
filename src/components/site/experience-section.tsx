@@ -107,37 +107,37 @@ export function ExperienceSection({ copy, experiences, cvHref }: ExperienceSecti
 
           {cvHref && cvFile ? (
             <div className={CV_CALLOUT_CLASS}>
-            <div className="flex min-w-0 items-center gap-[11px] max-[520px]:gap-2">
-              <span
-                aria-hidden="true"
-                className="grid size-[35px] flex-none place-items-center rounded-[9px] border border-input bg-card text-primary max-[520px]:size-[30px]"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  className="size-[17px] fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.7]"
+              <div className="flex min-w-0 items-center gap-[11px] max-[520px]:gap-2">
+                <span
+                  aria-hidden="true"
+                  className="grid size-[35px] flex-none place-items-center rounded-[9px] border border-input bg-card text-primary max-[520px]:size-[30px]"
                 >
-                  <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM13 2v7h7M8 14h8M8 18h6" />
-                </svg>
-              </span>
-              <span className="min-w-0">
-                <strong className="block text-[12px] leading-[1.4] text-foreground">
-                  {copy.cv.title}
-                </strong>
-                <small className="mono mt-0.5 block text-[10px] leading-[1.5] font-medium text-muted">
-                  {copy.cv.subtitle}
-                </small>
-              </span>
-            </div>
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="size-[17px] fill-none stroke-current [stroke-linecap:round] [stroke-linejoin:round] [stroke-width:1.7]"
+                  >
+                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM13 2v7h7M8 14h8M8 18h6" />
+                  </svg>
+                </span>
+                <span className="min-w-0">
+                  <strong className="block text-[12px] leading-[1.4] text-foreground">
+                    {copy.cv.title}
+                  </strong>
+                  <small className="mono mt-0.5 block text-[10px] leading-[1.5] font-medium text-muted">
+                    {copy.cv.subtitle}
+                  </small>
+                </span>
+              </div>
 
-            <a
-              href={cvHref}
-              download={cvFile}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mono inline-flex flex-none items-center gap-[7px] border-b border-current py-1.5 text-[10px] leading-[1.4] font-bold text-primary transition-colors hover:text-foreground max-[520px]:text-[9px]"
-            >
-              <span>{copy.cv.download}</span> ↓
-            </a>
+              <a
+                href={cvHref}
+                download={cvFile}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mono inline-flex flex-none items-center gap-[7px] border-b border-current py-1.5 text-[10px] leading-[1.4] font-bold text-primary transition-colors hover:text-foreground max-[520px]:text-[9px]"
+              >
+                <span>{copy.cv.download}</span> ↓
+              </a>
             </div>
           ) : null}
         </div>
