@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs'
 
 import { ProjectDetail, type ProjectDetailItem } from '@/components/site/project-detail'
-import type { ProjectDetailLabels } from '@/lib/i18n'
+import { getDictionary, type ProjectDetailLabels } from '@/lib/i18n'
 
 const meta = {
   title: 'Site/ProjectDetail',
@@ -13,16 +13,16 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
+/**
+ * Derived from the real dictionary instead of typed out here: the detail labels grew with the
+ * case-page work once already, and a hand-kept copy silently falls behind the type.
+ */
+const dict = getDictionary('es')
+
 const labels: ProjectDetailLabels = {
-  backToProjects: 'Volver a proyectos',
-  viewLive: 'Ver en producción',
-  repository: 'Repositorio',
-  imageAltPrefix: 'Imagen de',
-  statusLabels: {
-    live: 'En producción',
-    wip: 'En desarrollo',
-    archived: 'Archivado',
-  },
+  ...dict.projects.detail,
+  imageAltPrefix: dict.projects.gridLabels.imageAltPrefix,
+  statusLabels: dict.projects.statusLabels,
 }
 
 /**

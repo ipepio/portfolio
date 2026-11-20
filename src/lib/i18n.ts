@@ -27,7 +27,12 @@ export type ProjectsGridLabels = {
   openPrefix: string
 }
 
-/** Copy for a single project detail page (server-rendered, outside the grid). */
+/**
+ * Copy for a single project detail page (server-rendered, outside the grid).
+ *
+ * The strings that are not in `ProjectDetailCopy` (`imageAltPrefix`, `statusLabels`) are
+ * borrowed from the projects section, so a status pill reads the same on both surfaces.
+ */
 export type ProjectDetailLabels = {
   backToProjects: string
   viewLive: string
@@ -36,12 +41,41 @@ export type ProjectDetailLabels = {
   imageAltPrefix: string
   /** Localized status pill labels; the same map the projects grid uses. */
   statusLabels: Record<ProjectStatus, string>
+  /** Accessible name of the detail aside (the reference's `case-aside`). */
+  asideLabel: string
+  /** Head over the section index; the reference prints it uppercase. */
+  onThisPage: string
+  /** Accessible name of the section index list itself. */
+  sectionIndexLabel: string
+  /** Side label over the project's status (the reference's `case-side-label`). */
+  caseStudy: string
+  /** Side label over the project's links. */
+  links: string
+  /** Shown instead of the link buttons when a project has no public link. */
+  noLinks: string
+  /** Small label of the closing row's back block, after the `←` glyph. */
+  backToWork: string
+  /** Title of the closing row's back block: the work archive it leads to. */
+  projectsArchive: string
+  /** Small label of the closing row's next block, before the `→` glyph. */
+  nextProject: string
 }
 
 /** The subset of `ProjectDetailLabels` that lives verbatim in the dictionary. */
 export type ProjectDetailCopy = Pick<
   ProjectDetailLabels,
-  'backToProjects' | 'viewLive' | 'repository'
+  | 'backToProjects'
+  | 'viewLive'
+  | 'repository'
+  | 'asideLabel'
+  | 'onThisPage'
+  | 'sectionIndexLabel'
+  | 'caseStudy'
+  | 'links'
+  | 'noLinks'
+  | 'backToWork'
+  | 'projectsArchive'
+  | 'nextProject'
 >
 
 /**
@@ -350,6 +384,16 @@ const dictionaries: Record<Locale, Dictionary> = {
         backToProjects: 'Volver a proyectos',
         viewLive: 'Ver en producción',
         repository: 'Repositorio',
+        asideLabel: 'Navegación del proyecto',
+        onThisPage: 'En esta página',
+        sectionIndexLabel: 'Apartados del proyecto',
+        caseStudy: 'Caso de estudio',
+        links: 'Enlaces',
+        noLinks:
+          'Proyecto privado o sin despliegue público verificable. No muestro enlaces ficticios.',
+        backToWork: 'Volver al trabajo',
+        projectsArchive: 'Todos los proyectos',
+        nextProject: 'Siguiente proyecto',
       },
     },
     footer: {
@@ -480,6 +524,15 @@ const dictionaries: Record<Locale, Dictionary> = {
         backToProjects: 'Back to projects',
         viewLive: 'View live',
         repository: 'Repository',
+        asideLabel: 'Project navigation',
+        onThisPage: 'On this page',
+        sectionIndexLabel: 'Project sections',
+        caseStudy: 'Case study',
+        links: 'Links',
+        noLinks: 'Private project or no verified public deployment. No placeholder links.',
+        backToWork: 'Back to work',
+        projectsArchive: 'All projects',
+        nextProject: 'Next project',
       },
     },
     footer: {

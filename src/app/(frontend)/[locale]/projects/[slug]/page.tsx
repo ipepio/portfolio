@@ -6,7 +6,7 @@ import { cache } from 'react'
 
 import config from '@payload-config'
 import { LiveProjectDetail } from '@/components/site/project-detail-live'
-import { defaultLocale, getDictionary, isLocale, locales } from '@/lib/i18n'
+import { defaultLocale, getDictionary, isLocale, locales, type Locale } from '@/lib/i18n'
 
 type ProjectPageProps = {
   params: Promise<{ locale: string; slug: string }>
@@ -32,6 +32,47 @@ const findProject = cache(async (locale: (typeof locales)[number], slug: string)
 
   return docs[0] ?? null
 })
+
+/**
+ * The whole archive in `order` order, with only what the closing row needs.
+ *
+ * The detail page's "next project" follows that order and wraps at both ends, so it needs
+ * the neighbourhood, not a `greater_than` query: one small read of every slug and title is
+ * cheaper than two queries and gets the wrap right. `defaultSort` is `-year`, so the order
+ * is requested explicitly.
+ */
+const listArchive = cache(async (locale: Locale) => {
+  const payloadConfig = await config
+  const payload = await getPayload({ config: payloadConfig })
+
+  const { docs } = await payload.find({
+    collection: 'projects',
+    locale,
+    depth: 0,
+    limit: 1000,
+    pagination: false,
+    sort: ['order', 'id'],
+    select: { slug: true, title: true },
+  })
+
+  return docs
+})
+
+/** The project after this one in the archive order, wrapping around at the end. */
+function nextInArchive(
+  archive: Awaited<ReturnType<typeof listArchive>>,
+  slug: string,
+): { slug: string; title: string } | null {
+  if (archive.length < 2) return null
+
+  const position = archive.findIndex((doc) => doc.slug === slug)
+  if (position === -1) return null
+
+  const neighbour = archive[(position + 1) % archive.length]
+  if (!neighbour?.slug || neighbour.slug === slug) return null
+
+  return { slug: neighbour.slug, title: neighbour.title ?? neighbour.slug }
+}
 
 /**
  * Prerenders every project detail page for both locales. The child segment must
@@ -93,11 +134,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   const dict = getDictionary(locale)
+  const nextProject = nextInArchive(await listArchive(locale), slug)
 
   return (
     <LiveProjectDetail
       project={project}
       locale={locale}
+      nextProject={nextProject}
       labels={{
         ...dict.projects.detail,
         imageAltPrefix: dict.projects.gridLabels.imageAltPrefix,

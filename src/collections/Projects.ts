@@ -68,7 +68,8 @@ export const Projects: CollectionConfig = {
       label: 'Descripción larga',
       admin: {
         description:
-          'Markdown en crudo: lo que escribes es lo que se guarda. Admite encabezados (##, ###), listas, énfasis, enlaces, citas y bloques de código con ```. Un bloque de código abierto con ```mermaid se renderiza como diagrama en la página del proyecto.',
+          'Markdown en crudo: lo que escribes es lo que se guarda. Admite encabezados (##, ###), listas, énfasis, enlaces, citas y bloques de código con ```. Un bloque de código abierto con ```mermaid se renderiza como diagrama en la página del proyecto, y cada encabezado ## añade una entrada al índice «En esta página». ' +
+          'Para cajitas de aviso, cita una línea con el marcador: «> [!NOTE] Título» deja una nota neutra, «> [!DECISION] Título» una decisión numerada (01, 02… en orden de aparición) y «> [!WARNING] Título» un aviso en tono de advertencia. Las líneas siguientes, también citadas con «>», son el cuerpo de la cajita (listas, código o diagramas incluidos); una cita normal, sin marcador, mantiene su estilo discreto.',
       },
     },
     {

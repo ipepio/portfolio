@@ -4,7 +4,7 @@ import { useLivePreview } from '@payloadcms/live-preview-react'
 import { useState } from 'react'
 
 import { ProjectDetail } from '@/components/site/project-detail'
-import type { ProjectDetailItem } from '@/components/site/project-detail'
+import type { ProjectDetailItem, ProjectDetailNeighbour } from '@/components/site/project-detail'
 import type { Locale, ProjectDetailLabels } from '@/lib/i18n'
 
 /** Payload's API lives in this same application, so the default route needs no proxy. */
@@ -51,10 +51,17 @@ export function LiveProjectDetail({
   project,
   locale,
   labels,
+  nextProject = null,
 }: {
   project: ProjectDetailItem
   locale: Locale
   labels: ProjectDetailLabels
+  /**
+   * Read from the archive order on the server, once. The live panel only follows the project
+   * being edited, so the closing row keeps pointing at the same neighbour while the owner
+   * types.
+   */
+  nextProject?: ProjectDetailNeighbour | null
 }) {
   const { data } = useLivePreview<ProjectDetailItem>({
     initialData: project,
@@ -63,5 +70,5 @@ export function LiveProjectDetail({
     depth: PREVIEW_DEPTH,
   })
 
-  return <ProjectDetail project={data} locale={locale} labels={labels} />
+  return <ProjectDetail project={data} locale={locale} labels={labels} nextProject={nextProject} />
 }
