@@ -62,6 +62,91 @@ export const Projects: CollectionConfig = {
       label: 'Descripción corta',
     },
     {
+      name: 'hero',
+      type: 'group',
+      label: 'Cabecera',
+      admin: {
+        description:
+          'La cabecera es la parte de arriba de la página del proyecto. Todo lo de este grupo es opcional: lo que dejes vacío cae en su respaldo y la página no se rompe.',
+      },
+      fields: [
+        {
+          name: 'heroLayout',
+          type: 'select',
+          defaultValue: 'split',
+          label: 'Disposición de la cabecera',
+          options: [
+            { label: 'Dos columnas (la referencia)', value: 'split' },
+            { label: 'Una columna (como antes)', value: 'stacked' },
+          ],
+          admin: {
+            description:
+              '«Dos columnas» pone el antetítulo, el título, la entradilla y las píldoras a la izquierda y la imagen o el diagrama a la derecha; en pantallas pequeñas se apila sola. «Una columna» mantiene la cabecera de siempre y no pinta el antetítulo, la entradilla ni las píldoras.',
+          },
+        },
+        {
+          name: 'heroEyebrow',
+          type: 'text',
+          localized: true,
+          label: 'Antetítulo',
+          admin: {
+            description:
+              'Línea mono que acompaña al índice de la cabecera, por ejemplo «AI INFRASTRUCTURE / MCP». El índice «01 / 07» no se escribe aquí: se calcula con el orden del archivo y el número de proyectos publicados. Si lo dejas vacío, la cabecera muestra solo el índice.',
+          },
+        },
+        {
+          name: 'heroLead',
+          type: 'textarea',
+          localized: true,
+          label: 'Entradilla de la cabecera',
+          admin: {
+            description:
+              'Markdown en crudo, igual que la descripción larga: admite énfasis, enlaces y saltos de línea (una línea en blanco separa párrafos). Si lo dejas vacío, la cabecera pinta la descripción corta en texto plano; la descripción corta sigue siendo la que se ve en las tarjetas del archivo.',
+          },
+        },
+        {
+          name: 'badges',
+          type: 'array',
+          localized: true,
+          label: 'Píldoras',
+          labels: { singular: 'Píldora', plural: 'Píldoras' },
+          admin: {
+            description:
+              'Rasgos de este proyecto, en una sola línea mono separada por «·» y con el punto verde del sistema: por ejemplo «Open source», «MIT», «Autoalojado». No son los filtros del archivo: esos son «Tags», que sirven para seleccionar proyectos. Sin píldoras no se pinta ninguna.',
+          },
+          fields: [
+            {
+              name: 'label',
+              type: 'text',
+              localized: true,
+              required: true,
+              label: 'Etiqueta',
+              admin: { description: 'Por ejemplo «Open source».' },
+            },
+          ],
+        },
+        {
+          name: 'cardLabel',
+          type: 'text',
+          label: 'Etiqueta de la tarjeta',
+          admin: {
+            description:
+              'Ruta que se pinta en la esquina de la imagen o del diagrama, por ejemplo «ipepio / projects / discord». Solo se ve con «Mostrar etiqueta de la tarjeta» marcado.',
+          },
+        },
+        {
+          name: 'showCardLabel',
+          type: 'checkbox',
+          defaultValue: false,
+          label: 'Mostrar etiqueta de la tarjeta',
+          admin: {
+            description:
+              'Apagado por defecto, para que los proyectos que ya existen no estrenen etiqueta. Marcado y con «Etiqueta de la tarjeta» escrita, la cabecera la pinta sobre la imagen.',
+          },
+        },
+      ],
+    },
+    {
       name: 'longDescription',
       type: 'textarea',
       localized: true,

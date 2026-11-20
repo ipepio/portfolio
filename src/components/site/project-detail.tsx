@@ -7,18 +7,52 @@ import { ProjectAside } from '@/components/site/project-aside'
 import type { ProjectItem } from '@/components/site/projects-grid'
 import { ProjectVisual } from '@/components/site/project-visuals'
 import type { Locale, ProjectDetailLabels, ProjectStatus } from '@/lib/i18n'
-import { parseMarkdown } from '@/lib/markdown'
+import { parseMarkdown, type MarkdownBlock } from '@/lib/markdown'
 
 /** Payload `Project` at `depth >= 1`, narrowed to what the detail page renders. */
 export type ProjectDetailItem = ProjectItem & {
   /** Raw markdown (`textarea`): headings, lists, links, fences, callouts, ```mermaid diagrams. */
   longDescription?: string | null
+  /** Payload `projects.hero`: every piece of the editable hero, all of it optional. */
+  hero?: ProjectHero | null
 }
+
+/**
+ * The `hero` group of a project (T1: S1-S5, S7): the layout select, the eyebrow beside the
+ * derived index, the markdown lead, the trait pills, and the optional label of the visual.
+ */
+export type ProjectHero = {
+  /** `split` (the reference, two columns) or `stacked` (the page's original shape). */
+  heroLayout?: HeroLayout | null
+  /** Mono line beside the derived index, e.g. `AI INFRASTRUCTURE / MCP`. */
+  heroEyebrow?: string | null
+  /** Markdown lead of the hero; falls back to `shortDescription` when empty. */
+  heroLead?: string | null
+  /** Trait pills (`Open source`, `MIT`, …); unrelated to the archive filter `tags`. */
+  badges?: { label?: string | null }[] | null
+  /** Path-like label, e.g. `ipepio / projects / discord`, painted on the visual's corner. */
+  cardLabel?: string | null
+  /** Off by default, so a project never grows a label it did not ask for. */
+  showCardLabel?: boolean | null
+}
+
+/** Payload `projects.hero.heroLayout`; anything else renders the split hero. */
+export type HeroLayout = 'split' | 'stacked'
 
 /** The project the closing row leads to, resolved by the page from the archive order. */
 export type ProjectDetailNeighbour = {
   slug: string
   title: string
+}
+
+/**
+ * Where this project sits in the published archive: its one-based position and the archive
+ * size, both derived on the server from the `order` sort. Stored nowhere, so reordering the
+ * archive (or publishing one more project) can never leave a stale `06 / 06` on the page.
+ */
+export type ProjectArchiveIndex = {
+  position: number
+  total: number
 }
 
 export type ProjectDetailProps = {
@@ -28,6 +62,8 @@ export type ProjectDetailProps = {
   labels: ProjectDetailLabels
   /** The next project in the archive (wrapping at the end), or `null` for a lone project. */
   nextProject?: ProjectDetailNeighbour | null
+  /** The hero's `NN / TT`, or `null` when the project is missing from the archive read. */
+  archiveIndex?: ProjectArchiveIndex | null
 }
 
 const HEADING_ID = 'project-detail-heading'
@@ -52,6 +88,26 @@ const CLOSING_LABEL =
 /** Their `strong`: the destination's name. */
 const CLOSING_TITLE = 'font-heading text-[23px] leading-[1.1] tracking-[-0.05em] text-foreground'
 
+/** The reference's `.case-hero`: two columns wide, one column from `lg` down. */
+const HERO_SPLIT =
+  'grid grid-cols-1 items-center gap-8 pb-2 lg:grid-cols-[minmax(0,1.13fr)_minmax(0,.87fr)] lg:gap-[clamp(35px,5vw,92px)]'
+/** Their `.case-topline`: the derived index in the accent, the eyebrow beside it. */
+const HERO_META =
+  'mono flex flex-wrap items-center gap-x-2.5 gap-y-2 text-[10px] font-semibold uppercase leading-none tracking-[0.13em] text-muted'
+/** Their `.case-number`: the only piece of the meta line that is not writable. */
+const HERO_INDEX = 'text-[11px] font-bold tracking-[0.02em] text-primary'
+/** Their `.case-hero h1`, one step smaller so the split column can hold it. */
+const HERO_TITLE =
+  'font-heading text-[clamp(44px,5.4vw,88px)] font-bold leading-[0.96] tracking-[-0.08em] text-balance'
+/** Their `.case-intro`, used only for the plain-short-description fallback. */
+const HERO_LEAD = 'max-w-[650px] text-[15px] leading-[1.85] text-muted-foreground'
+/** Their `.case-status`: one mono line, the labels separated by `·`, the accent dot first. */
+const HERO_BADGES =
+  'mono inline-flex w-fit max-w-full items-center gap-2.5 rounded-full border border-border px-3.5 py-[9px] text-[10px] font-semibold uppercase leading-[1.2] text-muted-foreground'
+/** Their `.case-code`, pinned to the visual's corner instead of a strip under it. */
+const HERO_CARD_LABEL =
+  'mono absolute bottom-3 left-3 inline-flex max-w-[calc(100%-1.5rem)] items-center truncate rounded-[9px] border border-border bg-card/92 px-2.5 py-1.5 text-[10px] font-semibold leading-none tracking-[0.04em] text-muted-foreground backdrop-blur-sm'
+
 /**
  * Tag names of a project, dropping unresolved ids and empty names. Mirrors the
  * grid's local helper: `projects-grid` is a client module, so its runtime values
@@ -67,6 +123,96 @@ function coverImageOf(project: ProjectDetailItem) {
   return typeof project.coverImage === 'object' && project.coverImage !== null
     ? project.coverImage
     : null
+}
+
+/** Two-digit ordinal, as the reference prints it (`01`, `07`). */
+function ordinal(position: number): string {
+  return String(position).padStart(2, '0')
+}
+
+/** `hero.badges[].label`, dropping the empty ones so a blank row never prints a stray `·`. */
+function badgeLabels(hero: ProjectHero): string[] {
+  return (hero.badges ?? [])
+    .map((badge) => badge?.label?.trim())
+    .filter((label): label is string => Boolean(label))
+}
+
+/**
+ * The reference's `.case-code` label (`ipepio / projects / discord`), painted on the corner
+ * of the visual: the first segment keeps the accent, the rest stays muted like the strip.
+ */
+function CardLabel({ label }: { label: string }) {
+  const [head, ...rest] = label.split('/').map((part) => part.trim())
+
+  return (
+    <span data-hero-card-label className={HERO_CARD_LABEL}>
+      <b className="font-semibold text-primary">{head}</b>
+      {rest.length > 0 ? <span>{` / ${rest.join(' / ')}`}</span> : null}
+    </span>
+  )
+}
+
+/** The archive tags as chips; unchanged from the original hero, both layouts show them. */
+function TagChips({ tags }: { tags: string[] }) {
+  return (
+    <ul role="list" className="flex flex-wrap gap-1.5">
+      {tags.map((name) => (
+        <li key={name}>
+          <span className="mono inline-flex rounded-md border border-border bg-secondary/40 px-2 py-1 text-[10px] leading-none text-muted-foreground">
+            {name}
+          </span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+/** The badge pill (`Open source · MIT · Autoalojado`), absent when there are no badges. */
+function BadgePill({ badges }: { badges: string[] }) {
+  return (
+    <p data-hero-badges className={HERO_BADGES}>
+      <span aria-hidden className="size-[7px] shrink-0 rounded-full bg-primary" />
+      <span className="min-w-0">{badges.join(' · ')}</span>
+    </p>
+  )
+}
+
+/** The cover image, or the project's generated diagram when there is no cover. */
+function HeroVisual({
+  project,
+  labels,
+  sizes,
+}: {
+  project: ProjectDetailItem
+  labels: ProjectDetailLabels
+  sizes: string
+}) {
+  const cover = coverImageOf(project)
+  const coverUrl = cover?.url ?? null
+
+  if (!cover || !coverUrl) {
+    return (
+      <div aria-hidden className="overflow-hidden rounded-2xl border border-border bg-secondary">
+        <ProjectVisual
+          visual={project.visual}
+          number={project.order}
+          className="h-[335px] sm:h-[420px]"
+        />
+      </div>
+    )
+  }
+
+  return (
+    <Image
+      src={coverUrl}
+      alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
+      width={cover.width ?? 1600}
+      height={cover.height ?? 900}
+      sizes={sizes}
+      priority
+      className="h-auto w-full rounded-2xl border border-border object-cover"
+    />
+  )
 }
 
 /**
@@ -105,25 +251,201 @@ function ClosingRow({
   )
 }
 
+/** Everything the split hero prints besides the title, already resolved from the document. */
+type SplitHeroData = {
+  /** `NN / TT`, derived on the server from the archive; `null` when it is unknown. */
+  index: string | null
+  eyebrow: string
+  /** The lead, parsed; empty when the owner left `heroLead` blank. */
+  leadBlocks: MarkdownBlock[]
+  badges: string[]
+  cardLabel: string | null
+}
+
 /**
- * Presentational project detail: back link, year/status eyebrow, display title,
- * lead paragraph, tag chips, cover media, the reading row (markdown body and the
- * section index aside) and the closing row that leads back to the work and to the
- * next project.
+ * The reference's `.case-hero` (T2: S1-S5): title, eyebrow, lead and pill on the left, the
+ * cover or the generated diagram on the right, one column on small screens.
  */
-export function ProjectDetail({ project, locale, labels, nextProject = null }: ProjectDetailProps) {
+function SplitHero({
+  project,
+  labels,
+  hero,
+}: {
+  project: ProjectDetailItem
+  labels: ProjectDetailLabels
+  hero: SplitHeroData
+}) {
+  const tags = tagNames(project)
+
+  return (
+    <section data-hero-layout="split" className={HERO_SPLIT}>
+      <div data-hero-copy className="min-w-0">
+        {/* The meta line carries the derived index and the owner's eyebrow, nothing else
+            (T2: S3): with no eyebrow it is the index alone. The year stays a fact of the
+            stacked hero, and the aside carries the status. */}
+        {hero.index !== null || hero.eyebrow.length > 0 ? (
+          <p className={HERO_META}>
+            {hero.index !== null ? (
+              <span data-hero-index className={HERO_INDEX}>
+                {hero.index}
+              </span>
+            ) : null}
+            {hero.index !== null && hero.eyebrow.length > 0 ? (
+              <span aria-hidden className="text-border">
+                ·
+              </span>
+            ) : null}
+            {hero.eyebrow.length > 0 ? (
+              <span data-hero-eyebrow className="min-w-0">
+                {hero.eyebrow}
+              </span>
+            ) : null}
+          </p>
+        ) : null}
+
+        <h1 id={HEADING_ID} className={`${HERO_TITLE} mt-7`}>
+          {project.title}
+          {/* The reference's accent dot, the split hero's only decoration. */}
+          <span aria-hidden className="text-primary">
+            .
+          </span>
+        </h1>
+
+        {hero.leadBlocks.length > 0 ? (
+          <div data-hero-lead className="mt-6 max-w-[650px]">
+            <MarkdownBlocks blocks={hero.leadBlocks} />
+          </div>
+        ) : project.shortDescription ? (
+          <p data-hero-lead className={`${HERO_LEAD} mt-6`}>
+            {project.shortDescription}
+          </p>
+        ) : null}
+
+        {hero.badges.length > 0 || tags.length > 0 ? (
+          <div className="mt-6 flex flex-col gap-4">
+            {hero.badges.length > 0 ? <BadgePill badges={hero.badges} /> : null}
+            {tags.length > 0 ? <TagChips tags={tags} /> : null}
+          </div>
+        ) : null}
+      </div>
+
+      <div data-hero-visual className="relative min-w-0">
+        <HeroVisual project={project} labels={labels} sizes="(min-width: 1024px) 40vw, 100vw" />
+        {hero.cardLabel !== null ? <CardLabel label={hero.cardLabel} /> : null}
+      </div>
+    </section>
+  )
+}
+
+/**
+ * The page's original hero, restored verbatim by `heroLayout: 'stacked'` (S1, S6): one
+ * column, the year and the status pill first, the plain short description under the title
+ * and the visual full width. The editable hero pieces are deliberately not rendered here.
+ */
+function StackedHero({
+  project,
+  labels,
+  status,
+}: {
+  project: ProjectDetailItem
+  labels: ProjectDetailLabels
+  status: ProjectStatus
+}) {
   const cover = coverImageOf(project)
   const coverUrl = cover?.url ?? null
   const tags = tagNames(project)
+
+  return (
+    <section data-hero-layout="stacked" className="flex flex-col gap-10 lg:gap-12">
+      <header className="flex flex-col gap-5">
+        <p className="mono flex flex-wrap items-center gap-3 text-[11px] uppercase leading-none tracking-[0.16em] text-muted">
+          {project.year ? <span>{project.year}</span> : null}
+          <span
+            className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] tracking-[0.14em] ${STATUS_CLASSNAMES[status]}`}
+          >
+            {labels.statusLabels[status]}
+          </span>
+        </p>
+
+        <h1
+          id={HEADING_ID}
+          className="font-heading text-[clamp(40px,6vw,80px)] font-bold leading-[0.98] tracking-[-0.07em] text-balance"
+        >
+          {project.title}
+        </h1>
+
+        {project.shortDescription ? (
+          <p className="max-w-[62ch] text-[clamp(17px,2vw,20px)] leading-[1.65] text-muted-foreground">
+            {project.shortDescription}
+          </p>
+        ) : null}
+
+        {tags.length > 0 ? <TagChips tags={tags} /> : null}
+      </header>
+
+      {cover && coverUrl ? (
+        <Image
+          src={coverUrl}
+          alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
+          width={cover.width ?? 1600}
+          height={cover.height ?? 900}
+          sizes={DETAIL_IMAGE_SIZES}
+          priority
+          className="h-auto w-full rounded-2xl border border-border object-cover"
+        />
+      ) : (
+        <div aria-hidden className={DETAIL_VISUAL}>
+          <ProjectVisual visual={project.visual} number={project.order} />
+        </div>
+      )}
+    </section>
+  )
+}
+
+/**
+ * Presentational project detail: back link, the hero (two columns by default, or the
+ * project's original stacked shape), the reading row (markdown body and the section index
+ * aside) and the closing row that leads back to the work and to the next project.
+ *
+ * Every piece of the split hero is optional and falls back to the page as it was: no
+ * eyebrow leaves the derived index alone, no lead shows the plain short description, no
+ * badges hide the pill, and no `cardLabel` (or `showCardLabel` off) leaves the visual bare.
+ */
+export function ProjectDetail({
+  project,
+  locale,
+  labels,
+  nextProject = null,
+  archiveIndex = null,
+}: ProjectDetailProps) {
   const status = project.status ?? 'live'
   const liveUrl = project.liveUrl?.trim()
   const githubUrl = project.githubUrl?.trim()
   const body = project.longDescription?.trim() ?? ''
+  const heroSource = project.hero ?? {}
+  const leadSource = heroSource.heroLead?.trim() ?? ''
 
   // One parse feeds the body and the index: the aside lists exactly the `##` headings the
   // renderer stamped, in document order, so an index link can never point at nothing.
   const { blocks, headings } = parseMarkdown(body)
   const indexHeadings = headings.filter((heading) => heading.depth === 2)
+
+  // The lead is markdown through the same parse and the same renderer as the body, so the
+  // owner's emphasis, links and paragraph breaks survive here too — and so the live panel
+  // re-parses it while they type instead of holding a second, plainer implementation.
+  const leadBlocks = leadSource.length > 0 ? parseMarkdown(leadSource).blocks : []
+
+  const hero: SplitHeroData = {
+    index:
+      archiveIndex !== null && archiveIndex.position > 0 && archiveIndex.total > 0
+        ? `${ordinal(archiveIndex.position)} / ${ordinal(archiveIndex.total)}`
+        : null,
+    eyebrow: heroSource.heroEyebrow?.trim() ?? '',
+    leadBlocks,
+    badges: badgeLabels(heroSource),
+    cardLabel:
+      heroSource.showCardLabel && heroSource.cardLabel?.trim() ? heroSource.cardLabel.trim() : null,
+  }
 
   return (
     <article className="px-6 py-16 sm:py-20 lg:py-24">
@@ -136,56 +458,10 @@ export function ProjectDetail({ project, locale, labels, nextProject = null }: P
           {labels.backToProjects}
         </Link>
 
-        <header className="flex flex-col gap-5">
-          <p className="mono flex flex-wrap items-center gap-3 text-[11px] uppercase leading-none tracking-[0.16em] text-muted">
-            {project.year ? <span>{project.year}</span> : null}
-            <span
-              className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] tracking-[0.14em] ${STATUS_CLASSNAMES[status]}`}
-            >
-              {labels.statusLabels[status]}
-            </span>
-          </p>
-
-          <h1
-            id={HEADING_ID}
-            className="font-heading text-[clamp(40px,6vw,80px)] font-bold leading-[0.98] tracking-[-0.07em] text-balance"
-          >
-            {project.title}
-          </h1>
-
-          {project.shortDescription ? (
-            <p className="max-w-[62ch] text-[clamp(17px,2vw,20px)] leading-[1.65] text-muted-foreground">
-              {project.shortDescription}
-            </p>
-          ) : null}
-
-          {tags.length > 0 ? (
-            <ul role="list" className="flex flex-wrap gap-1.5">
-              {tags.map((name) => (
-                <li key={name}>
-                  <span className="mono inline-flex rounded-md border border-border bg-secondary/40 px-2 py-1 text-[10px] leading-none text-muted-foreground">
-                    {name}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </header>
-
-        {cover && coverUrl ? (
-          <Image
-            src={coverUrl}
-            alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
-            width={cover.width ?? 1600}
-            height={cover.height ?? 900}
-            sizes={DETAIL_IMAGE_SIZES}
-            priority
-            className="h-auto w-full rounded-2xl border border-border object-cover"
-          />
+        {project.hero?.heroLayout === 'stacked' ? (
+          <StackedHero project={project} labels={labels} status={status} />
         ) : (
-          <div aria-hidden className={DETAIL_VISUAL}>
-            <ProjectVisual visual={project.visual} number={project.order} />
-          </div>
+          <SplitHero project={project} labels={labels} hero={hero} />
         )}
 
         {/* Reading layout: the body keeps a comfortable measure on the left and the section

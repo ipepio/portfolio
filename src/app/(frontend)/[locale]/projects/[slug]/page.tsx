@@ -75,6 +75,23 @@ function nextInArchive(
 }
 
 /**
+ * Where this project sits in the published archive, for the hero's `NN / TT`.
+ *
+ * Derived, never stored: it is the one-based position in the same `order` list the grid
+ * shows, plus the size of that list, so reordering or publishing a project moves the index
+ * of every page at once and no page can print a position that stopped being true.
+ */
+function indexInArchive(
+  archive: Awaited<ReturnType<typeof listArchive>>,
+  slug: string,
+): { position: number; total: number } | null {
+  const position = archive.findIndex((doc) => doc.slug === slug)
+  if (position === -1 || archive.length === 0) return null
+
+  return { position: position + 1, total: archive.length }
+}
+
+/**
  * Prerenders every project detail page for both locales. The child segment must
  * return the parent's `locale` param too, so the cross product is built here.
  */
@@ -134,13 +151,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   const dict = getDictionary(locale)
-  const nextProject = nextInArchive(await listArchive(locale), slug)
+  const archive = await listArchive(locale)
 
   return (
     <LiveProjectDetail
       project={project}
       locale={locale}
-      nextProject={nextProject}
+      nextProject={nextInArchive(archive, slug)}
+      archiveIndex={indexInArchive(archive, slug)}
       labels={{
         ...dict.projects.detail,
         imageAltPrefix: dict.projects.gridLabels.imageAltPrefix,

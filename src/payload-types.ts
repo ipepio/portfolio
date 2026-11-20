@@ -227,6 +227,43 @@ export interface Project {
   slug: string;
   shortDescription?: string | null;
   /**
+   * La cabecera es la parte de arriba de la página del proyecto. Todo lo de este grupo es opcional: lo que dejes vacío cae en su respaldo y la página no se rompe.
+   */
+  hero?: {
+    /**
+     * «Dos columnas» pone el antetítulo, el título, la entradilla y las píldoras a la izquierda y la imagen o el diagrama a la derecha; en pantallas pequeñas se apila sola. «Una columna» mantiene la cabecera de siempre y no pinta el antetítulo, la entradilla ni las píldoras.
+     */
+    heroLayout?: ('split' | 'stacked') | null;
+    /**
+     * Línea mono que acompaña al índice de la cabecera, por ejemplo «AI INFRASTRUCTURE / MCP». El índice «01 / 07» no se escribe aquí: se calcula con el orden del archivo y el número de proyectos publicados. Si lo dejas vacío, la cabecera muestra solo el índice.
+     */
+    heroEyebrow?: string | null;
+    /**
+     * Markdown en crudo, igual que la descripción larga: admite énfasis, enlaces y saltos de línea (una línea en blanco separa párrafos). Si lo dejas vacío, la cabecera pinta la descripción corta en texto plano; la descripción corta sigue siendo la que se ve en las tarjetas del archivo.
+     */
+    heroLead?: string | null;
+    /**
+     * Rasgos de este proyecto, en una sola línea mono separada por «·» y con el punto verde del sistema: por ejemplo «Open source», «MIT», «Autoalojado». No son los filtros del archivo: esos son «Tags», que sirven para seleccionar proyectos. Sin píldoras no se pinta ninguna.
+     */
+    badges?:
+      | {
+          /**
+           * Por ejemplo «Open source».
+           */
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Ruta que se pinta en la esquina de la imagen o del diagrama, por ejemplo «ipepio / projects / discord». Solo se ve con «Mostrar etiqueta de la tarjeta» marcado.
+     */
+    cardLabel?: string | null;
+    /**
+     * Apagado por defecto, para que los proyectos que ya existen no estrenen etiqueta. Marcado y con «Etiqueta de la tarjeta» escrita, la cabecera la pinta sobre la imagen.
+     */
+    showCardLabel?: boolean | null;
+  };
+  /**
    * Markdown en crudo: lo que escribes es lo que se guarda. Admite encabezados (##, ###), listas, énfasis, enlaces, citas y bloques de código con ```. Un bloque de código abierto con ```mermaid se renderiza como diagrama en la página del proyecto, y cada encabezado ## añade una entrada al índice «En esta página». Para cajitas de aviso, cita una línea con el marcador: «> [!NOTE] Título» deja una nota neutra, «> [!DECISION] Título» una decisión numerada (01, 02… en orden de aparición) y «> [!WARNING] Título» un aviso en tono de advertencia. Las líneas siguientes, también citadas con «>», son el cuerpo de la cajita (listas, código o diagramas incluidos); una cita normal, sin marcador, mantiene su estilo discreto.
    */
   longDescription?: string | null;
@@ -467,6 +504,21 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   shortDescription?: T;
+  hero?:
+    | T
+    | {
+        heroLayout?: T;
+        heroEyebrow?: T;
+        heroLead?: T;
+        badges?:
+          | T
+          | {
+              label?: T;
+              id?: T;
+            };
+        cardLabel?: T;
+        showCardLabel?: T;
+      };
   longDescription?: T;
   coverImage?: T;
   visual?: T;

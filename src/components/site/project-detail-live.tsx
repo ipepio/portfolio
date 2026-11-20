@@ -4,7 +4,11 @@ import { useLivePreview } from '@payloadcms/live-preview-react'
 import { useState } from 'react'
 
 import { ProjectDetail } from '@/components/site/project-detail'
-import type { ProjectDetailItem, ProjectDetailNeighbour } from '@/components/site/project-detail'
+import type {
+  ProjectArchiveIndex,
+  ProjectDetailItem,
+  ProjectDetailNeighbour,
+} from '@/components/site/project-detail'
 import type { Locale, ProjectDetailLabels } from '@/lib/i18n'
 
 /** Payload's API lives in this same application, so the default route needs no proxy. */
@@ -52,6 +56,7 @@ export function LiveProjectDetail({
   locale,
   labels,
   nextProject = null,
+  archiveIndex = null,
 }: {
   project: ProjectDetailItem
   locale: Locale
@@ -62,6 +67,11 @@ export function LiveProjectDetail({
    * types.
    */
   nextProject?: ProjectDetailNeighbour | null
+  /**
+   * The hero's `NN / TT`, also read on the server: it is derived from the archive, not stored,
+   * so it is the one piece of the hero the editor cannot type over.
+   */
+  archiveIndex?: ProjectArchiveIndex | null
 }) {
   const { data } = useLivePreview<ProjectDetailItem>({
     initialData: project,
@@ -70,5 +80,13 @@ export function LiveProjectDetail({
     depth: PREVIEW_DEPTH,
   })
 
-  return <ProjectDetail project={data} locale={locale} labels={labels} nextProject={nextProject} />
+  return (
+    <ProjectDetail
+      project={data}
+      locale={locale}
+      labels={labels}
+      nextProject={nextProject}
+      archiveIndex={archiveIndex}
+    />
+  )
 }

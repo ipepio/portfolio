@@ -55,6 +55,7 @@ export const Default: Story = {
     project: aiGovernor,
     locale: 'es',
     labels,
+    archiveIndex: { position: 1, total: 7 },
   },
 }
 
@@ -74,5 +75,51 @@ export const WithMarkdown: Story = {
     },
     locale: 'es',
     labels,
+    archiveIndex: { position: 1, total: 7 },
+  },
+}
+
+/**
+ * The split hero with every optional piece filled (T2/T3: S2-S5): an eyebrow beside the
+ * derived index, a markdown lead with emphasis and a link, the badge pill and the card
+ * label on the visual's corner.
+ */
+export const SplitHeroWithContent: Story = {
+  args: {
+    project: {
+      ...aiGovernor,
+      hero: {
+        heroLayout: 'split',
+        heroEyebrow: 'AI INFRASTRUCTURE / MCP',
+        heroLead:
+          'Un **plano de control** único delante de cada proveedor de modelos, con cuotas y presupuesto por usuario.\n\nEl detalle técnico vive en [el repositorio](https://github.com/ipepio/ai-governor).',
+        badges: [{ label: 'Open source' }, { label: 'MIT' }, { label: 'Autoalojado' }],
+        cardLabel: 'ipepio / projects / ai-governor',
+        showCardLabel: true,
+      },
+    },
+    locale: 'es',
+    labels,
+    archiveIndex: { position: 2, total: 7 },
+  },
+}
+
+/** `heroLayout: 'stacked'`: the page's original one-column hero, untouched by the hero fields. */
+export const StackedHero: Story = {
+  args: {
+    project: {
+      ...aiGovernor,
+      hero: {
+        heroLayout: 'stacked',
+        heroEyebrow: 'AI INFRASTRUCTURE / MCP',
+        heroLead: 'Una entradilla que la cabecera apilada no pinta.',
+        badges: [{ label: 'Open source' }],
+        cardLabel: 'ipepio / projects / ai-governor',
+        showCardLabel: true,
+      },
+    },
+    locale: 'es',
+    labels,
+    archiveIndex: { position: 2, total: 7 },
   },
 }
