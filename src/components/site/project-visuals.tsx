@@ -42,7 +42,7 @@ function isProjectVisualName(value: unknown): value is ProjectVisualName {
 }
 
 /** Zero-padded three-digit card number (`001`), as in the reference head line. */
-function formatNumber(value: number | string | null | undefined): string {
+export function formatNumber(value: number | string | null | undefined): string {
   if (typeof value === 'number' && Number.isFinite(value)) {
     return String(Math.max(0, Math.trunc(value))).padStart(3, '0')
   }
@@ -58,7 +58,23 @@ const HAIRLINE = 'border-border'
 /** Solid block used for placeholder bars and avatars in the mock diagrams. */
 const BLOCK = 'bg-input'
 
-function VisualHead({ number, label, tag }: { number: string; label: string; tag: string }) {
+/**
+ * Resolved copy of the head line: the project's own text when it has any, else the
+ * diagram's default. Exported so the archive card can paint the same line over a cover
+ * image, where no diagram — and therefore no head of its own — is rendered.
+ */
+export function visualHeadCopy(
+  visual: unknown,
+  label?: string | null,
+  tag?: string | null,
+): { label: string; tag: string } {
+  const name = isProjectVisualName(visual) ? visual : FALLBACK_VISUAL
+  const meta = VISUALS[name]
+
+  return { label: label?.trim() || meta.label, tag: tag?.trim() || meta.tag }
+}
+
+export function VisualHead({ number, label, tag }: { number: string; label: string; tag: string }) {
   return (
     <div className="mono relative z-[2] flex items-center justify-between gap-3 text-[9px] leading-[1.3] font-[650] tracking-[0.08em] text-muted">
       <span className="min-w-0 truncate">{`${number} / ${label}`}</span>
@@ -336,7 +352,7 @@ export type ProjectVisualProps = {
  */
 export function ProjectVisual({ visual, number, label, tag, className }: ProjectVisualProps) {
   const name = isProjectVisualName(visual) ? visual : FALLBACK_VISUAL
-  const meta = VISUALS[name]
+  const head = visualHeadCopy(visual, label, tag)
 
   return (
     <div
@@ -346,8 +362,8 @@ export function ProjectVisual({ visual, number, label, tag, className }: Project
       <div className="grid-lines pointer-events-none absolute inset-0 opacity-80 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
       <VisualHead
         number={formatNumber(number)}
-        label={label?.trim() || meta.label}
-        tag={tag?.trim() || meta.tag}
+        label={head.label}
+        tag={head.tag}
       />
       <ProjectDiagram visual={name} />
     </div>

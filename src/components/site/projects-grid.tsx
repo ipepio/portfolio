@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 
 import type { Locale, ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
-import { ProjectVisual, type ProjectVisualName } from '@/components/site/project-visuals'
+import { formatNumber, ProjectVisual, VisualHead, visualHeadCopy, type ProjectVisualName } from '@/components/site/project-visuals'
 import { useDictionary, useLocale } from '@/lib/locale-context'
 
 /** Tag as returned by Payload at `depth >= 1` (or as a raw id at `depth 0`). */
@@ -169,16 +169,29 @@ function ProjectCard({
   const statusLabel = statusLabels[status]
   // Reference category line: the localized status label.
   const category = statusLabel
+  // Resolved once for both branches: a cover image hides the diagram, and with it the head
+  // line the owner fills in Payload.
+  const head = visualHeadCopy(project.visual, project.card?.category, project.card?.tag)
 
   const media =
     cover && coverUrl ? (
-      <Image
-        src={coverUrl}
-        alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
-        fill
-        sizes={CARD_SIZES}
-        className="object-cover transition duration-500 motion-safe:group-hover:scale-[1.03]"
-      />
+      <>
+        <Image
+          src={coverUrl}
+          alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
+          fill
+          sizes={CARD_SIZES}
+          className="object-cover transition duration-500 motion-safe:group-hover:scale-[1.03]"
+        />
+        {/* The scrim is what makes muted mono legible over a photograph. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-transparent"
+        />
+        <div className="absolute inset-x-0 top-0 z-[2] p-[21px]">
+          <VisualHead number={formatNumber(indexLabel)} label={head.label} tag={head.tag} />
+        </div>
+      </>
     ) : (
       <ProjectVisual
         visual={project.visual}
