@@ -5,7 +5,12 @@ import { ArrowLeft } from 'lucide-react'
 import { MarkdownBlocks } from '@/components/site/markdown-body'
 import { ProjectAside } from '@/components/site/project-aside'
 import type { ProjectItem } from '@/components/site/projects-grid'
-import { ProjectVisual } from '@/components/site/project-visuals'
+import {
+  formatNumber,
+  ProjectVisual,
+  VisualHead,
+  visualHeadCopy,
+} from '@/components/site/project-visuals'
 import type { Locale, ProjectDetailLabels, ProjectStatus } from '@/lib/i18n'
 import { parseMarkdown, type MarkdownBlock } from '@/lib/markdown'
 
@@ -185,13 +190,16 @@ function HeroVisual({
 }) {
   const cover = coverImageOf(project)
   const coverUrl = cover?.url ?? null
+  // Resolved for both branches: a cover replaces the diagram, and with it the head line the
+  // owner fills in Payload.
+  const head = visualHeadCopy(project.visual, project.card?.category, project.card?.tag)
 
   if (!cover || !coverUrl) {
     return (
       <div aria-hidden className="overflow-hidden rounded-2xl border border-border bg-secondary">
         <ProjectVisual
           visual={project.visual}
-          number={project.order}
+          number={project.order === null || project.order === undefined ? null : project.order + 1}
           label={project.card?.category}
           tag={project.card?.tag ?? undefined}
           className="h-[335px] sm:h-[420px]"
@@ -201,15 +209,24 @@ function HeroVisual({
   }
 
   return (
-    <Image
-      src={coverUrl}
-      alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
-      width={cover.width ?? 1600}
-      height={cover.height ?? 900}
-      sizes={sizes}
-      priority
-      className="h-auto w-full rounded-2xl border border-border object-cover"
-    />
+    <div className="relative overflow-hidden rounded-2xl border border-border">
+      <Image
+        src={coverUrl}
+        alt={cover.alt?.trim() || `${labels.imageAltPrefix} ${project.title}`}
+        width={cover.width ?? 1600}
+        height={cover.height ?? 900}
+        sizes={sizes}
+        priority
+        className="h-auto w-full object-cover"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-transparent"
+      />
+      <div className="absolute inset-x-0 top-0 z-[2] p-[21px]">
+        <VisualHead number={formatNumber(project.order)} label={head.label} tag={head.tag} />
+      </div>
+    </div>
   )
 }
 
@@ -393,7 +410,7 @@ function StackedHero({
         <div aria-hidden className={DETAIL_VISUAL}>
           <ProjectVisual
             visual={project.visual}
-            number={project.order}
+            number={project.order === null || project.order === undefined ? null : project.order + 1}
             label={project.card?.category}
             tag={project.card?.tag ?? undefined}
           />

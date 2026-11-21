@@ -360,11 +360,7 @@ export function ProjectVisual({ visual, number, label, tag, className }: Project
       className={cn('relative h-[202px] overflow-hidden bg-secondary p-[21px]', className)}
     >
       <div className="grid-lines pointer-events-none absolute inset-0 opacity-80 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
-      <VisualHead
-        number={formatNumber(number)}
-        label={head.label}
-        tag={head.tag}
-      />
+      <VisualHead number={formatNumber(number)} label={head.label} tag={head.tag} />
       <ProjectDiagram visual={name} />
     </div>
   )

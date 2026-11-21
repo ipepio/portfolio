@@ -6,7 +6,13 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 
 import type { Locale, ProjectStatus, ProjectsGridLabels } from '@/lib/i18n'
-import { formatNumber, ProjectVisual, VisualHead, visualHeadCopy, type ProjectVisualName } from '@/components/site/project-visuals'
+import {
+  formatNumber,
+  ProjectVisual,
+  VisualHead,
+  visualHeadCopy,
+  type ProjectVisualName,
+} from '@/components/site/project-visuals'
 import { useDictionary, useLocale } from '@/lib/locale-context'
 
 /** Tag as returned by Payload at `depth >= 1` (or as a raw id at `depth 0`). */
