@@ -74,7 +74,7 @@ Portfolio, from the repository root:
 
 ```bash
 npm ci
-npm run build          # payload build: import map, types, next build
+npm run build          # next build (payload build was removed in Payload 3.93)
 npm run start          # next start, port 3000
 npm run dev            # next dev, port 3000 (schema push, no migration needed)
 ```
